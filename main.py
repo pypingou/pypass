@@ -1,15 +1,9 @@
-
 #!/usr/bin/env python -c
 # -*- coding: utf-8 -*-
 
 import sys
 import os
-import gobject
-#from pyqtl import EasyRqtl, EasryRqtlError
-
-import rpy2.robjects as robjects
-import rpy2.rinterface as rinterface
-from rpy2.robjects.packages import importr
+import ConfigParser
 
 try:
     import pygtk
@@ -27,7 +21,6 @@ except:
     print("gobject Not Availible")
     sys.exit(1)
 
-import ConfigParser, os
 
 config = ConfigParser.RawConfigParser()
 config.read('test.cfg')
