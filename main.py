@@ -3,7 +3,6 @@
 
 import sys
 import os
-import ConfigParser
 from PyPassjson import JsonClass
 
 try:
@@ -22,11 +21,6 @@ except:
     print("gobject Not Availible")
     sys.exit(1)
 
-
-#config = ConfigParser.RawConfigParser()
-#config.read('test.cfg')
-data = JsonClass().generatePasswordList()
-
 class PyPass(object):
 
     def __init__( self, filename = None ):
@@ -43,7 +37,8 @@ class PyPass(object):
         treeview.append_column(col0)
         
         treestore = gtk.TreeStore(gobject.TYPE_STRING)
-        
+        data = self.readConfFile("")
+
         for key in data.keys():
             parent = treestore.append(None, [key ])
             for option in data[key ]:
@@ -65,6 +60,12 @@ class PyPass(object):
         stbar.push(1, "Welcome into pypass")
 
         self.mainwindow.show()
+
+    def readConfFile(self, filename):
+        """Read the given json file and return the content """
+        data = JsonClass().generatePasswordList()
+        return data
+
     
     def _dialog(self, dialog, timeout=0, center_on=None):
         """ Display a dialog window """
