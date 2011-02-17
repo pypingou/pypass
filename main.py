@@ -4,6 +4,7 @@
 import sys
 import os
 import ConfigParser
+from PyPassjson import JsonClass
 
 try:
     import pygtk
@@ -22,9 +23,9 @@ except:
     sys.exit(1)
 
 
-config = ConfigParser.RawConfigParser()
-config.read('test.cfg')
-
+#config = ConfigParser.RawConfigParser()
+#config.read('test.cfg')
+data = JsonClass().generatePasswordList()
 
 class PyPass(object):
 
@@ -42,14 +43,12 @@ class PyPass(object):
         treeview.append_column(col0)
         
         treestore = gtk.TreeStore(gobject.TYPE_STRING)
-        sections = config.sections()
-        sections.sort()
-        for section in sections:
-            parent = treestore.append(None, [section])
-            options = config.options(section)
-            options.sort()
-            for option in options:
-                treestore.append(parent, [option])
+        
+        for key in data.keys():
+            parent = treestore.append(None, [key ])
+            for option in data[key ]:
+                if isinstance(option, dict):
+                    treestore.append(parent, [option['name']])
         treeview.set_model(treestore)
         treeview.set_reorderable(True)
         
@@ -95,12 +94,15 @@ class PyPass(object):
         (model, iter) = selection.get_selected()
         key = model[iter][0]
         parent = None
+        print key
         if model[iter].parent is not None:
             parent = model[iter].parent[0]
-        if parent in config.sections():
-            if key in config.options(parent):
-                passwd = self.builder.get_object("labelpass")
-                passwd.set_text(config.get(parent, key))
+        
+        if parent in data.keys():
+            for passw in data[parent]:
+                if key in passw['name']:
+                    passwd = self.builder.get_object("labelpass")
+                    passwd.set_text(passw['pass'])
         else:
             passwd = self.builder.get_object("labelpass")
             passwd.set_text("")
