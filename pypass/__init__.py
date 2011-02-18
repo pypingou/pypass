@@ -15,12 +15,12 @@ except:
 try:
     import gtk
 except:
-    print("GTK Not Availible")
+    print("GTK not available")
     sys.exit(1)
 try:
     import gobject
 except:
-    print("gobject Not Availible")
+    print("gobject not available")
     sys.exit(1)
 
 class PyPass(object):
