@@ -53,13 +53,6 @@ class PyPass(object):
         col0.set_attributes(cellpb, stock_id=1)
         col0.set_attributes(cell, text=0)
         
-        ## Old version -- works but no icons
-        #treeview = self.builder.get_object("treefolderview")
-        #cell0 = gtk.CellRendererText()
-        #col0 = gtk.TreeViewColumn("", cell0, text=0)
-        #treeview.append_column(col0) 
-        
-        
         if self.options.filename is not None:
             self.data = self.read_password_file(self.options.filename)
             if self.data is not None:
