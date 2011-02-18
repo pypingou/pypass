@@ -136,8 +136,12 @@ class PyPass(object):
         if parent in self.data.keys():
             for passw in self.data[parent]:
                 if key in passw['name']:
-                    passwd = self.builder.get_object("labelpass")
-                    passwd.set_text(passw['pass'])
+                    txtpass = self.builder.get_object("labelpass")
+                    content = "%s \nUser: %s\nPassword: %s" %(
+                        passw['name'],
+                        passw['user'],
+                        passw['pass'])
+                    txtpass.set_text(content)
         else:
             passwd = self.builder.get_object("labelpass")
             passwd.set_text("")
