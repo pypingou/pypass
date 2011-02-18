@@ -154,12 +154,22 @@ class PyPass(object):
         if parent in self.data.keys():
             for passw in self.data[parent]:
                 if key in passw['name']:
+                    content = ""
+                    for key in ('name','user','pass'):
+                        content += "<b>%s:</b> %s \n" %(key, passw[key])
+                    keys = passw.keys()
+                    keys.sort()
+                    for key in keys:
+                        if key not in ('name','user','pass'):
+                            if key.lower() == 'url':
+                                content += "<b>%s:</b> <a href='%s'> %s</a> \n" %(
+                                        key, passw[key], passw[key])
+                            else:
+                                content += "<b>%s:</b> %s \n" %(
+                                        key, passw[key])
                     txtpass = self.builder.get_object("labelpass")
-                    content = "%s \nUser: %s\nPassword: %s" %(
-                        passw['name'],
-                        passw['user'],
-                        passw['pass'])
                     txtpass.set_text(content)
+                    txtpass.set_use_markup(True)
         else:
             passwd = self.builder.get_object("labelpass")
             passwd.set_text("")
