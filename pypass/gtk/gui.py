@@ -41,13 +41,13 @@ except:
     print("gobject not available")
     sys.exit(1)
 
-class PyPass(object):
+class PyPassGui(object):
 
     def __init__( self, options):
         self.options = options
         self.builder = gtk.Builder()
-        self.builder.add_from_file(os.path.dirname(
-                os.path.realpath( __file__ )) + "/../ui/pyrevelation.ui")
+        self.builder.add_from_file(os.path.join(os.path.dirname(
+                os.path.realpath( __file__ )), "ui", "pyrevelation.ui"))
         self.mainwindow = self.builder.get_object('mainwindow')
         
         self.set_button_toolbar()

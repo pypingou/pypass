@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with pypass.  If not, see <http://www.gnu.org/licenses/>.
 
-import pypass
+from pypass.gtk import gui 
 from optparse import OptionParser
 
 def getArgument():
@@ -40,5 +40,5 @@ if __name__ == "__main__":
         pass
     else:
         options.filename = "test.json"
-        pypass.PyPass(options)
+        gui.PyPassGui(options)
 
