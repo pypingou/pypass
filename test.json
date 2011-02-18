@@ -2,12 +2,12 @@
   "pers": [
     {
       "name": "server1", 
-      "pass": "sv1pass", 
+      "password": "sv1pass", 
       "user": "sv1user"
     }, 
     {
       "name": "server2", 
-      "pass": "sv2pass", 
+      "password": "sv2pass", 
       "user": "sv2user",
       "hostname": "mysecreteserver.com"
     }
@@ -15,13 +15,13 @@
   "websites": [
     {
       "name": "sourceforge", 
-      "pass": "sfpass", 
+      "password": "sfpass", 
       "user": "sfuser",
       "url": "http://sf.net"
     }, 
     {
       "name": "fedora", 
-      "pass": "fedpass", 
+      "password": "fedpass", 
       "user": "feduser",
       "description": "Password of the fedora project website"
     }

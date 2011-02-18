@@ -4,6 +4,8 @@
 import sys
 import os
 import json
+import random
+import string
 
 try:
     import pygtk
@@ -54,9 +56,10 @@ class PyPass(object):
         col0.set_attributes(cell, text=0)
         
         if self.options.filename is not None:
-            self.data = self.read_password_file(self.options.filename)
-            if self.data is not None:
-                self.load_password_tree(self.data)
+            self.fio = FileIO(self.options.filename)
+            data = self.read_password_file(self.options.filename)
+            if data is not None:
+                self.load_password_tree(data)
         
         dic = {
             "on_buttonQuit_clicked" : self.quit,
@@ -64,11 +67,15 @@ class PyPass(object):
             "gtk_main_quit" : self.quit,
             "show_about" : self.show_about,
             "cursor_changed": self.on_pass_selected,
+            "add_entry": self.add_entry,
+            "generate_password": self.generate_password,
+            "save_database": self.save_database,
         }
         self.builder.connect_signals( dic )
         
-        stbar = self.builder.get_object('statusbar')
-        stbar.push(1, "Welcome into pypass")
+        self.update_status_bar("Welcome into pypass")
+
+        self.modifiedDb = False
 
         self.mainwindow.show()
         gtk.main()
@@ -82,12 +89,15 @@ class PyPass(object):
                     "b_del": gtk.STOCK_REMOVE,
                     "b_quit": gtk.STOCK_QUIT,
                     "b_about": gtk.STOCK_ABOUT,
+                    "b_add_entry": gtk.STOCK_OK,
+                    "b_cancel_entry": gtk.STOCK_CANCEL,
                     }
         for buton in butons.keys():
             butonopen = self.builder.get_object(buton)
             img = gtk.image_new_from_stock(butons[buton], 
                                             gtk.ICON_SIZE_LARGE_TOOLBAR)
             butonopen.set_image(img)
+
 
     def errorWindow(self, message, er = None):
         """ Display an error window with the given message """
@@ -113,8 +123,8 @@ class PyPass(object):
 
     def read_password_file(self, filename):
         """Read the given json file and return the content """
-        try:
-            data = FileIO().readJson(filename)
+        try:            
+            data = self.fio.readJson()
         except IOError, er:
             self.generate_error(
                 "Something went wrong when trying to load the database:",
@@ -123,16 +133,28 @@ class PyPass(object):
         return data
 
     def load_password_tree(self, tree):
+        self.data = tree
         treeview = self.builder.get_object("treefolderview")
         treestore = gtk.TreeStore(str, str)
+        #print tree
         for key in tree.keys():
-            parent = treestore.append(None, [key, gtk.STOCK_DIRECTORY])
+            if key is not None:
+                parent = treestore.append(None, [key, gtk.STOCK_DIRECTORY])
+            else:
+                parent = None
             for password in tree[key]:
                 if isinstance(password, dict):
                     icon = gtk.STOCK_DIALOG_AUTHENTICATION
                     treestore.append(parent, [password['name'], icon])
         treeview.set_model(treestore)
         treeview.set_reorderable(True)
+    
+    def reset_entry_dialog(self):
+        """ Reset the different entry field of the add_entry dialog """
+        self.builder.get_object("entry_name").set_text("")
+        self.builder.get_object("entry_user").set_text("")
+        self.builder.get_object("entry_password").set_text("")
+        self.builder.get_object("entry_url").set_text("")
     
     def make_pb(self, tvcolumn, cell, model, iter):
         stock = model.get_value(iter, 1)
@@ -161,7 +183,23 @@ class PyPass(object):
     def quit(self, widget):
         """ Quit the application """
         print "quitting..."
+        if self.modifiedDb:
+            dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_WARNING)
+            dialog.set_markup("<b>" + "Erreur" + "</b>")
+            dialog.format_secondary_markup(
+                    "Voulez-vous sauvez la base avant de quitter ?")
+            dialog.add_buttons(gtk.STOCK_OK, gtk.RESPONSE_YES,
+                                gtk.STOCK_CANCEL, gtk.RESPONSE_NO)
+            result = self._dialog(dialog)
+            if result == gtk.RESPONSE_YES:
+                self.save_database()
         sys.exit(0)
+    
+    def save_database(self, widget = None):
+        """ Save the current database """
+        # TODO: reconstruct the json from the TreeView
+        self.fio.save_json(self.data)
+        self.update_status_bar("Database saved")
     
     def on_pass_selected(self, widget):
         selection = self.builder.get_object("treefolderview").get_selection()
@@ -176,12 +214,12 @@ class PyPass(object):
             for passw in self.data[parent]:
                 if key in passw['name']:
                     content = ""
-                    for key in ('name','user','pass'):
+                    for key in ('name','user','password'):
                         content += "<b>%s:</b> %s \n" %(key, passw[key])
                     keys = passw.keys()
                     keys.sort()
                     for key in keys:
-                        if key not in ('name','user','pass'):
+                        if key not in ('name','user','password'):
                             if key.lower() == 'url':
                                 content += "<b>%s:</b> <a href='%s'> %s</a> \n" %(
                                         key, passw[key], passw[key])
@@ -194,7 +232,69 @@ class PyPass(object):
         else:
             passwd = self.builder.get_object("labelpass")
             passwd.set_text("")
-        
+    
+    def add_entry(self, widget):
+        add = self.builder.get_object("dialogaddentry")
+        if self._dialog(add):
+            name = self.builder.get_object("entry_name").get_text()
+            user = self.builder.get_object("entry_user").get_text()
+            password = self.builder.get_object("entry_password").get_text()
+            url = self.builder.get_object("entry_url").get_text()
+            if "" in (name, user, password):
+                self.generate_error("Could not enter the password. \nOne of the mandatory field had missing information")
+                return
+            else:
+                passdict = {"name": name, "user": user, "password": password}
+                if url is not "":
+                    passdict['url'] = urll
+                level = self.get_level()
+                data = PassDatabase().add_password_to_database(
+                                            self.data, level, passdict)
+                self.load_password_tree(data)
+                self.reset_entry_dialog()
+                self.update_status_bar("Password added*")
+                self.modifiedDb = True
+                
+    
+    def update_status_bar(self, entry):
+        """ Update the status bar with the given text """
+        stbar = self.builder.get_object('statusbar')
+        stbar.push(1, entry)
+    
+    def get_level(self):
+        """ Retrieve the level selected """
+        selection = self.builder.get_object("treefolderview").get_selection()
+        (model, iter) = selection.get_selected()
+        if iter is None: 
+            return
+        key = model[iter][0]
+        return key
+    
+    def generate_password(self, widget):
+        """ Generate a random password """
+        length = random.randrange(5,15)
+        random_string = ''.join(random.choice(string.ascii_letters + 
+                            string.digits) for x in range(length))
+        entry = self.builder.get_object("entry_password")
+        entry.set_text(random_string)
+        return
+
+class PassDatabase(object):
+    """
+    Class to handle the addition and removal from the database
+    """
+    
+    def add_password_to_database(self, database, level, passdict):
+        """ Add the given hashdict to the given database at the given
+        level"""
+        #if level is None:
+            #level = ""
+        if level in database.keys():
+            database[level].append(passdict)
+        else:
+            database[level] = [passdict]
+        return database
+
 class FileIO(object):
     """
     Class handling the File Input/Output
@@ -204,12 +304,28 @@ class FileIO(object):
     - encrypt using gpg
     - write the encrypted file
     """
-    def readJson(self, filename):
+    def __init__(self, filename = None):
+        self.filename = filename
+    
+    def readJson(self, filename = None):
         """
-        Read the given json file and return the json object
+        Read the set json file and return the json object
+        If no filename is specify it will use the one given to the constructor
+        and if both are None it will return None
         """
+        readfile = self.filename
+        if filename is not None:
+            readfile = filename
+        if readfile is None:
+            return
         # TODO: make it decrypt the file
-        f = open(filename, "r")
+        f = open(readfile, "r")
         content = f.read()
         f.close()
         return json.loads(content)
+    
+    def save_json(self, json):
+        """
+        Save the given json into a file
+        """
+        print json, self.filename
