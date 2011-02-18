@@ -144,15 +144,19 @@ class PyPass(object):
         
 class FileIO(object):
     """
+    Class handling the File Input/Output
+    Aka: 
+    - decrypt using gpg
+    - read the json file
+    - encrypt using gpg
+    - write the encrypted file
     """
     def readJson(self, filename):
         """
         Read the given json file and return the json object
         """
+        # TODO: make it decrypt the file
         f = open(filename, "r")
         content = f.read()
         f.close()
         return json.loads(content)
-    
-if __name__ == "__main__":
-   pypass = PyPass()
