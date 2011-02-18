@@ -1,0 +1,26 @@
+{
+  "pers": [
+    {
+      "name": "server1", 
+      "pass": "sv1pass", 
+      "user": "sv1user"
+    }, 
+    {
+      "name": "server2", 
+      "pass": "sv2pass", 
+      "user": "sv2user"
+    }
+  ], 
+  "websites": [
+    {
+      "name": "sourceforge", 
+      "pass": "sfpass", 
+      "user": "sfuser"
+    }, 
+    {
+      "name": "fedora", 
+      "pass": "fedpass", 
+      "user": "feduser"
+    }
+  ]
+}
