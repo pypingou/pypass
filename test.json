@@ -8,19 +8,22 @@
     {
       "name": "server2", 
       "pass": "sv2pass", 
-      "user": "sv2user"
+      "user": "sv2user",
+      "hostname": "mysecreteserver.com"
     }
   ], 
   "websites": [
     {
       "name": "sourceforge", 
       "pass": "sfpass", 
-      "user": "sfuser"
+      "user": "sfuser",
+      "url": "http://sf.net"
     }, 
     {
       "name": "fedora", 
       "pass": "fedpass", 
-      "user": "feduser"
+      "user": "feduser",
+      "description": "Password of the fedora project website"
     }
   ]
 }
