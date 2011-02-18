@@ -1,0 +1,8 @@
+syntax: glob
+.svn/
+
+# Python-specific build output
+*.pyd
+*.pyc
+*.pyo
+
