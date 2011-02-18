@@ -32,11 +32,33 @@ class PyPass(object):
         
         self.set_button_toolbar()
         
+        ## source to put the icons in the TreeView:
+        ## http://www.eurion.net/python-snippets/snippet/Tree%20View%20Column.html
+        
+        # retrieve the TreeView
         treeview = self.builder.get_object("treefolderview")
-        cell0 = gtk.CellRendererText()
-        col0 = gtk.TreeViewColumn("title", cell0,    
-                            text=0)
-        treeview.append_column(col0)
+        # create the TreeViewColumns to display the data
+        col0 = gtk.TreeViewColumn("")
+        treeview.append_column(col0) 
+        
+        # create a CellRenderers to render the data
+        cellpb = gtk.CellRendererPixbuf()
+        cell = gtk.CellRendererText()
+        
+        # add the cells to the columns - 2 in the first
+        col0.pack_start(cellpb, False)
+        col0.pack_start(cell, True)
+        
+        # set the cell attributes to the appropriate liststore column
+        col0.set_attributes(cellpb, stock_id=1)
+        col0.set_attributes(cell, text=0)
+        
+        ## Old version -- works but no icons
+        #treeview = self.builder.get_object("treefolderview")
+        #cell0 = gtk.CellRendererText()
+        #col0 = gtk.TreeViewColumn("", cell0, text=0)
+        #treeview.append_column(col0) 
+        
         
         if self.options.filename is not None:
             self.data = self.read_password_file(self.options.filename)
@@ -109,15 +131,21 @@ class PyPass(object):
 
     def load_password_tree(self, tree):
         treeview = self.builder.get_object("treefolderview")
-        treestore = gtk.TreeStore(gobject.TYPE_STRING)
+        treestore = gtk.TreeStore(str, str)
         for key in tree.keys():
-            parent = treestore.append(None, [key ])
+            parent = treestore.append(None, [key, gtk.STOCK_DIRECTORY])
             for password in tree[key]:
                 if isinstance(password, dict):
-                    treestore.append(parent, [password['name']])
+                    icon = gtk.STOCK_DIALOG_AUTHENTICATION
+                    treestore.append(parent, [password['name'], icon])
         treeview.set_model(treestore)
         treeview.set_reorderable(True)
-
+    
+    def make_pb(self, tvcolumn, cell, model, iter):
+        stock = model.get_value(iter, 1)
+        pb = self.treeview.render_icon(stock, gtk.ICON_SIZE_MENU, None)
+        cell.set_property('pixbuf', pb)
+        return
     
     def _dialog(self, dialog, timeout = 0, center_on = None):
         """ Display a dialog window """
