@@ -39,15 +39,15 @@ class PyPass(object):
         treeview.append_column(col0)
         
         if self.options.filename is not None:
-            self.data = self.readPasswordFile(self.options.filename)
+            self.data = self.read_password_file(self.options.filename)
             if self.data is not None:
-                self.loadPasswordTree(self.data)
+                self.load_password_tree(self.data)
         
         dic = {
             "on_buttonQuit_clicked" : self.quit,
             "on_windowMain_destroy" : self.quit,
             "gtk_main_quit" : self.quit,
-            "show_about" : self.showAbout,
+            "show_about" : self.show_about,
             "cursor_changed": self.on_pass_selected,
         }
         self.builder.connect_signals( dic )
@@ -96,7 +96,7 @@ class PyPass(object):
         else:
             self.errorWindow(errortext, er)
 
-    def readPasswordFile(self, filename):
+    def read_password_file(self, filename):
         """Read the given json file and return the content """
         try:
             data = FileIO().readJson(filename)
@@ -107,7 +107,7 @@ class PyPass(object):
             return
         return data
 
-    def loadPasswordTree(self, tree):
+    def load_password_tree(self, tree):
         treeview = self.builder.get_object("treefolderview")
         treestore = gtk.TreeStore(gobject.TYPE_STRING)
         for key in tree.keys():
@@ -132,7 +132,7 @@ class PyPass(object):
         dialog.hide()
         return result
     
-    def showAbout(self, widget):
+    def show_about(self, widget):
         """ Show the about diaglog """
         about = self.builder.get_object("aboutdialog")
         self._dialog(about)
