@@ -30,6 +30,8 @@ class PyPass(object):
                 os.path.realpath( __file__ )) + "/../ui/pyrevelation.ui")
         self.mainwindow = self.builder.get_object('mainwindow')
         
+        self.set_button_toolbar()
+        
         treeview = self.builder.get_object("treefolderview")
         cell0 = gtk.CellRendererText()
         col0 = gtk.TreeViewColumn("title", cell0,    
@@ -55,6 +57,22 @@ class PyPass(object):
 
         self.mainwindow.show()
         gtk.main()
+    
+    def set_button_toolbar(self):
+        butons = {
+                    "b_open": gtk.STOCK_OPEN,
+                    "b_save": gtk.STOCK_SAVE,
+                    "b_add": gtk.STOCK_ADD,
+                    "b_edit": gtk.STOCK_EDIT,
+                    "b_del": gtk.STOCK_REMOVE,
+                    "b_quit": gtk.STOCK_QUIT,
+                    "b_about": gtk.STOCK_ABOUT,
+                    }
+        for buton in butons.keys():
+            butonopen = self.builder.get_object(buton)
+            img = gtk.image_new_from_stock(butons[buton], 
+                                            gtk.ICON_SIZE_LARGE_TOOLBAR)
+            butonopen.set_image(img)
 
     def errorWindow(self, message, er = None):
         """ Display an error window with the given message """
