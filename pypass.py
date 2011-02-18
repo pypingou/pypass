@@ -21,6 +21,6 @@ if __name__ == "__main__":
     if options.cli:
         pass
     else:
-        options.filename = "../test.json"
+        options.filename = "test.json"
         pypass.PyPass(options)
 
