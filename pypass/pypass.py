@@ -53,12 +53,13 @@ class PyPass():
         self.data = self.decrypt()
 
     def decrypt(self):
-        #TODO: we should work only from a stream, not from a file
-        stream = open(self.filename, 'rb')
-        #have to select key before that
-        passphrase = getpass.getpass("Enter your GPG password:") 
-        decrypted_data = self.gpg.decrypt_file(stream, passphrase=passphrase)
-        return decrypted_data.data
+        if os.path.exists(self.filename):
+            #TODO: we should work only from a stream, not from a file
+            stream = open(self.filename, 'rb')
+            #have to select key before that
+            passphrase = getpass.getpass("Enter your GPG password:") 
+            decrypted_data = self.gpg.decrypt_file(stream, passphrase=passphrase)
+            return decrypted_data.data
 
     def crypt(self, recipients):
         #TODO: we should work only from a stream, not from a file
