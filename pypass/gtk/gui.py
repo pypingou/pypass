@@ -206,11 +206,14 @@ class PyPassGui(object):
             dialog.set_markup("<b>" + "Erreur" + "</b>")
             dialog.format_secondary_markup(
                     "Voulez-vous sauvez la base avant de quitter ?")
-            dialog.add_buttons(gtk.STOCK_OK, gtk.RESPONSE_YES,
-                                gtk.STOCK_CANCEL, gtk.RESPONSE_NO)
+            dialog.add_buttons( gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                gtk.STOCK_REMOVE, gtk.RESPONSE_NO,
+                                gtk.STOCK_OK, gtk.RESPONSE_YES,)
             result = self._dialog(dialog)
             if result == gtk.RESPONSE_YES:
                 self.save_database()
+            elif result == gtk.RESPONSE_CANCEL:
+                return
         sys.exit(0)
     
     def save_database(self, widget = None):
