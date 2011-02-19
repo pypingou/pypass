@@ -56,8 +56,10 @@ class PyPass():
         else: 
             return "{}"
 
-    def crypt(self, recipients):
+    def crypt(self, recipients = None):
         #have to select recipient before that
+        if recipients is None:
+            recipients = self.config.recipients
         edata = str(self.gpg.encrypt(self.data, recipients, output=self.config.file))
         return edata
 
