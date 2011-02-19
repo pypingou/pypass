@@ -42,15 +42,13 @@ class PyPass():
         self.hd = os.path.join(os.path.expanduser('~'), '.gnupg')
         #print self.hd
         self.gpg = gnupg.GPG(gnupghome=self.hd, use_agent=True)
-        self.plain_file = 'test.json'
-        self.filename = 'test.json.asc'
 
         self.data = self.decrypt()
 
     def decrypt(self):
-        if os.path.exists(self.filename):
+        if os.path.exists(self.config.file):
             #TODO: we should work only from a stream, not from a file
-            stream = open(self.filename, 'rb')
+            stream = open(self.config.file, 'rb')
             #have to select key before that
             passphrase = getpass.getpass("Enter your GPG password:") 
             decrypted_data = self.gpg.decrypt_file(stream, passphrase=passphrase)
@@ -59,10 +57,9 @@ class PyPass():
             return "{}"
 
     def crypt(self, recipients):
-        #TODO: we should work only from a stream, not from a file
-        stream = open(self.plain_file, 'rb')
         #have to select recipient before that
-        edata = str(self.gpg.encrypt_file(stream, recipients, output=self.filename))
+        edata = str(self.gpg.encrypt(self.data, recipients, output=self.config.file))
+        return edata
 
     def read_file(self):
         """Read the given json file and return the content """
@@ -126,3 +123,5 @@ if __name__ == "__main__":
     recipients = ['8BA59F94']
     p.crypt(recipients)
     p.decrypt()
+    p.config.file='/a/file/whose/parent/path/does/not/exists'
+    print p.config.file

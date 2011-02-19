@@ -70,7 +70,7 @@ class PyPassConfig():
             CharacterSet("Base 64 (a-z, A-Z, 0-9, '+', '/')", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/")
         )
 
-        self._file = self.config.get('global', 'file')
+        self._file = os.path.expanduser(self.config.get('global', 'file'))
         self.recipients = self.config.get('global', 'recipients')
         self.passwords = {
             'length': int(self.config.get('password generator', 'lenght')),
