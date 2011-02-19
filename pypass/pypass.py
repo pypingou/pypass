@@ -21,32 +21,67 @@
 
 import os
 import gnupg
-import getpass 
+import getpass
+import json
 
 class PyPass():
 
     def __init__( self):
         #File should be in ~/.pypass/
+        #TODO: load configuration file
         self.hd = os.path.join(os.path.expanduser('~'), '.gnupg')
         #print self.hd
         self.gpg = gnupg.GPG(gnupghome=self.hd, use_agent=True)
         self.plain_file = 'test.json'
-        self.crypted_file = 'test.json.asc'
+        self.filename = 'test.json.asc'
+
+        self.data = self.decrypt()
 
     def decrypt(self):
-        stream = open(self.crypted_file, 'rb')
+        #TODO: we should work only from a stream, not from a file
+        stream = open(self.filename, 'rb')
         #have to select key before that
         passphrase = getpass.getpass("Enter your GPG password:") 
         decrypted_data = self.gpg.decrypt_file(stream, passphrase=passphrase)
-        print decrypted_data.data
+        return decrypted_data.data
 
     def crypt(self, recipients):
+        #TODO: we should work only from a stream, not from a file
         stream = open(self.plain_file, 'rb')
         #have to select recipient before that
-        edata = str(self.gpg.encrypt_file(stream, recipients, output=self.crypted_file))
-        
-        #f = open(self.crypted_file, 'w')
-        #f.write(edata)
+        edata = str(self.gpg.encrypt_file(stream, recipients, output=self.filename))
+
+    def read_file(self):
+        """Read the given json file and return the content """
+        try:
+            data = self.fio.readJson()
+        except IOError, er:
+            self.generate_error(
+                "Something went wrong when trying to load the database:",
+                er)
+            return
+        return data
+
+    def add_password(self, database, level, passdict):
+        """ Add the given hashdict to the given database at the given
+        level"""
+        if level in database.keys():
+            database[level].append(passdict)
+        else:
+            database[level] = [passdict]
+        return database
+
+    def data_as_json(self):
+        return json.loads(self.data)
+
+    def generate_error(self, errortext, er = None):
+        """ 
+        Function called when a error needs to be raised
+        The error will be displayed in stdout
+        """
+        print  errortext
+        print er
+        sys.exit(1)
 
 # for dev/testing purposes
 if __name__ == "__main__":
