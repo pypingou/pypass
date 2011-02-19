@@ -25,9 +25,13 @@ import getpass
 import json
 import random
 
+import config
+
 class PyPass():
 
     def __init__( self):
+        self.config = config.PyPassConfig()
+
         self.character_sets = (
             CharacterSet("All printable (excluding space)", "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"),
             CharacterSet("Alpha-numeric (a-z, A-Z, 0-9)", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),

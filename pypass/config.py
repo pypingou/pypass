@@ -19,7 +19,10 @@
 # You should have received a copy of the GNU General Public License
 # along with pypass.  If not, see <http://www.gnu.org/licenses/>.
 
-import os, ConfigParser
+import os, ConfigParser, logging
+logger = logging.getLogger(__name__)
+if not logger.handlers:
+    logger.addHandler(logging.NullHandler())
 
 class PyPassConfig():
 
@@ -31,11 +34,12 @@ class PyPassConfig():
                'pypass.ini'
             )
          )
-        print self.app_config_file
+
         self.config_dir = os.path.join(os.path.expanduser('~'), '.pypass')
         self.config_file = os.path.join(self.config_dir, 'pypass.ini')
 
-        print self.app_config_file
+        logger.debug('Application configuration file: %s' % self.app_config_file)
+        logger.debug('Configuration file:             %s' % self.config_file)
 
         #Check if configuration directory exists, create it otherwise
         if not os.path.exists(self.config_dir):
@@ -49,8 +53,9 @@ class PyPassConfig():
         config.read([self.app_config_file, self.config_file])
 
         #Rewrite local config to take care of new app changes
-        print 'Update user config file'
+        logger.info('Update user config file')
         with open(self.config_file, 'wb') as configfile:
             config.write(configfile)
 
-        print self.config_dir
+    def load(self):
+        pass
