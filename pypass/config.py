@@ -49,13 +49,23 @@ class PyPassConfig():
             except MkdirError:
                 sys.exit('Unable to create PyPass configuration directory under %s' % self.config_dir)
 
-        config = ConfigParser.ConfigParser()
-        config.read([self.app_config_file, self.config_file])
+        self.config = ConfigParser.ConfigParser()
+        self.config.read([self.app_config_file, self.config_file])
 
         #Rewrite local config to take care of new app changes
         logger.info('Update user config file')
         with open(self.config_file, 'wb') as configfile:
-            config.write(configfile)
+            self.config.write(configfile)
+
+        #we're done with initialization, we can load values now
+        self.load()
 
     def load(self):
-        pass
+        self.file = self.config.get('global', 'file')
+        self.recipients = self.config.get('global', 'recipients')
+        self.passwords = {
+            'length': int(self.config.get('password generator', 'lenght')),
+            'base': int(self.config.get('password generator', 'base'))
+        }
+
+        logger.debug("Configuration loaded:\n- file: %s\n-recipients: %s\n-password length: %i\n-password base: %i" % (self.file, self.recipients, self.passwords['length'], self.passwords['base']))
