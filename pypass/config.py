@@ -77,20 +77,21 @@ class PyPassConfig():
             'base': int(self.config.get('password generator', 'base'))
         }
 
-        logger.debug("Configuration loaded:\n- file: %s\n- recipients: %s\n- password length: %i\n- password base: %i" % (self.file, self.recipients, self.passwords['length'], self.passwords['base']))
+        logger.debug("Configuration loaded:\n- file: %s\n- recipients: %s\n- password length: %i\n- password base: %i" % (self._file, self.recipients, self.passwords['length'], self.passwords['base']))
 
     @property
     def file(self):
+        #FIXME: we do not pass here :/
         return self._file
 
     @file.setter
     def file(self, value):
+        #FIXME: we do not pass here :/
         if os.path.exists(os.path.dirname(value)):
             logger.warn('Trying to set a value for file with a missing parent. ' + value)
             #FIXME: return something?
         else:
-            #self._file = value
-            pass
+            self._file = value
 
 class CharacterSet:
     def __init__(self, description, characters):
