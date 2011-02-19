@@ -14,3 +14,4 @@ syntax: glob
 # projectr specific output
 *.asc
 *.log
+build
