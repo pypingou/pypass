@@ -216,6 +216,12 @@ class PyPassGui(object):
                 return
         sys.exit(0)
     
+    def generate_password(self, widget):
+        """ Call the PassDatabase to generate the password """
+        password = PassDatabase().generate_password()
+        entry = self.builder.get_object("entry_password")
+        entry.set_text(password)
+    
     def save_database(self, widget = None):
         """ Save the current database """
         # TODO: reconstruct the json from the TreeView
@@ -290,15 +296,6 @@ class PyPassGui(object):
             return
         key = model[iter][0]
         return key
-    
-    def generate_password(self, widget):
-        """ Generate a random password """
-        length = random.randrange(5,15)
-        random_string = ''.join(random.choice(string.ascii_letters + 
-                            string.digits) for x in range(length))
-        entry = self.builder.get_object("entry_password")
-        entry.set_text(random_string)
-        return
 
 class PassDatabase(object):
     """
@@ -315,6 +312,18 @@ class PassDatabase(object):
         else:
             database[level] = [passdict]
         return database
+    
+    def generate_password(self, length = 'rand', extraletters = None):
+        """ Generate a random password """
+        if length == 'rand':
+            length = random.randrange(5,15)
+        
+        chars = string.ascii_letters + string.digits
+        if extraletters is not None:
+            chars += extraletters
+        
+        random_string = ''.join(random.choice(chars) for x in range(length))
+        return random_string
 
 class FileIO(object):
     """
