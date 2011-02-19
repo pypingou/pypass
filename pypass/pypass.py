@@ -60,6 +60,8 @@ class PyPass():
             passphrase = getpass.getpass("Enter your GPG password:") 
             decrypted_data = self.gpg.decrypt_file(stream, passphrase=passphrase)
             return decrypted_data.data
+        else: 
+            return "{}"
 
     def crypt(self, recipients):
         #TODO: we should work only from a stream, not from a file
@@ -95,7 +97,7 @@ class PyPass():
         Function called when a error needs to be raised
         The error will be displayed in stdout
         """
-        print  errortext
+        print errortext
         print er
         sys.exit(1)
 
