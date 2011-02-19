@@ -32,15 +32,6 @@ class PyPass():
     def __init__( self):
         self.config = config.PyPassConfig()
 
-        self.character_sets = (
-            CharacterSet("All printable (excluding space)", "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"),
-            CharacterSet("Alpha-numeric (a-z, A-Z, 0-9)", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
-            CharacterSet("Alpha lower-case (a-z)", "abcdefghijklmnopqrstuvwxyz"),
-            CharacterSet("Hexadecimal (0-9, A-F)", "0123456789ABCDEF"),
-            CharacterSet("Decimal (0-9)", "0123456789"),
-            CharacterSet("Base 64 (a-z, A-Z, 0-9, '+', '/')", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/")
-        )
-
         try:
             self.random_number_generator = random.SystemRandom()
         except NotImplementedError:
@@ -119,7 +110,7 @@ class PyPass():
         if character_set_ndx is None:
             character_set_ndx = 1
 
-        character_set = self.character_sets[character_set_ndx].characters
+        character_set = self.config.character_sets[character_set_ndx].characters
 
         password = ""
         for current_character in range(password_length):
@@ -127,11 +118,6 @@ class PyPass():
             password += character_set[random_number]
 
         return password
-
-class CharacterSet:
-    def __init__(self, description, characters):
-        self.description = description
-        self.characters = characters
 
 # for dev/testing purposes
 if __name__ == "__main__":

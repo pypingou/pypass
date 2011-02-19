@@ -61,6 +61,15 @@ class PyPassConfig():
         self.load()
 
     def load(self):
+        self.character_sets = (
+            CharacterSet("All printable (excluding space)", "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"),
+            CharacterSet("Alpha-numeric (a-z, A-Z, 0-9)", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
+            CharacterSet("Alpha lower-case (a-z)", "abcdefghijklmnopqrstuvwxyz"),
+            CharacterSet("Hexadecimal (0-9, A-F)", "0123456789ABCDEF"),
+            CharacterSet("Decimal (0-9)", "0123456789"),
+            CharacterSet("Base 64 (a-z, A-Z, 0-9, '+', '/')", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/")
+        )
+
         self.file = self.config.get('global', 'file')
         self.recipients = self.config.get('global', 'recipients')
         self.passwords = {
@@ -69,3 +78,8 @@ class PyPassConfig():
         }
 
         logger.debug("Configuration loaded:\n- file: %s\n-recipients: %s\n-password length: %i\n-password base: %i" % (self.file, self.recipients, self.passwords['length'], self.passwords['base']))
+
+class CharacterSet:
+    def __init__(self, description, characters):
+        self.description = description
+        self.characters = characters
