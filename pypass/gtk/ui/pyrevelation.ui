@@ -164,6 +164,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Open another database</property>
+                <accelerator key="o" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -177,6 +178,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Save the current database</property>
+                <accelerator key="s" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <signal name="clicked" handler="save_database"/>
               </object>
               <packing>
@@ -202,6 +204,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Add an entry</property>
+                <accelerator key="n" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <signal name="clicked" handler="add_entry"/>
               </object>
               <packing>
@@ -264,6 +267,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Quit PyPass</property>
+                <accelerator key="q" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <signal name="clicked" handler="gtk_main_quit"/>
               </object>
               <packing>
