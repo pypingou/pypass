@@ -103,9 +103,9 @@ class PyPass():
         """
         #TODO: get that from app preferences
         if password_length is None:
-            password_length = 12
+            password_length = self.config.passwords['length']
         if character_set_ndx is None:
-            character_set_ndx = 1
+            character_set_ndx = self.config.paswords['base']
 
         character_set = self.config.character_sets[character_set_ndx].characters
 

@@ -200,7 +200,7 @@ class PyPassGui(object):
         """ Save the current database """
         # TODO: reconstruct the json from the TreeView
         self.pypass.data = self.data
-        self.pypass.crypt('8BA59F94')
+        self.pypass.crypt(self.config.recipients)
 
         self.update_status_bar("Database saved")
     
@@ -257,7 +257,6 @@ class PyPassGui(object):
                 self.reset_entry_dialog()
                 self.update_status_bar("Password added*")
                 self.modifiedDb = True
-                
 
     def update_status_bar(self, entry):
         """ Update the status bar with the given text """
