@@ -88,7 +88,7 @@ class PyPass():
         return json.loads(self.data)
 
     def list_recipients(self):
-        return self.gpg.list_keys()
+        return self.gpg.list_keys(True)
 
     def generate_error(self, errortext, er = None):
         """ 
@@ -122,6 +122,7 @@ class PyPass():
 # for dev/testing purposes
 if __name__ == "__main__":
     p = PyPass()
+    print p.list_recipients()
     recipients = ['8BA59F94']
     p.crypt(recipients)
     p.decrypt()
