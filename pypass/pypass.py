@@ -92,6 +92,9 @@ class PyPass():
     def data_as_json(self):
         return json.loads(self.data)
 
+    def list_recipients(self):
+        return self.gpg.list_keys()
+
     def generate_error(self, errortext, er = None):
         """ 
         Function called when a error needs to be raised
@@ -121,14 +124,14 @@ class PyPass():
 
         return password
 
+class CharacterSet:
+    def __init__(self, description, characters):
+        self.description = description
+        self.characters = characters
+
 # for dev/testing purposes
 if __name__ == "__main__":
     p = PyPass()
     recipients = ['8BA59F94']
     p.crypt(recipients)
     p.decrypt()
-
-class CharacterSet:
-    def __init__(self, description, characters):
-        self.description = description
-        self.characters = characters
