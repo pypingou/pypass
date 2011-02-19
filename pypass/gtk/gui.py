@@ -193,6 +193,7 @@ class PyPassGui(object):
             if result == gtk.RESPONSE_YES:
                 self.save_database()
             elif result == gtk.RESPONSE_CANCEL:
+                self.mainwindow.show()
                 return
         sys.exit(0)
     
@@ -238,7 +239,7 @@ class PyPassGui(object):
 
     def add_entry(self, widget):
         add = self.builder.get_object("dialogaddentry")
-        if self._dialog(add):
+        if self._dialog(add) == 1:
             name = self.builder.get_object("entry_name").get_text()
             user = self.builder.get_object("entry_user").get_text()
             password = self.builder.get_object("entry_password").get_text()
