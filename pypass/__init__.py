@@ -24,7 +24,7 @@
 import os, logging
 
 #logging stuff
-LOG_FILENAME = 'pypass.log'
+LOG_FILENAME = os.path.join(os.path.expanduser('~'), '.pypass', 'pypass.log')
 logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
 
 name = 'PyPass'
