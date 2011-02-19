@@ -23,10 +23,25 @@ import os
 import gnupg
 import getpass
 import json
+import random
 
 class PyPass():
 
     def __init__( self):
+        self.character_sets = (
+            CharacterSet("All printable (excluding space)", "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"),
+            CharacterSet("Alpha-numeric (a-z, A-Z, 0-9)", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
+            CharacterSet("Alpha lower-case (a-z)", "abcdefghijklmnopqrstuvwxyz"),
+            CharacterSet("Hexadecimal (0-9, A-F)", "0123456789ABCDEF"),
+            CharacterSet("Decimal (0-9)", "0123456789"),
+            CharacterSet("Base 64 (a-z, A-Z, 0-9, '+', '/')", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/")
+        )
+
+        try:
+            self.random_number_generator = random.SystemRandom()
+        except NotImplementedError:
+            self.random_number_generator = random.Random()
+
         #File should be in ~/.pypass/
         #TODO: load configuration file
         self.hd = os.path.join(os.path.expanduser('~'), '.gnupg')
@@ -83,9 +98,33 @@ class PyPass():
         print er
         sys.exit(1)
 
+    def generate_password(self, password_length = None, character_set_ndx = None):
+        """
+        Random password generation. The above code was originally taken from
+        gnome-password-generator
+        """
+        if password_length is None:
+            password_length = 12
+        if character_set_ndx is None:
+            character_set_ndx = 1
+
+        character_set = self.character_sets[character_set_ndx].characters
+
+        password = ""
+        for current_character in range(password_length):
+            random_number = self.random_number_generator.randint(0, len(character_set)-1)
+            password += character_set[random_number]
+
+        return password
+
 # for dev/testing purposes
 if __name__ == "__main__":
     p = PyPass()
     recipients = ['8BA59F94']
     p.crypt(recipients)
     p.decrypt()
+
+class CharacterSet:
+    def __init__(self, description, characters):
+        self.description = description
+        self.characters = characters

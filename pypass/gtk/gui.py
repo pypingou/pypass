@@ -273,9 +273,7 @@ class PyPassGui(object):
 
     def generate_password(self, widget):
         """ Generate a random password """
-        length = random.randrange(5,15)
-        random_string = ''.join(random.choice(string.ascii_letters + 
-                            string.digits) for x in range(length))
+        password = self.pypass.generate_password()
         entry = self.builder.get_object("entry_password")
-        entry.set_text(random_string)
+        entry.set_text(password)
         return
