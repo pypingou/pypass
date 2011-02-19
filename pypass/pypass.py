@@ -81,6 +81,9 @@ class PyPass():
             database[level] = [passdict]
         return database
 
+    def data_from_json(self, data):
+        self.data = json.dumps(data, indent=4)
+
     def data_as_json(self):
         return json.loads(self.data)
 
@@ -105,7 +108,7 @@ class PyPass():
         if password_length is None:
             password_length = self.config.passwords['length']
         if character_set_ndx is None:
-            character_set_ndx = self.config.paswords['base']
+            character_set_ndx = self.config.passwords['base']
 
         character_set = self.config.character_sets[character_set_ndx].characters
 

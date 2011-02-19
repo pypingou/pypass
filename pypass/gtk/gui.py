@@ -200,7 +200,7 @@ class PyPassGui(object):
         """ Save the current database """
         # TODO: reconstruct the json from the TreeView
         self.pypass.data = self.data
-        self.pypass.crypt(self.config.recipients)
+        self.pypass.data_from_json(self.pypass.config.recipients)
 
         self.update_status_bar("Database saved")
     
