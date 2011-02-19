@@ -103,6 +103,7 @@ class PyPass():
         Random password generation. The above code was originally taken from
         gnome-password-generator
         """
+        #TODO: get that from app preferences
         if password_length is None:
             password_length = 12
         if character_set_ndx is None:
