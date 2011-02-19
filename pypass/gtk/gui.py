@@ -43,8 +43,8 @@ except:
 
 class PyPassGui(object):
 
-    def __init__( self, options):
-        self.options = options
+    def __init__( self, pypass):
+        self.pypass = pypass
         self.builder = gtk.Builder()
         self.builder.add_from_file(os.path.join(os.path.dirname(
                 os.path.realpath( __file__ )), "ui", "pyrevelation.ui"))
@@ -73,11 +73,8 @@ class PyPassGui(object):
         col0.set_attributes(cellpb, stock_id=1)
         col0.set_attributes(cell, text=0)
         
-        if self.options.filename is not None:
-            self.fio = FileIO(self.options.filename)
-            data = self.read_password_file(self.options.filename)
-            if data is not None:
-                self.load_password_tree(data)
+        if self.pypass.data is not None:
+            self.load_password_tree(self.pypass.data_as_json())
         
         dic = {
             "on_buttonQuit_clicked" : self.quit,
@@ -116,7 +113,6 @@ class PyPassGui(object):
                                             gtk.ICON_SIZE_LARGE_TOOLBAR)
             butonopen.set_image(img)
 
-
     def errorWindow(self, message, er = None):
         """ Display an error window with the given message """
         dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_ERROR)
@@ -128,27 +124,11 @@ class PyPassGui(object):
         return self._dialog(dialog)
 
     def generate_error(self, errortext, er = None):
-        """ 
-        Function called when a error needs to be raised
-        The error is then either showns in the console or in a window
         """
-        if self.options.cli:
-            print  errortext
-            print er
-            sys.exit(1)
-        else:
-            self.errorWindow(errortext, er)
-
-    def read_password_file(self, filename):
-        """Read the given json file and return the content """
-        try:            
-            data = self.fio.readJson()
-        except IOError, er:
-            self.generate_error(
-                "Something went wrong when trying to load the database:",
-                er)
-            return
-        return data
+        Function called when a error needs to be raised
+        The error will be displayed in a window
+        """
+        self.errorWindow(errortext, er)
 
     def load_password_tree(self, tree):
         self.data = tree
@@ -216,12 +196,6 @@ class PyPassGui(object):
                 return
         sys.exit(0)
     
-    def generate_password(self, widget):
-        """ Call the PassDatabase to generate the password """
-        password = PassDatabase().generate_password()
-        entry = self.builder.get_object("entry_password")
-        entry.set_text(password)
-    
     def save_database(self, widget = None):
         """ Save the current database """
         # TODO: reconstruct the json from the TreeView
@@ -259,7 +233,7 @@ class PyPassGui(object):
         else:
             passwd = self.builder.get_object("labelpass")
             passwd.set_text("")
-    
+
     def add_entry(self, widget):
         add = self.builder.get_object("dialogaddentry")
         if self._dialog(add):
@@ -275,19 +249,19 @@ class PyPassGui(object):
                 if url is not "":
                     passdict['url'] = urll
                 level = self.get_level()
-                data = PassDatabase().add_password_to_database(
+                data = self.pypass.add_password(
                                             self.data, level, passdict)
                 self.load_password_tree(data)
                 self.reset_entry_dialog()
                 self.update_status_bar("Password added*")
                 self.modifiedDb = True
                 
-    
+
     def update_status_bar(self, entry):
         """ Update the status bar with the given text """
         stbar = self.builder.get_object('statusbar')
         stbar.push(1, entry)
-    
+
     def get_level(self):
         """ Retrieve the level selected """
         selection = self.builder.get_object("treefolderview").get_selection()
@@ -297,65 +271,11 @@ class PyPassGui(object):
         key = model[iter][0]
         return key
 
-class PassDatabase(object):
-    """
-    Class to handle the addition and removal from the database
-    """
-    
-    def add_password_to_database(self, database, level, passdict):
-        """ Add the given hashdict to the given database at the given
-        level"""
-        #if level is None:
-            #level = ""
-        if level in database.keys():
-            database[level].append(passdict)
-        else:
-            database[level] = [passdict]
-        return database
-    
-    def generate_password(self, length = 'rand', extraletters = None):
+    def generate_password(self, widget):
         """ Generate a random password """
-        if length == 'rand':
-            length = random.randrange(5,15)
-        
-        chars = string.ascii_letters + string.digits
-        if extraletters is not None:
-            chars += extraletters
-        
-        random_string = ''.join(random.choice(chars) for x in range(length))
-        return random_string
-
-class FileIO(object):
-    """
-    Class handling the File Input/Output
-    Aka: 
-    - decrypt using gpg
-    - read the json file
-    - encrypt using gpg
-    - write the encrypted file
-    """
-    def __init__(self, filename = None):
-        self.filename = filename
-    
-    def readJson(self, filename = None):
-        """
-        Read the set json file and return the json object
-        If no filename is specify it will use the one given to the constructor
-        and if both are None it will return None
-        """
-        readfile = self.filename
-        if filename is not None:
-            readfile = filename
-        if readfile is None:
-            return
-        # TODO: make it decrypt the file
-        f = open(readfile, "r")
-        content = f.read()
-        f.close()
-        return json.loads(content)
-    
-    def save_json(self, json):
-        """
-        Save the given json into a file
-        """
-        print json, self.filename
+        length = random.randrange(5,15)
+        random_string = ''.join(random.choice(string.ascii_letters + 
+                            string.digits) for x in range(length))
+        entry = self.builder.get_object("entry_password")
+        entry.set_text(random_string)
+        return
