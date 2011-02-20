@@ -41,11 +41,11 @@ class PyPass(object):
         #print self.hd
         self.gpg = gnupg.GPG(gnupghome=self.hd, use_agent=True)
 
-    def load_data(self, password = None):
+    def load_data(self, password = None, filename = None):
         """
         Decrypt and lods data into an internal object
         """
-        self.data = self.decrypt(password)
+        self.data = self.decrypt(passphrase = password, filename = filename)
 
     def decrypt(self, passphrase = None, filename = None):
         """
@@ -54,6 +54,7 @@ class PyPass(object):
         if filename is None:
             filename = self.config.file
         if os.path.exists(filename):
+            print "opening file", self.config.file
             stream = open(self.config.file, 'rb')
             #have to select key before that
             decrypted_data = self.gpg.decrypt_file(stream, passphrase=passphrase)

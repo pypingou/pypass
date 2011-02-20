@@ -27,7 +27,7 @@ def getArgument():
     ''' Handle the parameters'''
     parser = OptionParser(version="%prog 0.0.1")
     parser.add_option("-f", "--file", dest="filename",
-                help="The password database file")
+                help="The password database file, this override the default value contained in the configuration file")
     parser.add_option("--cli", dest="cli", default = False, action = "store_true",
                 help="Start the cli interface instead of the gtk")
 
@@ -39,5 +39,5 @@ if __name__ == "__main__":
         pass
     else:
         pypass = pypass.PyPass()
-        gui.PyPassGui(pypass)
+        gui.PyPassGui(pypass, options)
 
