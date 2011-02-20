@@ -65,7 +65,7 @@ class PyPassConfig(object):
         """
         Loads configuration
         """
-        self.character_sets = (
+        self._character_sets = (
             CharacterSet("All printable (excluding space)", "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"),
             CharacterSet("Alpha-numeric (a-z, A-Z, 0-9)", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
             CharacterSet("Alpha lower-case (a-z)", "abcdefghijklmnopqrstuvwxyz"),
@@ -75,20 +75,19 @@ class PyPassConfig(object):
         )
 
         self._file = os.path.expanduser(self.config.get('global', 'file'))
-        self.recipients = self.config.get('global', 'recipients')
-        self.passwords = {
-            'length': int(self.config.get('password generator', 'lenght')),
+        self._recipients = self.config.get('global', 'recipients')
+        self._passwords = {
+            'length': int(self.config.get('password generator', 'length')),
             'base': int(self.config.get('password generator', 'base'))
         }
 
-        logger.debug("Configuration loaded:\n- file: %s\n- recipients: %s\n- password length: %i\n- password base: %i" % (self._file, self.recipients, self.passwords['length'], self.passwords['base']))
+        logger.debug("Configuration loaded:\n- file: %s\n- recipients: %s\n- password length: %i\n- password base: %i" % (self._file, self.recipients, self.passwords_length, self.passwords_base))
 
     @property
     def file(self):
         """
         Getter for _file
         """
-        #FIXME: we do not pass here :/
         return self._file
 
     @file.setter
@@ -96,12 +95,84 @@ class PyPassConfig(object):
         """
         Setter for _file
         """
-        #FIXME: we do not pass here :/
-        if os.path.exists(os.path.dirname(value)):
+        if not os.path.exists(os.path.dirname(value)):
             logger.warn('Trying to set a value for file with a missing parent. ' + value)
             #FIXME: return something?
         else:
+            logger.debug('Setting file to: ' + value)
             self._file = value
+
+    @property
+    def recipients(self):
+        """
+        Getter for recipients
+        """
+        return self._recipients
+
+    @recipients.setter
+    def recipients(self, value):
+        """
+        Setter for recipient
+        """
+        self._recipient = value
+
+    @property
+    def passwords(self):
+        """
+        Getter for passwords
+        """
+        return self._passwords
+
+    @passwords.setter
+    def passwords(self, value):
+        """
+        Prevent passwords modification. Use passwords_length and
+        passwords_base attributes instead.
+        """
+        logger.warning('Trying to set passwords')
+
+    @property
+    def passwords_length(self):
+        """
+        Getter for password lenght
+        """
+        return self._passwords['length']
+
+    @passwords_length.setter
+    def passwords_length(self, value):
+        """
+        Setter for passwords length
+        """
+        #TODO: check if value is an integer
+        self._passwords['length'] = value
+
+    @property
+    def passwords_base(self):
+        """
+        Getter for password base
+        """
+        return self._passwords['base']
+
+    @passwords_base.setter
+    def passwords_base(self, value):
+        """
+        Setter for passwords base
+        """
+        #TODO: check if value is an integer
+        self._passwords['base'] = value
+
+    @property
+    def character_sets(self):
+        """
+        Characters sets getter
+        """
+        return self._character_sets
+
+    def character_sets(self,value):
+        """
+        Prevent characters_sets modification.
+        """
+        logger.warning('Trying to change characters_sets')
 
 class CharacterSet:
     def __init__(self, description, characters):
