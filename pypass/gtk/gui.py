@@ -280,22 +280,23 @@ class PyPassGui(object):
         """ Open a selected database """
         # get database file
         filename = self.select_file("Open a database", os.path.expanduser('~'))
-        # retrieve all keys and create the list
-        self.set_keys_list()
-        # ask to select a key and a password
-        add = self.builder.get_object("dialogkeychooser")
-        if self._dialog(add) != 1:
-            print "not-ok"
-            return
-        else:
-            selection = self.builder.get_object("treeviewkey").get_selection()
-            (model, iter) = selection.get_selected()
-            key = model[iter][0]
-            entry = self.builder.get_object("entry_key_password")
-            password = entry.get_text()
-            print "key: %s - password: %s" %(key, password)
-            return
-        self.load_password_tree(self.pypass.decrypt())
+        if filename is not None:
+            # retrieve all keys and create the list
+            self.set_keys_list()
+            # ask to select a key and a password
+            add = self.builder.get_object("dialogkeychooser")
+            if self._dialog(add) != 1:
+                print "not-ok"
+                return
+            else:
+                selection = self.builder.get_object("treeviewkey").get_selection()
+                (model, iter) = selection.get_selected()
+                key = model[iter][0]
+                entry = self.builder.get_object("entry_key_password")
+                password = entry.get_text()
+                print "key: %s - password: %s" %(key, password)
+                return
+            self.load_password_tree(self.pypass.decrypt())
     
     def save_database(self, widget = None):
         """ Save the current database """
