@@ -74,7 +74,7 @@ class PyPassGui(object):
         col0.set_attributes(cell, text=0)
         
         #FIXME: send the pasword to decode!
-        self.pypass.load_data('')
+        self.pypass.load_data()
         if self.pypass.data is not None:
             self.load_password_tree(self.pypass.data_as_json())
         

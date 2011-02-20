@@ -37,26 +37,23 @@ class PyPass(object):
         except NotImplementedError:
             self.random_number_generator = random.Random()
 
-        #File should be in ~/.pypass/
-        #TODO: load configuration file
         self.hd = os.path.join(os.path.expanduser('~'), '.gnupg')
         #print self.hd
         self.gpg = gnupg.GPG(gnupghome=self.hd, use_agent=True)
 
-    def load_data(self, password):
+    def load_data(self, password = None):
         """
         Decrypt and lods data into an internal object
         """
         self.data = self.decrypt(password)
 
-    def decrypt(self, passphrase, filename = None):
+    def decrypt(self, passphrase = None, filename = None):
         """
         Decrypt file. If no file is specified, get its path from configuration
         """
         if filename is None:
             filename = self.config.file
         if os.path.exists(filename):
-            #TODO: we should work only from a stream, not from a file
             stream = open(self.config.file, 'rb')
             #have to select key before that
             decrypted_data = self.gpg.decrypt_file(stream, passphrase=passphrase)
