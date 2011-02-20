@@ -85,6 +85,7 @@ class PyPassGui(object):
             "add_entry": self.add_entry,
             "generate_password": self.generate_password,
             "save_database": self.save_database,
+            "open_database": self.open_database,
         }
         self.builder.connect_signals( dic )
         
@@ -196,6 +197,40 @@ class PyPassGui(object):
                 self.mainwindow.show()
                 return
         sys.exit(0)
+    
+    def select_file(self, title, pathname, types = {}):
+        """ Open a given file chosser dialog and return the selection if any """
+        dialog = gtk.FileChooserDialog(title= title,
+                                        action=gtk.FILE_CHOOSER_ACTION_OPEN,
+                                        buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,
+                                                gtk.STOCK_OPEN,gtk.RESPONSE_OK)
+                                        )
+        dialog.set_current_folder(pathname)
+        dialog.set_default_response(gtk.RESPONSE_OK)
+        response = dialog.run()
+        
+        if len(types.keys()) > 0:
+            for typek in types.keys():
+                filter = gtk.FileFilter()
+                filter.set_name(typek)
+                for el in types[typek]:
+                    filter.add_mime_type(el)
+                dialog.add_filter(filter)
+        
+        if response == gtk.RESPONSE_OK:
+            print dialog.get_filename(), 'selected'
+            selection = dialog.get_filename()
+        elif response == gtk.RESPONSE_CANCEL:
+            print 'Closed, no files selected'
+            selection = None
+        dialog.destroy()
+        
+        return selection
+    
+    def open_database(self, widget = None):
+        """ Open a selected database """
+        filename = self.select_file("Open a database", os.path.expanduser('~'))
+        
     
     def save_database(self, widget = None):
         """ Save the current database """
