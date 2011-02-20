@@ -62,6 +62,9 @@ class PyPassConfig():
         self.load()
 
     def load(self):
+        """
+        Loads configuration
+        """
         self.character_sets = (
             CharacterSet("All printable (excluding space)", "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"),
             CharacterSet("Alpha-numeric (a-z, A-Z, 0-9)", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
@@ -82,11 +85,17 @@ class PyPassConfig():
 
     @property
     def file(self):
+        """
+        Getter for _file
+        """
         #FIXME: we do not pass here :/
         return self._file
 
     @file.setter
     def file(self, value):
+        """
+        Setter for _file
+        """
         #FIXME: we do not pass here :/
         if os.path.exists(os.path.dirname(value)):
             logger.warn('Trying to set a value for file with a missing parent. ' + value)

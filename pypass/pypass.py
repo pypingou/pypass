@@ -46,6 +46,9 @@ class PyPass():
         #self.data = self.decrypt()
 
     def decrypt(self, passphrase, filename = None):
+        """
+        Decrypt file. If no file is specified, get its path from configuration
+        """
         if filename is None:
             filename = self.config.file
         if os.path.exists(filename):
@@ -58,6 +61,9 @@ class PyPass():
             return "{}"
 
     def crypt(self, recipients = None):
+        """
+        Crypt file from current datas
+        """
         #have to select recipient before that
         if recipients is None:
             recipients = self.config.recipients
@@ -85,12 +91,21 @@ class PyPass():
         return database
 
     def data_from_json(self, data):
+        """
+        Set data from JSON 
+        """
         self.data = json.dumps(data, indent=4)
 
     def data_as_json(self):
+        """
+        Get datas as JSON
+        """
         return json.loads(self.data)
 
     def list_recipients(self):
+        """
+        List knows keys
+        """
         return self.gpg.list_keys(True)
 
     def generate_error(self, errortext, er = None):
