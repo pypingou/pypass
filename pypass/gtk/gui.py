@@ -43,7 +43,7 @@ except:
 
 class PyPassGui(object):
 
-    def __init__( self, pypass):
+    def __init__( self, pypass, options):
         self.pypass = pypass
         self.builder = gtk.Builder()
         self.builder.add_from_file(os.path.join(os.path.dirname(
@@ -55,6 +55,7 @@ class PyPassGui(object):
         ## source to put the icons in the TreeView:
         ## http://www.eurion.net/python-snippets/snippet/Tree%20View%20Column.html
         
+        ## Handles the tree view in the main window
         # retrieve the TreeView
         treeview = self.builder.get_object("treefolderview")
         # create the TreeViewColumns to display the data
@@ -65,7 +66,7 @@ class PyPassGui(object):
         cellpb = gtk.CellRendererPixbuf()
         cell = gtk.CellRendererText()
         
-        # add the cells to the columns - 2 in the first
+        # add the cells to the columns - 2 
         col0.pack_start(cellpb, False)
         col0.pack_start(cell, True)
         
@@ -74,9 +75,14 @@ class PyPassGui(object):
         col0.set_attributes(cell, text=0)
         
         #FIXME: send the pasword to decode!
-        self.pypass.load_data()
-        if self.pypass.data is not None:
+        filename = None
+        if options.filename is not None:
+            filename = options.filename()
+        self.pypass.load_data(filename = filename)
+        if self.pypass.data is not None and self.pypass.data != "":
             self.load_password_tree(self.pypass.data_as_json())
+        
+        self.set_combox_type()
         
         dic = {
             "on_buttonQuit_clicked" : self.quit,
@@ -134,6 +140,7 @@ class PyPassGui(object):
         self.errorWindow(errortext, er)
 
     def load_password_tree(self, tree):
+        """ Load a given tree into the treefolderview """
         self.data = tree
         treeview = self.builder.get_object("treefolderview")
         treestore = gtk.TreeStore(str, str)
@@ -156,12 +163,6 @@ class PyPassGui(object):
         self.builder.get_object("entry_user").set_text("")
         self.builder.get_object("entry_password").set_text("")
         self.builder.get_object("entry_url").set_text("")
-    
-    def make_pb(self, tvcolumn, cell, model, iter):
-        stock = model.get_value(iter, 1)
-        pb = self.treeview.render_icon(stock, gtk.ICON_SIZE_MENU, None)
-        cell.set_property('pixbuf', pb)
-        return
     
     def _dialog(self, dialog, timeout = 0, center_on = None):
         """ Display a dialog window """
@@ -220,19 +221,81 @@ class PyPassGui(object):
                 dialog.add_filter(filter)
         
         if response == gtk.RESPONSE_OK:
-            print dialog.get_filename(), 'selected'
+            #print dialog.get_filename(), 'selected'
             selection = dialog.get_filename()
-        elif response == gtk.RESPONSE_CANCEL:
-            print 'Closed, no files selected'
+        else:
+            #print 'Closed, no files selected'
             selection = None
+            
         dialog.destroy()
-        
         return selection
+    
+    def set_combox_type(self):
+        """ Set the different options in the combobox of the new entry
+        dialog """
+        
+        options = {
+            "website":"",
+            "server": gtk.STOCK_NETWORK,
+            "ftp": "",
+            "Email": "",
+        }
+        
+        combo = self.builder.get_object("combo_type")
+        store = gtk.ListStore(str, str)
+        opts = options.keys()
+        opts.sort()
+        for opt in opts:
+            store.append([opt, options[opt]])
+        combo.set_model(store)
+
+        cell = gtk.CellRendererText()
+        combo.pack_start(cell, True)
+        combo.add_attribute(cell, 'text', 0)
+
+        combo.set_active(0)
+    
+    def set_keys_list(self):
+        """ Set all the keys retrieved from pypass into the list """
+        keys = self.pypass.list_recipients()
+        treeview = self.builder.get_object("treeviewkey")
+        column_str = gtk.TreeViewColumn('Key ID') 
+        treeview.append_column(column_str)
+        cell = gtk.CellRendererText()
+        column_str.pack_start(cell, True)
+        column_str.add_attribute(cell, "text", 0)
+        
+        column_str = gtk.TreeViewColumn('') 
+        treeview.append_column(column_str)
+        cell1 = gtk.CellRendererText()
+        column_str.pack_start(cell1, True)
+        column_str.add_attribute(cell1, "text", 1)
+        
+        store = gtk.ListStore(str, str)
+        treeview.set_model(store)
+        for key in keys:
+            store.append([key['keyid'], " ".join(key['uids'])])
     
     def open_database(self, widget = None):
         """ Open a selected database """
+        # get database file
         filename = self.select_file("Open a database", os.path.expanduser('~'))
-        
+        # retrieve all keys and create the list
+        self.set_keys_list()
+        # ask to select a key and a password
+        add = self.builder.get_object("dialogkeychooser")
+        if self._dialog(add) != 1:
+            print "not-ok"
+            return
+        else:
+            selection = self.builder.get_object("treeviewkey").get_selection()
+            (model, iter) = selection.get_selected()
+            key = model[iter][0]
+            entry = self.builder.get_object("entry_key_password")
+            password = entry.get_text()
+            print "key: %s - password: %s" %(key, password)
+            return
+        self.load_password_tree(self.pypass.decrypt())
     
     def save_database(self, widget = None):
         """ Save the current database """
@@ -275,6 +338,7 @@ class PyPassGui(object):
             passwd.set_text("")
 
     def add_entry(self, widget):
+        """ Display the dialog to add an entry to the database """
         add = self.builder.get_object("dialogaddentry")
         if self._dialog(add) == 1:
             name = self.builder.get_object("entry_name").get_text()
