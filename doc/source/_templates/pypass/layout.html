@@ -13,17 +13,47 @@
     <div class="topics">
         <ul>
         {%- for rellink in rellinks %}
-            <li><a href="{{ pathto(rellink[0]) }}" title="{{ rellink[1]|striptags|e }}"{{ accesskey(rellink[2]) }}>{{ rellink[3] }}</a>{%- if not loop.first %}{{ reldelim2 }}{% endif %}</li>
+            <li><a href="{{ pathto(rellink[0]) }}" title="{{ rellink[1]|striptags|e }}" {{ accesskey(rellink[2]) }}>{{ rellink[3] }}</a>{%- if not loop.last %}{{ reldelim2 }}{% endif %}</li>
         {%- endfor %}
-        {%- block rootrellink %}
-            <li><a href="{{ pathto(master_doc) }}">{{ shorttitle|e }}</a>{{ reldelim1 }}</li>
-        {%- endblock %}
-        {%- for parent in parents %}
-            <li><a href="{{ parent.link|e }}" {% if loop.last %}{{ accesskey("U") }}{% endif %}>{{ parent.title }}</a>{{ reldelim1 }}</li>
-        {%- endfor %}
-        {%- block relbaritems %} {% endblock %}
         </ul>
     </div>
+{%- endmacro %}
+
+
+{%- macro ownsidebar() %}
+      {%- if render_sidebar %}
+      <div id="sphinxsidebar" class="float-right one-column">
+        <div class="sphinxsidebarwrapper">
+          {%- block sidebarlogo %}
+          {%- if logo %}
+            <p class="logo"><a href="{{ pathto(master_doc) }}">
+              <img class="logo" src="{{ pathto('_static/' + logo, 1) }}" alt="Logo"/>
+            </a></p>
+          {%- endif %}
+          {%- endblock %}
+          {%- if sidebars != None %}
+            {#- new style sidebar: explicitly include/exclude templates #}
+            {%- for sidebartemplate in sidebars %}
+            {%- include sidebartemplate %}
+            {%- endfor %}
+          {%- else %}
+            {#- old style sidebars: using blocks -- should be deprecated #}
+            {%- block sidebartoc %}
+            {%- include "localtoc.html" %}
+            {%- endblock %}
+            {%- block sidebarrel %}
+            {%- include "relations.html" %}
+            {%- endblock %}
+            {%- block sidebarsourcelink %}
+            {%- include "sourcelink.html" %}
+            {%- endblock %}
+            {%- if customsidebar %}
+            {%- include customsidebar %}
+            {%- endif %}
+          {%- endif %}
+        </div>
+      </div>
+      {%- endif %}
 {%- endmacro %}
 
 {%- block header %}
@@ -47,10 +77,13 @@
     <div id="navbar">
         {{ ownrelbar() }}
         <div class="search">
-            <form method="get" id="searchform" action="http://pypass.ulysses.fr/wp/">
+            {%- block sidebarsearch %}
+                {%- include "searchbox.html" %}
+            {%- endblock %}
+            <!--<form method="get" id="searchform" action="http://pypass.ulysses.fr/wp/">
                 <input type="text" class="searchform searchbox" value="search our site" name="s" id="s" onblur="if (this.value == '') {this.value = 'search our site';}" onfocus="if (this.value == 'search our site') {this.value = '';}" style="width: 180px; background:none; border: none;" />
                 <input type="submit" id="searchsubmit" style="display:none;" class="button" value="Go!" />
-            </form>
+            </form>-->
         </div>
     </div>
 {%- endblock %}
@@ -74,7 +107,7 @@
                 {%- endblock %}
             </div>
         </div><!-- /content -->
-        {%- block sidebar1 %}{{ sidebar() }}{% endblock %}
+        {%- block sidebar1 %}{{ ownsidebar() }}{% endblock %}
     </div><!-- /wrapper -->
 {%- endblock %}
 
@@ -84,7 +117,7 @@
 {%- block footer %}
 </div><!-- /container -->
 <div id="footer-wrapper">
-    <div class="footer">
+    <div id="footer">
         <div class="footer-column float-left">
             {%- if show_copyright %}
                 {%- if hasdoc('copyright') %}

@@ -13,8 +13,9 @@ PyPass' Documentation
    gtk_gui.rst
    modules.rst
 
+******************
 Indices and tables
-==================
+******************
 
 * :ref:`genindex`
 * :ref:`modindex`
