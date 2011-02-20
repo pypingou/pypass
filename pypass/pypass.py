@@ -43,14 +43,15 @@ class PyPass():
         #print self.hd
         self.gpg = gnupg.GPG(gnupghome=self.hd, use_agent=True)
 
-        self.data = self.decrypt()
+        #self.data = self.decrypt()
 
-    def decrypt(self):
-        if os.path.exists(self.config.file):
+    def decrypt(self, passphrase, filename = None):
+        if filename is None:
+            filename = self.config.file
+        if os.path.exists(filename):
             #TODO: we should work only from a stream, not from a file
             stream = open(self.config.file, 'rb')
             #have to select key before that
-            passphrase = getpass.getpass("Enter your GPG password:") 
             decrypted_data = self.gpg.decrypt_file(stream, passphrase=passphrase)
             return decrypted_data.data
         else: 
@@ -126,7 +127,8 @@ if __name__ == "__main__":
     p = PyPass()
     print p.list_recipients()
     recipients = ['8BA59F94']
+    passphrase = getpass.getpass("Enter your GPG password:") 
     p.crypt(recipients)
-    p.decrypt()
+    p.decrypt(passphrase = passphrase)
     p.config.file='/a/file/whose/parent/path/does/not/exists'
     print p.config.file
