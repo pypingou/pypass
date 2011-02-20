@@ -142,7 +142,7 @@
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate_item" handler="show_about"/>
+                        <signal name="activate" handler="show_about"/>
                       </object>
                     </child>
                   </object>
