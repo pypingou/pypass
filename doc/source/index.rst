@@ -3,17 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to PyPass's documentation!
-==================================
-
-Contents:
+PyPass' Documentation
+=====================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 5
 
-   modules/pypass.rst
-   modules/config.rst
-   modules/gtk_gui.rst
+   cli.rst
+   gtk_gui.rst
+   modules.rst
 
 Indices and tables
 ==================

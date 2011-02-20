@@ -1,0 +1,105 @@
+{#
+    pypass/layout.html
+    ~~~~~~~~~~~~~~~~~~~~~
+
+    Sphinx layout template for the PyPass theme.
+
+    :copyright: Copyright 2011 Johan Cwiklinski.
+    :license: see LICENSE for details.
+#}
+{% extends "basic/layout.html" %}
+
+{%- macro ownrelbar() %}
+    <div class="topics">
+        <ul>
+        {%- for rellink in rellinks %}
+            <li><a href="{{ pathto(rellink[0]) }}" title="{{ rellink[1]|striptags|e }}"{{ accesskey(rellink[2]) }}>{{ rellink[3] }}</a>{%- if not loop.first %}{{ reldelim2 }}{% endif %}</li>
+        {%- endfor %}
+        {%- block rootrellink %}
+            <li><a href="{{ pathto(master_doc) }}">{{ shorttitle|e }}</a>{{ reldelim1 }}</li>
+        {%- endblock %}
+        {%- for parent in parents %}
+            <li><a href="{{ parent.link|e }}" {% if loop.last %}{{ accesskey("U") }}{% endif %}>{{ parent.title }}</a>{{ reldelim1 }}</li>
+        {%- endfor %}
+        {%- block relbaritems %} {% endblock %}
+        </ul>
+    </div>
+{%- endmacro %}
+
+{%- block header %}
+<div id="container">
+    <div id="header">
+        <div id="header-left">
+            <div id="logo">
+                <p class="site-title"><a href="http://pypass.ulysses.fr/doc">PyPass (documentation)</a></p>
+                <p class="description" id="tagline">Easily manage your passwords using Gnu Privacy Guard</p>
+            </div>
+        </div>
+        <div id="header-right">
+            <div class="nav">
+                <ul>
+                    <li><a href="http://pypass.ulysses.fr/wp">Website</a></li>
+                    <li class="page_item"><a href="http://pypass.ulysses.fr/doc/" title="Documentation">Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+    </div><!--/header-->
+    <div id="navbar">
+        {{ ownrelbar() }}
+        <div class="search">
+            <form method="get" id="searchform" action="http://pypass.ulysses.fr/wp/">
+                <input type="text" class="searchform searchbox" value="search our site" name="s" id="s" onblur="if (this.value == '') {this.value = 'search our site';}" onfocus="if (this.value == 'search our site') {this.value = '';}" style="width: 180px; background:none; border: none;" />
+                <input type="submit" id="searchsubmit" style="display:none;" class="button" value="Go!" />
+            </form>
+        </div>
+    </div>
+{%- endblock %}
+
+{%- block content %}
+    <div id="wrapper">
+        <div id="content" class="two-column float-left">
+            <div class="document">
+                {%- block document %}
+                    <div class="documentwrapper">
+                        {%- if render_sidebar %}
+                            <div class="bodywrapper">
+                        {%- endif %}
+                        <div class="body">
+                            {% block body %} {% endblock %}
+                        </div>
+                        {%- if render_sidebar %}
+                            </div>
+                        {%- endif %}
+                    </div>
+                {%- endblock %}
+            </div>
+        </div><!-- /content -->
+        {%- block sidebar1 %}{{ sidebar() }}{% endblock %}
+    </div><!-- /wrapper -->
+{%- endblock %}
+
+{%- block relbar1 %}{% endblock %}
+{%- block relbar2 %}{% endblock %}
+
+{%- block footer %}
+</div><!-- /container -->
+<div id="footer-wrapper">
+    <div class="footer">
+        <div class="footer-column float-left">
+            {%- if show_copyright %}
+                {%- if hasdoc('copyright') %}
+                    {% trans path=pathto('copyright'), copyright=copyright|e %}&copy; <a href="{{ path }}">Copyright</a> {{ copyright }}.{% endtrans %}
+                {%- else %}
+                    {% trans copyright=copyright|e %}&copy; Copyright {{ copyright }}.{% endtrans %}
+                {%- endif %}
+            {%- endif %}
+            {%- if last_updated %}
+                {% trans last_updated=last_updated|e %}Last updated on {{ last_updated }}.{% endtrans %}
+            {%- endif %}
+            {%- if show_sphinx %}
+                {% trans sphinx_version=sphinx_version|e %}Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> {{ sphinx_version }}.{% endtrans %}
+            {%- endif %}
+        </div>
+    </div>
+</div>
+{%- endblock %}

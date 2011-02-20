@@ -1,0 +1,63 @@
+body { background: #333 url(images/body-bg.jpg) repeat-x top; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 80%; color: #555; }
+
+/* Universal Stylings */
+a img { border: 0px; }
+p, h1, h2, h3, h4, h5, h6, h7, ul { margin-top: 0; margin-bottom: 1.0em; }
+p { line-height: 160%; }
+h1, h2, h3, h4, h5, h6 { font-family: Georgia, "Times New Roman", Times, serif; }
+h1 { font-size: 2.0em; font-weight: normal; color: #c00; }
+h2 { font-size: 1.3em; font-weight: normal; text-transform: uppercase; }
+
+/* Container */
+#container { width: 820px; margin: 0px auto; text-align: left; }
+
+/* Header */
+#header { height: 120px; width: 820px; float: left; display: inline; overflow: hidden; color: #efefef; }
+#header .logo { margin-right: 20px; float: left; display: inline; overflow: hidden; width: 430px; }
+#header .description { float: right; display: inline; overflow: hidden; margin: 20px; width: 315px; }
+#header .description p { font-style: italic; color: #ccc; font-size: 1.2em; font-family: Georgia, "Times New Roman", Times, serif; line-height: 140%; text-align: center; }
+#header .description p strong { font-weight: normal; }
+
+/* Navbar */
+#navbar { float: left; display: inline; overflow: hidden; width: 780px; height: 28px; padding: 6px 20px; color: #efefef; background: url(images/navbar-bg.jpg) no-repeat top left; }
+#navbar a { color: #efefef; text-decoration: none; }
+#navbar a:hover { color: #ddd; }
+#navbar ul { margin: 0px; padding: 0px; float: left; display: inline; overflow: hidden; }
+#navbar li { float: left; list-style-type: none; margin: 0px; padding: 6px 0px; font-size: 1.15em; text-transform: uppercase; }
+#navbar li a { margin-right: 14px; padding: 6px; }
+#navbar li a:hover { background: #444; padding: 6px; }
+#navbar form.search { float: right; display: inline; overflow: hidden; margin: 2px 0px 0px 10px; }
+
+/* Wrapper */
+#wrapper { float: left; display: inline; overflow: hidden; width: 820px; background: #fff url(images/wrapper-bottom.jpg) no-repeat bottom; padding-bottom: 15px; }
+#wrapper a { color: #036; }
+#wrapper a:hover { color: #c00; }
+
+/* Wider Content Area - front page and as needed */
+#content-wide { float: left; display: inline; overflow: hidden; width: 780px; margin: 0px 20px; padding: 20px 0px; border-top: 1px dotted #ccc; }
+
+/* Columns for the wider content area */
+#content-wide .wide-col { float: left; display: inline; overflow: hidden; width: 240px; margin-right: 14px; padding-right: 15px; border-right: 1px dotted #ccc; }
+#content-wide .wide-col-right { margin-right: 0px; padding-right: 0px; border-right: 0px; float: left; display: inline; overflow: hidden; width: 236px; }
+#content-wide h2 { background: #006; padding: 6px 4px; color: #c00; border: 3px solid #999; text-align: center; color: #eee; }
+
+/* Content Area */
+#content { float: left; display: inline; overflow: hidden; width: 425px; padding: 16px 20px; }
+#content ul, #content-wide ul { margin: 0px 0px 1em 0px; padding: 0px 0px 0px 20px; }
+#content li, #content-wide li { line-height: 160%; margin-left: 20px; list-style-type: disc; }
+
+/* Sidebar Area */
+#sidebar { float: right; display: inline; overflow: hidden; width: 315px; padding: 0px 20px 16px 19px; margin-top: 20px; border-left: 1px dotted #ccc; }
+
+/* Sidebar Widgets */
+#sidebar h2 { background: #006; padding: 6px 4px; color: #c00; border: 3px solid #999; text-align: center; color: #eee; }
+#sidebar p, ul { padding: 0px 4px; }
+#sidebar ul { margin: 0px 0px 15px 0px; }
+#sidebar li { margin: 0px; padding: 0px; line-height: 130%; list-style-type: none; }
+#sidebar li p { line-height: 130%; padding-left: 14px; }
+
+/* Footer */
+#footer { float: left; display: inline; overflow: hidden; width: 780px; padding: 20px; color: #efefef; }
+#footer p { text-align: center; line-height: 140%; font-size: 0.9em; }
+#footer a { color: #efefef; }
+#footer a:hover { color: #ccc; }

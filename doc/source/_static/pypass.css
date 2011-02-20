@@ -1,0 +1,175 @@
+/*
+Theme Name: Pypass
+Theme URI: http://redmine.ulysses.fr/projects/pypass
+Description: Theme for PyPass website. Partially based on New Balance of Blue 1.5 form Brandon Cox
+Author: Johan Cwiklinski
+Author URI: http://ulysses.fr
+Tags: white, blue, two columns, valid, widget ready, simple, clean, grid-based
+Version: 0.1
+License: This theme is released under GPL (http://www.opensource.org/licenses/gpl-3.0.html)
+*/
+
+body { margin: 0px; padding: 0px; font-family: Century Gothic, Avant Garde, Arial, Helvetica, sans-serif; font-size: 85%; color: #555; background: #fff url(images/page-bg.jpg) repeat-x; }
+
+a img { border: none; }
+p, h1, h2, h3, h4, h5, h6, h7, ul, small, blockquote { margin-top: 0px; margin-bottom: 18px; }
+p, li, li li { line-height: 160%; }
+h1 { font-size: 1.7em; padding-bottom: 5px; border-bottom: 2px #ccc solid; }
+h1 a { color: #036; text-decoration: none; }
+h2 { font-size: 1.4em; color: #036; font-weight:normal; }
+small { font-size: 0.9em; line-height: 140%; }
+a { color: #333; }
+a:hover { color: #555; }
+
+#container { width: 960px; margin: 15px auto; }
+
+#header {
+    width: 960px;
+    float: left;
+    display: inline;
+    overflow: hidden;
+    margin: 0px 0px 5px;
+    height: 150px;
+    /*background: url(images/header-bg.jpg) no-repeat;*/
+    background-color:#204c79;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    position:relative;
+}
+
+#header-left { float: left; width: 470px; height: 150px; display:inline; overflow: hidden; }
+p.site-title { font-size: 2.4em; margin-bottom: 0px; font-weight: bold; color: #fff; }
+p.site-title a { color: #fff; text-decoration: none; }
+p.site-title a:hover { color: #ddd; }
+p.description { margin-bottom: 0px; color: #ddd; }
+#logo { overflow: hidden; width: 430px; padding: 10px 20px; float: left; height: 130px; }
+
+#header-right { float: right; width: 490px; height: 150px; display: inline; overflow:hidden; }
+.banner-block { float: left; width: 468px; margin: 20px 10px 30px 10px; display: inline; overflow: hidden; height: 60px; }
+.nav {
+    /*width: 480px;*/
+    margin: 10px;
+    /*float: left;*/
+    position:absolute;
+    right:0;
+    bottom:0;
+    height: 22px;
+}
+.nav ul { margin: 0px; padding: 0px; list-style: none; }
+.nav li { float: left; margin-right: 15px; text-transform: lowercase; }
+.nav li a { color: #fff; font-weight: bold; text-decoration: none; }
+.nav li a:hover, #nav li a.active { color: #ddd; text-decoration: overline; }
+
+#navbar {
+    float: left;
+    display: inline;
+    overflow: hidden;
+    width: 960px;
+    height: 34px;
+    margin: 5px 0px;
+    padding: 0px;
+    /*background: url(images/navbar-bg.jpg) no-repeat top;*/
+    background-color:#4a4a4a;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+}
+#navbar .topics { float: left; display: inline; overflow: hidden; width: 700px; margin: 0px; padding: 0px 15px 0px 10px; text-transform: uppercase; color: #fff; }
+#navbar .topics ul { margin: 0px; padding: 2px 0px; list-style: none; }
+#navbar .topics li { float: left; padding: 5px; margin: 0px; }
+#navbar .topics li a {	color: #fff; text-decoration: none;	padding: 5px; }
+#navbar .topics li a:hover { color: #fff; text-decoration: none; background: #666; padding: 5px; }
+#navbar .search {
+    float: right;
+    padding: 4px 5px 0px 5px;
+    background-color:white;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    margin-top:4px;
+    margin-right:4px;
+}
+
+#searchform{
+    margin-bottom:3px;
+    padding-left:20px;
+    background:url(images/search.png) 0 50% no-repeat;
+}
+
+#wrapper { float: left; display: inline; width: 960px; padding-bottom: 20px; }
+div.float-left { float: left; display: inline; overflow: hidden; }
+div.float-right { float: right; display: inline; overflow: hidden; }
+div.one-column {
+    width: 250px;
+    padding: 10px;
+}
+div.two-column {
+    width: 650px; padding: 10px;
+}
+div.three-column { width: 940px; padding: 10px; }
+div.widget { margin-bottom: 20px; }
+div.footer-column { width: 280px; padding: 10px; margin-right: 20px; }
+
+.sphinxsidebar, #content { overflow: hidden; }
+
+.sphinxsidebar ul { margin: 0px 0px 20px 0px; padding: 0px; list-style: none; border-top: 1px #ccc solid; }
+.sphinxsidebar li { margin: 0px; padding: 4px 0px 4px; border-bottom: 1px #ccc solid; width: 300px; }
+.sphinxsidebar li a { display: block; text-decoration: none; padding: 4px 15px; background: url(images/li-bullet.jpg) 0px 8px no-repeat; }
+.sphinxsidebar ul.highlight li a { background: #ddd; }
+.sphinxsidebar li a:hover { background: url(images/li-bullet.jpg) 0px 8px no-repeat; }
+.sphinxsidebar ul.highlight li a:hover { background: #333; color: #fff; }
+.sphinxsidebar h2, .sphinxsidebar h2 a {
+    color: #fff;
+    text-decoration: none;
+    /*background: url(images/h2-bg.jpg) no-repeat;*/
+    background-color:#204c79;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    height: 24px;
+    padding: 4px 10px;
+    margin: 0px -10px 16px -10px;
+    text-transform: uppercase;
+    font-size: 1.2em;
+}
+
+#content .post { margin-bottom: 20px; }
+#content .post h1 { margin-bottom: 5px; }
+#content .post h2 { text-transform: uppercase; font-size: 1.2em; font-weight: normal; }
+#content p.premeta { font-size: 90%; color: #999; margin-bottom: 20px; }
+#content .postmeta { color: #999; font-size: 90%; border-top: 2px #ccc solid; padding: 4px 0px; margin-bottom: 20px; }
+
+/* Comments */
+#content .comments { font-size: 90%; margin: 20px 0px; }
+#content .comments ul { margin: 10px 20px; padding: 0px 20px; list-style: none; border-left: 5px #ccc solid; border-right: 5px #ccc solid; }
+#content .comments li { margin: 0px 0px 10px 0px; padding: 0px 0px 10px 0px; border-bottom: 1px solid #ccc; list-style-type: none; }
+#content .comments img { padding: 0px; margin: 0px 0px 10px 10px; float: right; }
+
+#footer-wrapper { float: left; display: inline; width: 100%; }
+#footer {
+    margin: 0px auto;
+    width: 960px;
+    overflow: hidden;
+    padding: 10px 0px 10px;
+    font-size: 90%;
+    /*background: #111 url(images/footer-top.jpg) top no-repeat;*/
+    background-color:#4a4a4a;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    padding-top: 10px;
+    color: #ddd;
+}
+#footer ul { margin: 0px 0px 20px 0px; padding: 0px; list-style: none; border-top: 1px #ccc solid; }
+#footer li { margin: 0px; padding: 1px 0px 1px; border-bottom: 1px #ccc solid; width: 280px; }
+#footer li a { display: block; text-decoration: none; padding: 1px 0px; }
+#footer a, #footer li a { color: #eee; }
+#footer a:hover, #footer li a:hover { color: #999; }
+#footer h2, #footer h2 a { font-size: 1.3em; color: #fff; }
+
+#footer p{
+    margin:0;
+}
+
+/* WordPress Images and Captions */
+#content .post p.wp-caption-text { text-align: center; font-size: 0.8em; line-height: 135%; margin: 0px; padding: 3px 0px; }
+#content img.alignnone { margin: 0px 10px 10px 0px; }
+#content .post div.alignleft, #content .post img.alignleft { float: left; margin: 0px 10px 10px 0px; }
+#content .post div.aligncenter, #content .post img.aligncenter { display: block; margin-left: auto; margin-right: auto; margin-bottom: 10px; clear: both; }
+#content .post div.alignright, #content .post img.alignright { float: right; margin: 0px 0px 10px 10px; }
