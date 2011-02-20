@@ -27,7 +27,7 @@ import random
 
 import config
 
-class PyPass():
+class PyPass(object):
 
     def __init__( self):
         self.config = config.PyPassConfig()
@@ -43,7 +43,11 @@ class PyPass():
         #print self.hd
         self.gpg = gnupg.GPG(gnupghome=self.hd, use_agent=True)
 
-        #self.data = self.decrypt()
+    def load_data(self, password):
+        """
+        Decrypt and lods data into an internal object
+        """
+        self.data = self.decrypt(password)
 
     def decrypt(self, passphrase, filename = None):
         """
@@ -140,10 +144,12 @@ class PyPass():
 # for dev/testing purposes
 if __name__ == "__main__":
     p = PyPass()
-    print p.list_recipients()
-    recipients = ['8BA59F94']
-    passphrase = getpass.getpass("Enter your GPG password:") 
-    p.crypt(recipients)
-    p.decrypt(passphrase = passphrase)
+    #print p.list_recipients()
+    #recipients = ['8BA59F94']
+    #passphrase = getpass.getpass("Enter your GPG password:")
+    #p.load_data(passphrase) 
+    #p.crypt(recipients)
+    #p.decrypt(passphrase = passphrase)
+    print p.config.file
     p.config.file='/a/file/whose/parent/path/does/not/exists'
     print p.config.file

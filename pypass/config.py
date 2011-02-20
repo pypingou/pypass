@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 if not logger.handlers:
     logger.addHandler(logging.NullHandler())
 
-class PyPassConfig():
+class PyPassConfig(object):
 
     def __init__(self):
         self.app_config_file = os.path.abspath(
