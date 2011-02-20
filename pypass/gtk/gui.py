@@ -82,8 +82,6 @@ class PyPassGui(object):
         if self.pypass.data is not None and self.pypass.data != "":
             self.load_password_tree(self.pypass.data_as_json())
         
-        self.set_combox_type()
-        
         dic = {
             "on_buttonQuit_clicked" : self.quit,
             "on_windowMain_destroy" : self.quit,
@@ -113,9 +111,11 @@ class PyPassGui(object):
                     "b_del": gtk.STOCK_REMOVE,
                     "b_quit": gtk.STOCK_QUIT,
                     "b_about": gtk.STOCK_ABOUT,
-                    "b_add_entry": gtk.STOCK_OK,
-                    "b_cancel_entry": gtk.STOCK_CANCEL,
                     }
+        self.set_button_img(butons)
+    
+    def set_button_img(self, butons):
+        """ For a given hash of button, set the image """
         for buton in butons.keys():
             butonopen = self.builder.get_object(buton)
             img = gtk.image_new_from_stock(butons[buton], 
@@ -281,6 +281,8 @@ class PyPassGui(object):
         # get database file
         filename = self.select_file("Open a database", os.path.expanduser('~'))
         if filename is not None:
+            self.builder.add_from_file(os.path.join(os.path.dirname(
+                os.path.realpath( __file__ )), "ui", "dialogkeychooser.ui"))
             # retrieve all keys and create the list
             self.set_keys_list()
             # ask to select a key and a password
@@ -295,8 +297,9 @@ class PyPassGui(object):
                 entry = self.builder.get_object("entry_key_password")
                 password = entry.get_text()
                 print "key: %s - password: %s" %(key, password)
-                return
-            self.load_password_tree(self.pypass.decrypt())
+                #self.load_password_tree(self.pypass.decrypt())
+            add.destroy()
+            return
     
     def save_database(self, widget = None):
         """ Save the current database """
@@ -340,6 +343,15 @@ class PyPassGui(object):
 
     def add_entry(self, widget):
         """ Display the dialog to add an entry to the database """
+        self.builder.add_from_file(os.path.join(os.path.dirname(
+                os.path.realpath( __file__ )), "ui", "dialogaddentry.ui"))
+        butons = {
+                "b_add_entry": gtk.STOCK_OK,
+                "b_cancel_entry": gtk.STOCK_CANCEL,
+                }
+        self.set_button_img(butons)
+        self.set_combox_type()
+        
         add = self.builder.get_object("dialogaddentry")
         if self._dialog(add) == 1:
             name = self.builder.get_object("entry_name").get_text()
@@ -360,6 +372,7 @@ class PyPassGui(object):
                 self.reset_entry_dialog()
                 self.update_status_bar("Password added*")
                 self.modifiedDb = True
+        add.destroy()
 
     def update_status_bar(self, entry):
         """ Update the status bar with the given text """
