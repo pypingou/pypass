@@ -303,3 +303,7 @@ pdf_cover_template = '_styles/_templates/pleade_cover.tmpl'
 
 # Page template name for "regular" pages
 #pdf_page_template = 'cutePage'
+
+# doctest settings:
+doctest_path = [os.path.abspath('../../')]
+#print doctest_path
