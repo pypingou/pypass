@@ -297,7 +297,8 @@ class PyPassGui(object):
         # get database file
         filename = self.select_file("Open a database", os.path.expanduser('~'))
         if filename is not None:
-            self.load_password_tree(self.pypass.decrypt(filename = filename))
+            self.pypass.load_data(filename = filename)
+            self.load_password_tree(self.pypass.data_as_json())
             return
     
     def save_database(self, widget = None):
