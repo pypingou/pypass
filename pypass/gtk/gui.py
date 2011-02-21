@@ -22,7 +22,8 @@
 import sys
 import os
 
-from .. import __version__, __author__, __copyright__
+#FIXME: should be from pypass import, but does not work due to name confusion
+from .. import __version__, __author__, __copyright__, __credits__, __url__
 
 try:
     import pygtk
@@ -35,9 +36,10 @@ except ImportError:
     print("GTK not available")
     sys.exit(1)
 
-def select_file(title, pathname, types = None):
+
+def select_file(title, pathname, types=None):
     """ Open a given file chosser dialog and return the selection if any """
-    dialog = gtk.FileChooserDialog(title= title,
+    dialog = gtk.FileChooserDialog(title=title,
                             action=gtk.FILE_CHOOSER_ACTION_OPEN,
                             buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_OPEN, gtk.RESPONSE_OK)
@@ -64,6 +66,7 @@ def select_file(title, pathname, types = None):
     dialog.destroy()
     return selection
 
+
 def _dialog(dialog):
     """ Display a dialog window """
     dialog.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
@@ -74,7 +77,8 @@ def _dialog(dialog):
     dialog.hide()
     return result
 
-def error_window(message, error = None):
+
+def error_window(message, error=None):
     """ Display an error window with the given message """
     dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_ERROR)
     dialog.set_markup("<b>" + "Error" + "</b>")
@@ -84,12 +88,14 @@ def error_window(message, error = None):
     dialog.add_buttons(gtk.STOCK_OK, gtk.RESPONSE_YES)
     return _dialog(dialog)
 
-def generate_error(errortext, error = None):
+
+def generate_error(errortext, error=None):
     """
     Function called when a error needs to be raised
     The error will be displayed in a window
     """
     error_window(errortext, error)
+
 
 class PyPassGui(object):
     """ Class handling the gtk gui for pypass """
@@ -130,7 +136,7 @@ class PyPassGui(object):
         filename = None
         if options.filename is not None:
             filename = options.filename()
-        self.pypass.load_data(filename = filename)
+        self.pypass.load_data(filename=filename)
         if self.pypass.data is not None and self.pypass.data != "":
             self.load_password_tree(self.pypass.data_as_json())
 
@@ -208,9 +214,16 @@ class PyPassGui(object):
     def show_about(self, widget):
         """ Show the about diaglog """
         about = self.builder.get_object("aboutdialog")
+        about.set_name("PyPass")
         about.set_version(__version__)
         about.set_copyright(__copyright__)
         about.set_authors(__author__)
+        about.set_comments('\n'.join(__credits__))
+        #about.set_license(open('gpl.txt').read())
+        about.set_website(__url__)
+        _logo_path = os.path.join(self.path, 'images/logo.png')
+        about.set_logo(gtk.gdk.pixbuf_new_from_file(_logo_path))
+
         _dialog(about)
 
     def quit(self, widget):
@@ -231,7 +244,6 @@ class PyPassGui(object):
                 self.mainwindow.show()
                 return
         sys.exit(0)
-
 
     def set_combox_type(self):
         """ Set the different options in the combobox of the new entry
@@ -258,7 +270,7 @@ class PyPassGui(object):
 
         combo.set_active(0)
 
-    def set_keys_list(self, hide = True):
+    def set_keys_list(self, hide=True):
         """ Set all the keys retrieved from pypass into the list """
         keys = self.pypass.list_recipients()
         treeview = self.builder.get_object("treeviewkey")
@@ -283,16 +295,16 @@ class PyPassGui(object):
             for key in keys:
                 store.append([key['keyid'], " ".join(key['uids'])])
 
-    def open_database(self, widget = None):
+    def open_database(self, widget=None):
         """ Open a selected database """
         # get database file
         filename = select_file("Open a database", os.path.expanduser('~'))
         if filename is not None:
-            self.pypass.load_data(filename = filename)
+            self.pypass.load_data(filename=filename)
             self.load_password_tree(self.pypass.data_as_json())
             return
 
-    def save_database(self, widget = None):
+    def save_database(self, widget=None):
         """ Save the current database """
         self.pypass.data_from_json(self.data)
         self.pypass.crypt()
@@ -359,8 +371,7 @@ class PyPassGui(object):
             passtype = combotype.get_active()
             print passtype
             if "" in (name, password):
-                generate_error(errortext =
-                    "Could not enter the password. \n" \
+                generate_error(errortext="Could not enter the password. \n" \
                     "Name or password had missing information")
                 return
             else:

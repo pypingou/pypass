@@ -19,19 +19,29 @@
 # You should have received a copy of the GNU General Public License
 # along with pypass.  If not, see <http://www.gnu.org/licenses/>.
 
-#define some global variables
+"""
+define some global variables
+"""
 
-
-__version__   = '0.0.1'
-__date__      = '2011/02/21'
-__author__    = ['Pierre-Yves `pingou` Chibon', 
-                    'Johan `trashy` Cwiklinski']
-__copyright__ = 'Copyright (c) 2011 Pierre-Yves Chibon \nCopyright (c) 2011 Johan Cwiklinski'
-__url__       = 'https://redmine.ulysses.fr/projects/pypass'
-__status__    = "Prototype"
+__version__ = '0.0.1'
+__date__ = '2011/02/21'
+__author__ = ['Pierre-Yves `pingou` Chibon',
+              'Johan `trashy` Cwiklinski']
+__credits__ = ['Pierre-Yves `pingou` Chibon',
+               'Johan `trashy` Cwiklinski',
+               'Haïkel Guémar ']
+__license__ = 'GPLv3'
+__copyright__ = 'Copyright (c) 2011 Pierre-Yves Chibon \n' \
+                'Copyright (c) 2011 Johan Cwiklinski'
+__url__ = 'https://pypass.ulysses.fr'
+__status__ = "Prototype"
 
 import os
+import sys
+import errno
+import gettext
 import logging
+#FIXME: should be import pypass.config, but does not work due to name confusion
 import config
 
 #logging stuff
@@ -40,16 +50,20 @@ LOG_FILENAME = os.path.join(os.path.expanduser('~'), '.pypass', 'pypass.log')
 if not os.path.exists(os.path.dirname(LOG_FILENAME)):
     try:
         os.mkdir(os.path.dirname(LOG_FILENAME))
-        print 'PyPass configuration directory has been created in %s' % os.path.dirname(LOG_FILENAME)
-    except MkdirError:
-        sys.exit('Unable to create PyPass configuration directory under %s' % os.path.dirname(LOG_FILENAME))
+        print ('PyPass configuration directory has been created in %s'
+               % os.path.dirname(LOG_FILENAME))
+    except OSError as exc:
+        if exc.errno == errno.EEXIST:
+            pass
+        else:
+            sys.exit('Unable to create PyPass configuration directory under %s'
+                     % os.path.dirname(LOG_FILENAME))
 
-logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
-locale_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale')
-pypassconf = config.PyPassConfig()
+logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG)
+__locale_dir__ = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                          'locale')
+__pypassconf__ = config.PyPassConfig()
+print __pypassconf__
 
-#TODO: i18n
-#import gettext
-#application = 'pypass'
-#gettext.install(application, locale_dir)
-#credits = _('')
+__application__ = 'pypass'
+gettext.install(__application__, __locale_dir__)

@@ -26,7 +26,7 @@ import json
 import random
 
 import config
-from . import pypassconf as config
+from . import __pypassconf__ as config
 
 class PyPass(object):
 
