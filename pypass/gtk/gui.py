@@ -367,7 +367,7 @@ class PyPassGui(object):
             else:
                 passdict = {"name": name, "user": user, "password": password}
                 if url is not "":
-                    passdict['url'] = urll
+                    passdict['url'] = url
                 level = self.get_level()
                 data = self.pypass.add_password(
                                             self.data, level, passdict)
