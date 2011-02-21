@@ -19,7 +19,9 @@
 # You should have received a copy of the GNU General Public License
 # along with pypass.  If not, see <http://www.gnu.org/licenses/>.
 
-import os, ConfigParser, logging
+import os
+import ConfigParser
+import logging
 from . import *
 logger = logging.getLogger(__name__)
 if not logger.handlers:
