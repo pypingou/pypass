@@ -219,10 +219,12 @@ class PyPassGui(object):
         about.set_copyright(__copyright__)
         about.set_authors(__author__)
         about.set_comments('\n'.join(__credits__))
-        #about.set_license(open('gpl.txt').read())
+        _lpath = os.path.join(os.path.dirname(
+                os.path.realpath(__file__)), "..", "datas", "gplv3.txt")
+        about.set_license(open(_lpath).read())
         about.set_website(__url__)
-        _logo_path = os.path.join(self.path, 'images/logo.png')
-        about.set_logo(gtk.gdk.pixbuf_new_from_file(_logo_path))
+        #_logo_path = os.path.join(self.path, 'images/logo.png')
+        #about.set_logo(gtk.gdk.pixbuf_new_from_file(_logo_path))
 
         _dialog(about)
 
