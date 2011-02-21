@@ -129,7 +129,7 @@ class PyPass(object):
         if character_set_ndx is None:
             character_set_ndx = config.passwords['base']
 
-        character_set = self.config.character_sets[character_set_ndx].characters
+        character_set = config._character_sets[character_set_ndx].characters
 
         password = ""
         for current_character in range(password_length):
