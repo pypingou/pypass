@@ -21,28 +21,23 @@
 
 #define some global variables
 
-import os, logging
+
+__version__   = '0.0.1'
+__date__      = '2011/02/21'
+__author__    = 'Pierre-Yves `pingou` Chibon' \
+                'Johan `trashy` Cwiklinski'
+__copyright__ = 'Copyright (c) 2011 Pierre-Yves Chibon - Copyright (c) 2011 Johan Cwiklinski'
+__url__       = 'https://redmine.ulysses.fr/projects/pypass'
+__status__    = "Prototype"
+
+import os
+import logging
 import config
 
 #logging stuff
 LOG_FILENAME = os.path.join(os.path.expanduser('~'), '.pypass', 'pypass.log')
-#Check if configuration directory exists, create it otherwise
-if not os.path.exists(os.path.dirname(LOG_FILENAME)):
-    try:
-        os.mkdir(os.path.dirname(LOG_FILENAME))
-        print 'PyPass configuration directory has been created in %s' % os.path.dirname(LOG_FILENAME)
-    except MkdirError:
-        sys.exit('Unable to create PyPass configuration directory under %s' % os.path.dirname(LOG_FILENAME))
-
 logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
-
-name = 'PyPass'
-version = '0.0.1'
-authors = ['Johan `trashy` Cwiklinski', 'Pierre-Yves `pingou` Chibon']
 locale_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale')
-copyright = 'Copyright (c) 2011 Pierre-Yves Chibon - Copyright (c) 2011 Johan Cwiklinski'
-website = 'https://redmine.ulysses.fr/projects/pypass'
-
 pypassconf = config.PyPassConfig()
 
 #TODO: i18n
