@@ -22,7 +22,6 @@
 import os
 import ConfigParser
 import logging
-from . import *
 LOG = logging.getLogger(__name__)
 if not LOG.handlers:
     LOG.addHandler(logging.NullHandler())

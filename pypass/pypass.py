@@ -20,12 +20,12 @@
 # along with pypass.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import sys
 import gnupg
 import getpass
 import json
 import random
 
-import config
 from . import __pypassconf__ as config
 
 
@@ -37,9 +37,9 @@ class PyPass(object):
         except NotImplementedError:
             self.random_number_generator = random.Random()
 
-        self.hd = os.path.join(os.path.expanduser('~'), '.gnupg')
+        self.gnupgdir = os.path.join(os.path.expanduser('~'), '.gnupg')
         #print self.hd
-        self.gpg = gnupg.GPG(gnupghome=self.hd, use_agent=True)
+        self.gpg = gnupg.GPG(gnupghome=self.gnupgdir, use_agent=True)
 
     def load_data(self, password=None, filename=None):
         """
@@ -77,17 +77,6 @@ class PyPass(object):
                                      output=config.file))
         return edata
 
-    def read_file(self):
-        """Read the given json file and return the content """
-        try:
-            data = self.fio.readJson()
-        except IOError, er:
-            self.generate_error(
-                "Something went wrong when trying to load the database:",
-                er)
-            return
-        return data
-
     def add_password(self, database, level, passdict):
         """ Add the given hashdict to the given database at the given
         level"""
@@ -115,13 +104,13 @@ class PyPass(object):
         """
         return self.gpg.list_keys(True)
 
-    def generate_error(self, errortext, er=None):
+    def generate_error(self, errortext, error=None):
         """
         Function called when a error needs to be raised
         The error will be displayed in stdout
         """
         print errortext
-        print er
+        print error
         sys.exit(1)
 
     def generate_password(self, password_length=None, character_set_ndx=None):
@@ -129,7 +118,6 @@ class PyPass(object):
         Random password generation. The above code was originally taken from
         gnome-password-generator
         """
-        #TODO: get that from app preferences
         if password_length is None:
             password_length = config.passwords['length']
         if character_set_ndx is None:
@@ -147,13 +135,13 @@ class PyPass(object):
 
 # for dev/testing purposes
 if __name__ == "__main__":
-    p = PyPass()
-    #print p.list_recipients()
+    PPASS = PyPass()
+    #print PPASS.list_recipients()
     #recipients = ['8BA59F94']
     #passphrase = getpass.getpass("Enter your GPG password:")
-    #p.load_data(passphrase)
-    #p.crypt(recipients)
-    #p.decrypt(passphrase = passphrase)
-    print p.config.file
-    p.config.file = '/a/file/whose/parent/path/does/not/exists'
-    print p.config.file
+    #PPASS.load_data(passphrase)
+    #PPASS.crypt(recipients)
+    #PPASS.decrypt(passphrase = passphrase)
+    print config.file
+    config.file = '/a/file/whose/parent/path/does/not/exists'
+    print config.file

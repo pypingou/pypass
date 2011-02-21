@@ -63,7 +63,6 @@ logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG)
 __locale_dir__ = os.path.join(os.path.dirname(os.path.realpath(__file__)),
                           'locale')
 __pypassconf__ = config.PyPassConfig()
-print __pypassconf__
 
 __application__ = 'pypass'
 gettext.install(__application__, __locale_dir__)
