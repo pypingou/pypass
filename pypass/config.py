@@ -38,15 +38,6 @@ class PyPassConfig(object):
         self.config_dir = os.path.join(os.path.expanduser('~'), '.pypass')
         self.config_file = os.path.join(self.config_dir, 'pypass.ini')
 
-        #Check if configuration directory exists, create it otherwise
-        if not os.path.exists(self.config_dir):
-            try:
-                os.mkdir(self.config_dir)
-                logger.info('PyPass configuration directory has been created in %s' % self.config_dir)
-            except MkdirError:
-                logger.exception('Unable to create PyPass configuration directory under %s' % self.config_dir)
-                sys.exit('Unable to create PyPass configuration directory under %s' % self.config_dir)
-
         logger.debug('Application configuration file: %s' % self.app_config_file)
         logger.debug('Configuration file:             %s' % self.config_file)
 
