@@ -1,4 +1,4 @@
-#!/usr/bin/python
+""" Config module for pypass """
 #-*- coding: utf-8 -*-
 
 # Copyright (c) 2011 Pierre-Yves Chibon <pingou AT pingoured DOT fr>
@@ -23,11 +23,13 @@ import os
 import ConfigParser
 import logging
 from . import *
-logger = logging.getLogger(__name__)
-if not logger.handlers:
-    logger.addHandler(logging.NullHandler())
+LOG = logging.getLogger(__name__)
+if not LOG.handlers:
+    LOG.addHandler(logging.NullHandler())
+
 
 class PyPassConfig(object):
+    """ Configuration class of pypass """
 
     def __init__(self):
         self.app_config_file = os.path.abspath(
@@ -41,14 +43,16 @@ class PyPassConfig(object):
         self.config_dir = os.path.join(os.path.expanduser('~'), '.pypass')
         self.config_file = os.path.join(self.config_dir, 'pypass.ini')
 
-        logger.debug('Application configuration file: %s' % self.app_config_file)
-        logger.debug('Configuration file:             %s' % self.config_file)
+        LOG.debug('Application configuration file: %s' %
+                    self.app_config_file)
+        LOG.debug('Configuration file:             %s' %
+                    self.config_file)
 
         self.config = ConfigParser.ConfigParser()
         self.config.read([self.app_config_file, self.config_file])
 
         #Rewrite local config to take care of new app changes
-        logger.info('Update user config file')
+        LOG.info('Update user config file')
         with open(self.config_file, 'wb') as configfile:
             self.config.write(configfile)
 
@@ -60,12 +64,17 @@ class PyPassConfig(object):
         Loads configuration
         """
         self._character_sets = (
-            CharacterSet("All printable (excluding space)", "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"),
-            CharacterSet("Alpha-numeric (a-z, A-Z, 0-9)", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
-            CharacterSet("Alpha lower-case (a-z)", "abcdefghijklmnopqrstuvwxyz"),
+            CharacterSet("All printable (excluding space)", "!\"#$%&'()"\
+                "*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`"\
+                "abcdefghijklmnopqrstuvwxyz{|}~"),
+            CharacterSet("Alpha-numeric (a-z, A-Z, 0-9)", "0123456789"\
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
+            CharacterSet("Alpha lower-case (a-z)", "abcdefghijklmno"\
+                "pqrstuvwxyz"),
             CharacterSet("Hexadecimal (0-9, A-F)", "0123456789ABCDEF"),
             CharacterSet("Decimal (0-9)", "0123456789"),
-            CharacterSet("Base 64 (a-z, A-Z, 0-9, '+', '/')", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/")
+            CharacterSet("Base 64 (a-z, A-Z, 0-9, '+', '/')", "0123456789"\
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/")
         )
 
         self._file = os.path.expanduser(self.config.get('global', 'file'))
@@ -75,7 +84,10 @@ class PyPassConfig(object):
             'base': int(self.config.get('password generator', 'base'))
         }
 
-        logger.debug("Configuration loaded:\n- file: %s\n- recipients: %s\n- password length: %i\n- password base: %i" % (self._file, self.recipients, self.passwords_length, self.passwords_base))
+        LOG.debug("Configuration loaded:\n- file: %s\n- recipients: "\
+            "%s\n- password length: %i\n- password base: %i" % (
+            self._file, self.recipients, self.passwords_length,
+            self.passwords_base))
 
     @property
     def file(self):
@@ -90,10 +102,11 @@ class PyPassConfig(object):
         Setter for _file
         """
         if not os.path.exists(os.path.dirname(value)):
-            logger.warn('Trying to set a value for file with a missing parent. ' + value)
+            LOG.warn('Trying to set a value for file with a missing ' \
+                'parent. ' + value)
             #FIXME: return something?
         else:
-            logger.debug('Setting file to: ' + value)
+            LOG.debug('Setting file to: ' + value)
             self._file = value
 
     @property
@@ -123,7 +136,7 @@ class PyPassConfig(object):
         Prevent passwords modification. Use passwords_length and
         passwords_base attributes instead.
         """
-        logger.warning('Trying to set passwords')
+        LOG.warning('Trying to set passwords')
 
     @property
     def passwords_length(self):
@@ -162,11 +175,12 @@ class PyPassConfig(object):
         """
         return self._character_sets
 
-    def character_sets(self,value):
+    def character_sets(self, value):
         """
         Prevent characters_sets modification.
         """
-        logger.warning('Trying to change characters_sets')
+        LOG.warning('Trying to change characters_sets')
+
 
 class CharacterSet:
     def __init__(self, description, characters):
