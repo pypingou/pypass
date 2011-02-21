@@ -259,26 +259,30 @@ class PyPassGui(object):
 
         combo.set_active(0)
     
-    def set_keys_list(self):
+    def set_keys_list(self, hide = True):
         """ Set all the keys retrieved from pypass into the list """
         keys = self.pypass.list_recipients()
         treeview = self.builder.get_object("treeviewkey")
-        column_str = gtk.TreeViewColumn('Key ID') 
-        treeview.append_column(column_str)
-        cell = gtk.CellRendererText()
-        column_str.pack_start(cell, True)
-        column_str.add_attribute(cell, "text", 0)
-        
-        column_str = gtk.TreeViewColumn('') 
-        treeview.append_column(column_str)
-        cell1 = gtk.CellRendererText()
-        column_str.pack_start(cell1, True)
-        column_str.add_attribute(cell1, "text", 1)
-        
-        store = gtk.ListStore(str, str)
-        treeview.set_model(store)
-        for key in keys:
-            store.append([key['keyid'], " ".join(key['uids'])])
+        if hide:
+            treeview.set_visible(False)
+            treeview.destroy()
+        else:
+            column_str = gtk.TreeViewColumn('Key ID') 
+            treeview.append_column(column_str)
+            cell = gtk.CellRendererText()
+            column_str.pack_start(cell, True)
+            column_str.add_attribute(cell, "text", 0)
+            
+            column_str = gtk.TreeViewColumn('') 
+            treeview.append_column(column_str)
+            cell1 = gtk.CellRendererText()
+            column_str.pack_start(cell1, True)
+            column_str.add_attribute(cell1, "text", 1)
+            
+            store = gtk.ListStore(str, str)
+            treeview.set_model(store)
+            for key in keys:
+                store.append([key['keyid'], " ".join(key['uids'])])
     
     def open_database(self, widget = None):
         """ Open a selected database """
@@ -296,8 +300,10 @@ class PyPassGui(object):
                 return
             else:
                 selection = self.builder.get_object("treeviewkey").get_selection()
-                (model, iter) = selection.get_selected()
-                key = model[iter][0]
+                key = None
+                if selection is not None:
+                    (model, iter) = selection.get_selected()
+                    key = model[iter][0]
                 entry = self.builder.get_object("entry_key_password")
                 password = entry.get_text()
                 print "key: %s - password: %s" %(key, password)

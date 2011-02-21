@@ -10,7 +10,6 @@
   </object>
   <object class="GtkDialog" id="dialogkeychooser">
     <property name="width_request">400</property>
-    <property name="height_request">200</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Select your key</property>
     <property name="type_hint">normal</property>
@@ -25,7 +24,6 @@
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkTreeView" id="treeviewkey">
-                <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="reorderable">True</property>
               </object>
