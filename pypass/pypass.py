@@ -28,9 +28,10 @@ import random
 import config
 from . import __pypassconf__ as config
 
+
 class PyPass(object):
 
-    def __init__( self):
+    def __init__(self):
         try:
             self.random_number_generator = random.SystemRandom()
         except NotImplementedError:
@@ -40,13 +41,13 @@ class PyPass(object):
         #print self.hd
         self.gpg = gnupg.GPG(gnupghome=self.hd, use_agent=True)
 
-    def load_data(self, password = None, filename = None):
+    def load_data(self, password=None, filename=None):
         """
         Decrypt and lods data into an internal object
         """
-        self.data = self.decrypt(passphrase = password, filename = filename)
+        self.data = self.decrypt(passphrase=password, filename=filename)
 
-    def decrypt(self, passphrase = None, filename = None):
+    def decrypt(self, passphrase=None, filename=None):
         """
         Decrypt file. If no file is specified, get its path from configuration
         """
@@ -56,19 +57,24 @@ class PyPass(object):
             print "opening file", filename
             stream = open(filename, 'rb')
             #have to select key before that
-            decrypted_data = self.gpg.decrypt_file(stream, passphrase=passphrase)
+            decrypted_data = self.gpg.decrypt_file(
+                                                   stream,
+                                                   passphrase=passphrase)
             return decrypted_data.data
         else:
             return "{}"
 
-    def crypt(self, recipients = None):
+    def crypt(self, recipients=None):
         """
         Crypt file from current datas
         """
         #have to select recipient before that
         if recipients is None:
             recipients = config.recipients
-        edata = str(self.gpg.encrypt(self.data, recipients, output=config.file))
+        edata = str(self.gpg.encrypt(
+                                     self.data,
+                                     recipients,
+                                     output=config.file))
         return edata
 
     def read_file(self):
@@ -109,7 +115,7 @@ class PyPass(object):
         """
         return self.gpg.list_keys(True)
 
-    def generate_error(self, errortext, er = None):
+    def generate_error(self, errortext, er=None):
         """
         Function called when a error needs to be raised
         The error will be displayed in stdout
@@ -118,7 +124,7 @@ class PyPass(object):
         print er
         sys.exit(1)
 
-    def generate_password(self, password_length = None, character_set_ndx = None):
+    def generate_password(self, password_length=None, character_set_ndx=None):
         """
         Random password generation. The above code was originally taken from
         gnome-password-generator
@@ -133,7 +139,8 @@ class PyPass(object):
 
         password = ""
         for current_character in range(password_length):
-            random_number = self.random_number_generator.randint(0, len(character_set)-1)
+            random_number = self.random_number_generator.randint(0,
+                                                    len(character_set) - 1)
             password += character_set[random_number]
 
         return password
@@ -148,5 +155,5 @@ if __name__ == "__main__":
     #p.crypt(recipients)
     #p.decrypt(passphrase = passphrase)
     print p.config.file
-    p.config.file='/a/file/whose/parent/path/does/not/exists'
+    p.config.file = '/a/file/whose/parent/path/does/not/exists'
     print p.config.file
