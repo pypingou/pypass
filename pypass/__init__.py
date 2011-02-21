@@ -36,6 +36,14 @@ import config
 
 #logging stuff
 LOG_FILENAME = os.path.join(os.path.expanduser('~'), '.pypass', 'pypass.log')
+#Check if configuration directory exists, create it otherwise
+if not os.path.exists(os.path.dirname(LOG_FILENAME)):
+    try:
+        os.mkdir(os.path.dirname(LOG_FILENAME))
+        print 'PyPass configuration directory has been created in %s' % os.path.dirname(LOG_FILENAME)
+    except MkdirError:
+        sys.exit('Unable to create PyPass configuration directory under %s' % os.path.dirname(LOG_FILENAME))
+
 logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
 locale_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale')
 pypassconf = config.PyPassConfig()
