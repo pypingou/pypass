@@ -352,6 +352,9 @@ class PyPassGui(object):
         self.set_button_img(butons)
         self.set_combox_type()
         
+        dic = { "generate_password": self.generate_password }
+        self.builder.connect_signals( dic )
+        
         add = self.builder.get_object("dialogaddentry")
         if self._dialog(add) == 1:
             name = self.builder.get_object("entry_name").get_text()
