@@ -26,12 +26,11 @@ import json
 import random
 
 import config
+from . import pypassconf as config
 
 class PyPass(object):
 
     def __init__( self):
-        self.config = config.PyPassConfig()
-
         try:
             self.random_number_generator = random.SystemRandom()
         except NotImplementedError:
@@ -52,14 +51,14 @@ class PyPass(object):
         Decrypt file. If no file is specified, get its path from configuration
         """
         if filename is None:
-            filename = self.config.file
+            filename = config.file
         if os.path.exists(filename):
-            print "opening file", self.config.file
-            stream = open(self.config.file, 'rb')
+            print "opening file", config.file
+            stream = open(config.file, 'rb')
             #have to select key before that
             decrypted_data = self.gpg.decrypt_file(stream, passphrase=passphrase)
             return decrypted_data.data
-        else: 
+        else:
             return "{}"
 
     def crypt(self, recipients = None):
@@ -68,8 +67,8 @@ class PyPass(object):
         """
         #have to select recipient before that
         if recipients is None:
-            recipients = self.config.recipients
-        edata = str(self.gpg.encrypt(self.data, recipients, output=self.config.file))
+            recipients = config.recipients
+        edata = str(self.gpg.encrypt(self.data, recipients, output=config.file))
         return edata
 
     def read_file(self):
@@ -94,7 +93,7 @@ class PyPass(object):
 
     def data_from_json(self, data):
         """
-        Set data from JSON 
+        Set data from JSON
         """
         self.data = json.dumps(data, indent=4)
 
@@ -111,7 +110,7 @@ class PyPass(object):
         return self.gpg.list_keys(True)
 
     def generate_error(self, errortext, er = None):
-        """ 
+        """
         Function called when a error needs to be raised
         The error will be displayed in stdout
         """
@@ -126,9 +125,9 @@ class PyPass(object):
         """
         #TODO: get that from app preferences
         if password_length is None:
-            password_length = self.config.passwords['length']
+            password_length = config.passwords['length']
         if character_set_ndx is None:
-            character_set_ndx = self.config.passwords['base']
+            character_set_ndx = config.passwords['base']
 
         character_set = self.config.character_sets[character_set_ndx].characters
 
@@ -145,7 +144,7 @@ if __name__ == "__main__":
     #print p.list_recipients()
     #recipients = ['8BA59F94']
     #passphrase = getpass.getpass("Enter your GPG password:")
-    #p.load_data(passphrase) 
+    #p.load_data(passphrase)
     #p.crypt(recipients)
     #p.decrypt(passphrase = passphrase)
     print p.config.file

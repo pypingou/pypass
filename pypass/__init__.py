@@ -22,6 +22,7 @@
 #define some global variables
 
 import os, logging
+import config
 
 #logging stuff
 LOG_FILENAME = os.path.join(os.path.expanduser('~'), '.pypass', 'pypass.log')
@@ -41,6 +42,8 @@ authors = ['Johan `trashy` Cwiklinski', 'Pierre-Yves `pingou` Chibon']
 locale_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'locale')
 copyright = 'Copyright (c) 2011 Pierre-Yves Chibon - Copyright (c) 2011 Johan Cwiklinski'
 website = 'https://redmine.ulysses.fr/projects/pypass'
+
+pypassconf = config.PyPassConfig()
 
 #TODO: i18n
 #import gettext
