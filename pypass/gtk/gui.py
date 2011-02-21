@@ -42,8 +42,10 @@ except:
     sys.exit(1)
 
 class PyPassGui(object):
+    """ Class handling the gtk gui for pypass """
 
     def __init__( self, pypass, options):
+        """ Instanciate the window and set the basic element """
         self.pypass = pypass
         self.builder = gtk.Builder()
         self.builder.add_from_file(os.path.join(os.path.dirname(
@@ -104,6 +106,7 @@ class PyPassGui(object):
         gtk.main()
     
     def set_button_toolbar(self):
+        """ Set the button toolbar with their logo """
         butons = {
                     "b_open": gtk.STOCK_OPEN,
                     "b_save": gtk.STOCK_SAVE,
@@ -311,6 +314,7 @@ class PyPassGui(object):
         self.update_status_bar("Database saved")
     
     def on_pass_selected(self, widget):
+        """ Display the password in the window when selected on the tree """
         selection = self.builder.get_object("treefolderview").get_selection()
         (model, iter) = selection.get_selected()
         key = model[iter][0]
