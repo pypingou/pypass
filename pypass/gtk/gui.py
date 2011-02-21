@@ -82,6 +82,7 @@ class PyPassGui(object):
         if self.pypass.data is not None and self.pypass.data != "":
             self.load_password_tree(self.pypass.data_as_json())
         
+        self.data = {}
         dic = {
             "on_buttonQuit_clicked" : self.quit,
             "on_windowMain_destroy" : self.quit,
@@ -155,7 +156,7 @@ class PyPassGui(object):
                     icon = gtk.STOCK_DIALOG_AUTHENTICATION
                     treestore.append(parent, [password['name'], icon])
         treeview.set_model(treestore)
-        treeview.set_reorderable(True)
+        #treeview.set_reorderable(True)
     
     def reset_entry_dialog(self):
         """ Reset the different entry field of the add_entry dialog """
@@ -304,7 +305,7 @@ class PyPassGui(object):
     def save_database(self, widget = None):
         """ Save the current database """
         # TODO: reconstruct the json from the TreeView
-        self.pypass.data_from_json(self.pypass.data)
+        self.pypass.data_from_json(self.data)
         self.pypass.crypt()
 
         self.update_status_bar("Database saved")
