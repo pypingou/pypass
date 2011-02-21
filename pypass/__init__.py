@@ -24,9 +24,9 @@
 
 __version__   = '0.0.1'
 __date__      = '2011/02/21'
-__author__    = 'Pierre-Yves `pingou` Chibon' \
-                'Johan `trashy` Cwiklinski'
-__copyright__ = 'Copyright (c) 2011 Pierre-Yves Chibon - Copyright (c) 2011 Johan Cwiklinski'
+__author__    = ['Pierre-Yves `pingou` Chibon', 
+                    'Johan `trashy` Cwiklinski']
+__copyright__ = 'Copyright (c) 2011 Pierre-Yves Chibon \nCopyright (c) 2011 Johan Cwiklinski'
 __url__       = 'https://redmine.ulysses.fr/projects/pypass'
 __status__    = "Prototype"
 

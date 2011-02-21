@@ -25,6 +25,8 @@ import json
 import random
 import string
 
+from .. import __version__, __author__, __date__, __copyright__, __url__, __status__
+
 try:
     import pygtk
     pygtk.require("2.0")
@@ -184,6 +186,9 @@ class PyPassGui(object):
     def show_about(self, widget):
         """ Show the about diaglog """
         about = self.builder.get_object("aboutdialog")
+        about.set_version(__version__)
+        about.set_copyright(__copyright__)
+        about.set_authors(__author__)
         self._dialog(about)
     
     def quit(self, widget):
@@ -369,16 +374,24 @@ class PyPassGui(object):
         add = self.builder.get_object("dialogaddentry")
         if self._dialog(add) == 1:
             name = self.builder.get_object("entry_name").get_text()
-            user = self.builder.get_object("entry_user").get_text()
             password = self.builder.get_object("entry_password").get_text()
+            user = self.builder.get_object("entry_user").get_text()
             url = self.builder.get_object("entry_url").get_text()
-            if "" in (name, user, password):
-                self.generate_error("Could not enter the password. \nOne of the mandatory field had missing information")
+            description = self.builder.get_object("entry_description").get_text()
+            combotype = self.builder.get_object("combo_type")
+            passtype = combotype.get_active()
+            print passtype
+            if "" in (name, password):
+                self.generate_error("Could not enter the password. \nName or password had missing information")
                 return
             else:
                 passdict = {"name": name, "user": user, "password": password}
                 if url is not "":
                     passdict['url'] = url
+                if user is not "":
+                    passdict['user'] = user
+                if description is not "":
+                    passdict['description'] = description
                 level = self.get_level()
                 data = self.pypass.add_password(
                                             self.data, level, passdict)
