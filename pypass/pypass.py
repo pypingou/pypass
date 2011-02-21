@@ -53,8 +53,8 @@ class PyPass(object):
         if filename is None:
             filename = config.file
         if os.path.exists(filename):
-            print "opening file", config.file
-            stream = open(config.file, 'rb')
+            print "opening file", filename
+            stream = open(filename, 'rb')
             #have to select key before that
             decrypted_data = self.gpg.decrypt_file(stream, passphrase=passphrase)
             return decrypted_data.data
