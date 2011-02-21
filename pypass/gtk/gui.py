@@ -323,6 +323,7 @@ class PyPassGui(object):
         self.pypass.crypt()
 
         self.update_status_bar("Database saved")
+        self.modifiedDb = False
     
     def on_pass_selected(self, widget):
         """ Display the password in the window when selected on the tree """
