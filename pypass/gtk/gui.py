@@ -150,7 +150,10 @@ class PyPassGui(object):
         self.data = tree
         treeview = self.builder.get_object("treefolderview")
         treestore = gtk.TreeStore(str, str)
-        #print tree
+        if not isinstance(tree, dict):
+            text = self.builder.get_object("labelpass")
+            text.set_text(tree)
+            return
         for key in tree.keys():
             if key is not None:
                 parent = treestore.append(None, [key, gtk.STOCK_DIRECTORY])
@@ -294,26 +297,7 @@ class PyPassGui(object):
         # get database file
         filename = self.select_file("Open a database", os.path.expanduser('~'))
         if filename is not None:
-            self.builder.add_from_file(os.path.join(os.path.dirname(
-                os.path.realpath( __file__ )), "ui", "dialogkeychooser.ui"))
-            # retrieve all keys and create the list
-            self.set_keys_list()
-            # ask to select a key and a password
-            add = self.builder.get_object("dialogkeychooser")
-            if self._dialog(add) != 1:
-                print "not-ok"
-                return
-            else:
-                selection = self.builder.get_object("treeviewkey").get_selection()
-                key = None
-                if selection is not None:
-                    (model, iter) = selection.get_selected()
-                    key = model[iter][0]
-                entry = self.builder.get_object("entry_key_password")
-                password = entry.get_text()
-                print "key: %s - password: %s" %(key, password)
-                #self.load_password_tree(self.pypass.decrypt())
-            add.destroy()
+            self.load_password_tree(self.pypass.decrypt(filename = filename))
             return
     
     def save_database(self, widget = None):
