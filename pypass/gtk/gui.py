@@ -160,9 +160,12 @@ class PyPassGui(object):
         col0.set_attributes(cell, text=0)
 
         filename = None
+        self.data = {}
+        
         if options.filename is not None:
             filename = options.filename
         self.pypass.load_data(filename=filename)
+        print self.pypass.data
         if self.pypass.data is not None and self.pypass.data != "":
             self.load_password_tree(self.pypass.data_as_json())
 
@@ -171,7 +174,6 @@ class PyPassGui(object):
         window.get_settings().set_long_property('gtk-button-images', 
                                                     True, '')
 
-        self.data = {}
         dic = {
             "on_buttonQuit_clicked": self.quit,
             "on_windowMain_destroy": self.quit,
@@ -183,6 +185,7 @@ class PyPassGui(object):
             "save_database": self.save_database,
             "save_as_database": self.save_as_database,
             "open_database": self.open_database,
+            "unselect_keys": self.cursor_changed,
         }
         self.builder.connect_signals(dic)
 
@@ -220,12 +223,13 @@ class PyPassGui(object):
         treeview = self.builder.get_object("treefolderview")
         treestore = gtk.TreeStore(str, str)
         if not isinstance(tree, dict):
+            print "plain text"
             text = self.builder.get_object("labelpass")
             text.set_text(tree)
             self.data = {}
             return
         for key in tree.keys():
-            if key is not None:
+            if key != "null":
                 parent = treestore.append(None, [key, gtk.STOCK_DIRECTORY])
             else:
                 parent = None
@@ -362,7 +366,7 @@ class PyPassGui(object):
         selection = self.builder.get_object("treefolderview").get_selection()
         (model, itera) = selection.get_selected()
         key = model[itera][0]
-        parent = None
+        parent = "null"
 
         if model[itera].parent is not None:
             parent = model[itera].parent[0]
