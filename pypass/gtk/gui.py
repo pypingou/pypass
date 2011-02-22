@@ -36,18 +36,42 @@ except ImportError:
     print("GTK not available")
     sys.exit(1)
 
+def file_browse(dialog_action, title, pathname, file_name="",
+                types=None):
+    """This function is used to browse for a pyWine file.
+    It can be either a save or open dialog depending on
+    what dialog_action is.
+    The path to the file will be returned if the user
+    selects one, however a blank string will be returned
+    if they cancel or do not select one.
+    dialog_action - The open or save mode for the dialog either
+    gtk.FILE_CHOOSER_ACTION_OPEN, gtk.FILE_CHOOSER_ACTION_SAVE
+        file_name - Default name when doing a save
+    source:
+    http://www.pygtk.org/articles/extending-our-pygtk-application \
+    /extending-our-pygtk-application.htm
+    """
 
-def select_file(title, pathname, types=None):
-    """ Open a given file chosser dialog and return the selection if any """
-    dialog = gtk.FileChooserDialog(title=title,
-                            action=gtk.FILE_CHOOSER_ACTION_OPEN,
-                            buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                        gtk.STOCK_OPEN, gtk.RESPONSE_OK)
-                                    )
-    dialog.set_current_folder(pathname)
-    dialog.set_default_response(gtk.RESPONSE_OK)
-    response = dialog.run()
+    if (dialog_action==gtk.FILE_CHOOSER_ACTION_OPEN):
+        dialog_buttons = (gtk.STOCK_CANCEL
+                            , gtk.RESPONSE_CANCEL
+                            , gtk.STOCK_OPEN
+                            , gtk.RESPONSE_OK)
+    else:
+        dialog_buttons = (gtk.STOCK_CANCEL
+                            , gtk.RESPONSE_CANCEL
+                            , gtk.STOCK_SAVE
+                            , gtk.RESPONSE_OK)
 
+    file_dialog = gtk.FileChooserDialog(title=title,
+                action=dialog_action,
+                buttons=dialog_buttons)
+    #set the filename if we are saving
+    if (dialog_action==gtk.FILE_CHOOSER_ACTION_SAVE):
+        file_dialog.set_current_name(file_name)
+    file_dialog.set_current_folder(pathname)
+    file_dialog.set_default_response(gtk.RESPONSE_OK)
+    
     if types is not None and isinstance(types, dict):
         for typek in types.keys():
             filefilter = gtk.FileFilter()
@@ -55,17 +79,19 @@ def select_file(title, pathname, types=None):
             for element in types[typek]:
                 filefilter.add_mime_type(element)
             dialog.add_filter(filefilter)
+    #Create and add the 'all files' filter
+    filefilter = gtk.FileFilter()
+    filefilter.set_name("All files")
+    filefilter.add_pattern("*")
+    file_dialog.add_filter(filefilter)
 
-    if response == gtk.RESPONSE_OK:
-        #print dialog.get_filename(), 'selected'
-        selection = dialog.get_filename()
-    else:
-        #print 'Closed, no files selected'
-        selection = None
+    #Init the return value
+    result = None
+    if file_dialog.run() == gtk.RESPONSE_OK:
+        result = file_dialog.get_filename()
+    file_dialog.destroy()
 
-    dialog.destroy()
-    return selection
-
+    return result
 
 def _dialog(dialog):
     """ Display a dialog window """
@@ -155,6 +181,7 @@ class PyPassGui(object):
             "add_entry": self.add_entry,
             "generate_password": self.generate_password,
             "save_database": self.save_database,
+            "save_as_database": self.save_as_database,
             "open_database": self.open_database,
         }
         self.builder.connect_signals(dic)
@@ -305,7 +332,8 @@ class PyPassGui(object):
     def open_database(self, widget=None):
         """ Open a selected database """
         # get database file
-        filename = select_file("Open a database", os.path.expanduser('~'))
+        filename = file_browse(gtk.FILE_CHOOSER_ACTION_OPEN, "Open a database", 
+                                os.path.expanduser('~'))
         if filename is not None:
             self.pypass.load_data(filename=filename)
             self.load_password_tree(self.pypass.data_as_json())
@@ -315,6 +343,16 @@ class PyPassGui(object):
         """ Save the current database """
         self.pypass.data_from_json(self.data)
         self.pypass.crypt()
+
+        self.update_status_bar("Database saved")
+        self.modified_db = False
+    
+    def save_as_database(self, widget=None):
+        """ Save the current database in a selected file """
+        filename = file_browse(gtk.FILE_CHOOSER_ACTION_SAVE, "Open a database", 
+                                os.path.expanduser('~'))
+        self.pypass.data_from_json(self.data)
+        self.pypass.crypt(recipients = filename)
 
         self.update_status_bar("Database saved")
         self.modified_db = False
