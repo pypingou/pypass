@@ -30,7 +30,10 @@ def json_to_tree(json):
 
 def load_pypdir(jsondir, name):
     """ convert an element of pypdir to tree """
-    pypdir = PypDirectory(name, jsondir["description"])
+    desc=None
+    if "description" in jsondir.keys():
+        desc=jsondir["description"]
+    pypdir=PypDirectory(name, )
     for password in jsondir["passwords"]:
         pypdir.passwords.append(load_password(password))
     for password in jsondir["directories"]:
