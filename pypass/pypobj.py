@@ -22,6 +22,23 @@ generated/read.
 # You should have received a copy of the GNU General Public License
 # along with pypass.  If not, see <http://www.gnu.org/licenses/>.
 
+def iterate_over_tree(obj, out, it = 0):
+    """ Iterate over the items in a PypDirectory """
+    out = '%s "%s": [ ' % (out, obj.name)
+    it = it + 1
+    cnt = 0
+    for item in obj.content:
+        cnt = cnt + 1
+        if isinstance(item, PypDirectory):
+            out = "%s ]," % out
+            out = iterate_over_tree(item, out, it)
+        else:
+            out = '%s { "name": "%s", "password": "%s"}'  % (out, 
+                    item.name, item.password)
+            if cnt != len(obj.content) and \
+             not isinstance(obj.content[cnt], PypDirectory):
+                out = "%s ," % out
+    return out
 
 class PypDirectory(object):
     """ Represents a directory in pypass, used to classify the passwords """
@@ -79,26 +96,15 @@ class PypDirectory(object):
         dir2.content.append(passw)
         dir1.content.append(dir2)
 
-        return root
+        self.content = root
 
-    def dump(self, obj, it = 0):
+    def dump(self):
         """ Dump the object to stdout """
-        print " " * it, '"%s": [ ' % obj.name
-        it = it + 1
-        cnt = 0
-        for item in obj.content:
-            cnt = cnt + 1
-            #print cnt, len(obj.content)
-            if isinstance(item, PypDirectory):
-                print " ],"
-                self.dump(item, it)
-            else:
-                print " " * it,'{ "name": "%s", "password": "%s"}'  % (item.name,
-                    item.password)
-                if cnt != len(obj.content) and \
-                 not isinstance(obj.content[cnt], PypDirectory):
-                    print ","
-            
+        out = "{"
+        out = iterate_over_tree(self.content, out)
+        out = out + " ]"
+        out = out + "}"
+        print out
 
 
 class PypPasword(object):
@@ -132,7 +138,4 @@ class PypPasword(object):
 if __name__ == "__main__":
     pypd = PypDirectory()
     tree = pypd.create_set()
-    print "{"
-    pypd.dump(tree)
-    print " ]"
-    print "}"
+    pypd.dump()
