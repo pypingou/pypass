@@ -161,7 +161,7 @@ class PyPassGui(object):
 
         filename = None
         if options.filename is not None:
-            filename = options.filename()
+            filename = options.filename
         self.pypass.load_data(filename=filename)
         if self.pypass.data is not None and self.pypass.data != "":
             self.load_password_tree(self.pypass.data_as_json())
