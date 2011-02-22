@@ -185,7 +185,6 @@ class PyPassGui(object):
             "save_database": self.save_database,
             "save_as_database": self.save_as_database,
             "open_database": self.open_database,
-            "unselect_keys": self.cursor_changed,
         }
         self.builder.connect_signals(dic)
 
