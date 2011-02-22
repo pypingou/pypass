@@ -83,13 +83,23 @@ class PypDirectory(object):
 
     def dump(self, obj, it = 0):
         """ Dump the object to stdout """
-        print " " * it, obj.name, "-", obj.description
+        print " " * it, '"%s": [ ' % obj.name
         it = it + 1
+        cnt = 0
         for item in obj.content:
+            cnt = cnt + 1
+            #print cnt, len(obj.content)
             if isinstance(item, PypDirectory):
+                print " ],"
                 self.dump(item, it)
             else:
-                print " " * it, item.name, " --", item.password
+                print " " * it,'{ "name": "%s", "password": "%s"}'  % (item.name,
+                    item.password)
+                if cnt != len(obj.content) and \
+                 not isinstance(obj.content[cnt], PypDirectory):
+                    print ","
+            
+
 
 class PypPasword(object):
     """ Represents a password in pypass"""
@@ -122,4 +132,7 @@ class PypPasword(object):
 if __name__ == "__main__":
     pypd = PypDirectory()
     tree = pypd.create_set()
+    print "{"
     pypd.dump(tree)
+    print " ]"
+    print "}"
