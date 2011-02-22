@@ -228,7 +228,7 @@ class PyPassGui(object):
             self.data = {}
             return
         for key in tree.keys():
-            if key != "null":
+            if key != "null" and key is not None:
                 parent = treestore.append(None, [key, gtk.STOCK_DIRECTORY])
             else:
                 parent = None
@@ -431,6 +431,8 @@ class PyPassGui(object):
                 if description is not "":
                     passdict['description'] = description
                 level = self.get_level()
+                if level is None:
+                    level = "null"
                 data = self.pypass.add_password(
                                             self.data, level, passdict)
                 self.load_password_tree(data)
