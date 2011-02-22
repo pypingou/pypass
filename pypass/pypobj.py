@@ -22,22 +22,47 @@ generated/read.
 # You should have received a copy of the GNU General Public License
 # along with pypass.  If not, see <http://www.gnu.org/licenses/>.
 
+def create_set():
+    """ Creates a fake PypDirectory for development """
+    root = PypDirectory("rootdir", "firstLevel")
+    passw = PypPasword("p1","mdp1")
+    root.passwords.append(passw)
+    passw = PypPasword("p2","mdp2")
+    root.passwords.append(passw)
+
+    dir1 = PypDirectory("secdir", "secLevel")
+    root.directories.append(dir1)
+    passw = PypPasword("p3","mdp3")
+    dir1.passwords.append(passw)
+
+    dir2 = PypDirectory("thirdDir", "thirdLevel")
+    passw = PypPasword("p4","mdp4")
+    dir2.passwords.append(passw)
+    dir1.directories.append(dir2)
+
+    return root
+
 def iterate_over_tree(obj, out, it = 0):
     """ Iterate over the items in a PypDirectory """
-    out = '%s "%s": [ ' % (out, obj.name)
+    out = '%s "%s": { ' % (out, obj.name)
+    print obj.description
+    if obj.description is not None and obj.description != "":
+        out = '%s "description": "%s",' % (out, obj.description)
     it = it + 1
     cnt = 0
-    for item in obj.content:
-        cnt = cnt + 1
-        if isinstance(item, PypDirectory):
-            out = "%s ]," % out
-            out = iterate_over_tree(item, out, it)
-        else:
-            out = '%s { "name": "%s", "password": "%s"}'  % (out, 
-                    item.name, item.password)
-            if cnt != len(obj.content) and \
-             not isinstance(obj.content[cnt], PypDirectory):
-                out = "%s ," % out
+    out = '%s "passwords": [' % out
+    for item in obj.passwords:
+        cnt = cnt +1
+        out = '%s { "name": "%s", "password": "%s"}'  % (out, 
+                item.name, item.password)
+        if cnt != len(obj.passwords):
+            out = "%s ," % out
+    out = '%s ], ' % out
+    out = '%s "directories": [{' % out
+    for item in obj.directories:
+        it = it + 1
+        out = iterate_over_tree(item, out, it)
+    out = '%s }] }' % out
     return out
 
 class PypDirectory(object):
@@ -46,7 +71,8 @@ class PypDirectory(object):
     def __init__(self, name="", description=None):
         self._name = name
         self._description = description
-        self._content = []
+        self._passwords = []
+        self._directories = []
 
     @property
     def name(self):
@@ -69,40 +95,29 @@ class PypDirectory(object):
         self._description = value
 
     @property
-    def content(self):
-        """ Getter for content """
-        return self._content
+    def passwords(self):
+        """ Getter for passwords """
+        return self._passwords
 
-    @content.setter
-    def content(self, value):
-        """ Setter for content """
-        self._content = value
-    
-    def create_set(self):
-        """ Creates a fake PypDirectory for development """
-        root = PypDirectory("rootdir", "firstLevel")
-        passw = PypPasword("p1","mdp1")
-        root.content.append(passw)
-        passw = PypPasword("p2","mdp2")
-        root.content.append(passw)
+    @passwords.setter
+    def passwords(self, value):
+        """ Setter for passwords """
+        self._passwords = value
 
-        dir1 = PypDirectory("secdir", "secLevel")
-        root.content.append(dir1)
-        passw = PypPasword("p3","mdp3")
-        dir1.content.append(passw)
+    @property
+    def directories(self):
+        """ Getter for directories """
+        return self._directories
 
-        dir2 = PypDirectory("thirdDir", "thirdLevel")
-        passw = PypPasword("p4","mdp4")
-        dir2.content.append(passw)
-        dir1.content.append(dir2)
-
-        self.content = root
+    @directories.setter
+    def directories(self, value):
+        """ Setter for directories """
+        self._directories = value
 
     def dump(self):
         """ Dump the object to stdout """
         out = "{"
-        out = iterate_over_tree(self.content, out)
-        out = out + " ]"
+        out = iterate_over_tree(self, out)
         out = out + "}"
         print out
 
@@ -136,6 +151,5 @@ class PypPasword(object):
         self._password = value
 
 if __name__ == "__main__":
-    pypd = PypDirectory()
-    tree = pypd.create_set()
-    pypd.dump()
+    tree = create_set()
+    tree.dump()
