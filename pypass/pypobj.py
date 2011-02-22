@@ -92,50 +92,10 @@ class PypDirectory(object):
     """ Represents a directory in pypass, used to classify the passwords """
 
     def __init__(self, name="", description=None):
-        self._name = name
-        self._description = description
-        self._passwords = []
-        self._directories = []
-
-    @property
-    def name(self):
-        """ Getter for name """
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        """ Setter for name """
-        self._name = value
-
-    @property
-    def description(self):
-        """ Getter for description """
-        return self._description
-
-    @description.setter
-    def description(self, value):
-        """ Setter for description """
-        self._description = value
-
-    @property
-    def passwords(self):
-        """ Getter for passwords """
-        return self._passwords
-
-    @passwords.setter
-    def passwords(self, value):
-        """ Setter for passwords """
-        self._passwords = value
-
-    @property
-    def directories(self):
-        """ Getter for directories """
-        return self._directories
-
-    @directories.setter
-    def directories(self, value):
-        """ Setter for directories """
-        self._directories = value
+        self.name = name
+        self.description = description
+        self.passwords = []
+        self.directories = []
 
     def dump(self):
         """ Dump the object to stdout """
@@ -149,29 +109,8 @@ class PypPassword(object):
     """ Represents a password in pypass"""
     
     def __init__(self, name, password, *args, **kw):
-        self._name = name
-        self._password = password
-        #print args, kw
-
-    @property
-    def name(self):
-        """ Getter for name """
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        """ Setter for name """
-        self._name = value
-
-    @property
-    def password(self):
-        """ Getter for password """
-        return self._password
-
-    @password.setter
-    def password(self, value):
-        """ Setter for password """
-        self._password = value
+        self.name = name
+        self.password = password
 
 if __name__ == "__main__":
     tree = create_set()
