@@ -22,21 +22,42 @@ generated/read.
 # You should have received a copy of the GNU General Public License
 # along with pypass.  If not, see <http://www.gnu.org/licenses/>.
 
+def json_to_tree(json):
+    """ From a given json structure transforms it to a tree """
+    for key in json.keys():
+        data = load_pypdir(json[key], key)
+    return data
+
+def load_pypdir(jsondir, name):
+    """ convert an element of pypdir to tree """
+    pypdir = PypDirectory(name, jsondir["description"])
+    for password in jsondir["passwords"]:
+        pypdir.passwords.append(load_password(password))
+    for password in jsondir["directories"]:
+        for key in password.keys():
+            pypdir.directories.append(load_pypdir(
+                                    password[key], key))
+    return pypdir
+
+def load_password(jsonpass):
+    pyppass = PypPassword(jsonpass["name"], jsonpass["password"])
+    return pyppass
+
 def create_set():
     """ Creates a fake PypDirectory for development """
     root = PypDirectory("rootdir", "firstLevel")
-    passw = PypPasword("p1","mdp1")
+    passw = PypPassword("p1","mdp1")
     root.passwords.append(passw)
-    passw = PypPasword("p2","mdp2")
+    passw = PypPassword("p2","mdp2")
     root.passwords.append(passw)
 
     dir1 = PypDirectory("secdir", "secLevel")
     root.directories.append(dir1)
-    passw = PypPasword("p3","mdp3")
+    passw = PypPassword("p3","mdp3")
     dir1.passwords.append(passw)
 
     dir2 = PypDirectory("thirdDir", "thirdLevel")
-    passw = PypPasword("p4","mdp4")
+    passw = PypPassword("p4","mdp4")
     dir2.passwords.append(passw)
     dir1.directories.append(dir2)
 
@@ -121,7 +142,7 @@ class PypDirectory(object):
         print out
 
 
-class PypPasword(object):
+class PypPassword(object):
     """ Represents a password in pypass"""
     
     def __init__(self, name, password, *args, **kw):
@@ -151,4 +172,11 @@ class PypPasword(object):
 
 if __name__ == "__main__":
     tree = create_set()
+    tree.dump()
+    
+    import json
+    f = open("../testjson")
+    data = json.load(f)
+    f.close()
+    tree = json_to_tree(data)
     tree.dump()
