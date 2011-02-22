@@ -45,7 +45,6 @@ def create_set():
 def iterate_over_tree(obj, out, it = 0):
     """ Iterate over the items in a PypDirectory """
     out = '%s "%s": { ' % (out, obj.name)
-    print obj.description
     if obj.description is not None and obj.description != "":
         out = '%s "description": "%s",' % (out, obj.description)
     it = it + 1
