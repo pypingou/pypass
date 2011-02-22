@@ -60,6 +60,7 @@ class PyPass(object):
             decrypted_data = self.gpg.decrypt_file(
                                                    stream,
                                                    passphrase=passphrase)
+            stream.close()
             return decrypted_data.data
         else:
             return "{}"
