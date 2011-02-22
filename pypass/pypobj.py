@@ -22,18 +22,104 @@ generated/read.
 # You should have received a copy of the GNU General Public License
 # along with pypass.  If not, see <http://www.gnu.org/licenses/>.
 
+
 class PypDirectory(object):
     """ Represents a directory in pypass, used to classify the passwords """
+
+    def __init__(self, name="", description=None):
+        self._name = name
+        self._description = description
+        self._content = []
+
+    @property
+    def name(self):
+        """ Getter for name """
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        """ Setter for name """
+        self._name = value
+
+    @property
+    def description(self):
+        """ Getter for description """
+        return self._description
+
+    @description.setter
+    def description(self, value):
+        """ Setter for description """
+        self._description = value
+
+    @property
+    def content(self):
+        """ Getter for content """
+        return self._content
+
+    @content.setter
+    def content(self, value):
+        """ Setter for content """
+        self._content = value
     
-    def __init__(self, name, description):
-        self.name = name
-        self.description = description
-        self.content = []
+    def create_set(self):
+        """ Creates a fake PypDirectory for development """
+        root = PypDirectory("rootdir", "firstLevel")
+        passw = PypPasword("p1","mdp1")
+        root.content.append(passw)
+        passw = PypPasword("p2","mdp2")
+        root.content.append(passw)
+
+        dir1 = PypDirectory("secdir", "secLevel")
+        root.content.append(dir1)
+        passw = PypPasword("p3","mdp3")
+        dir1.content.append(passw)
+
+        dir2 = PypDirectory("thirdDir", "thirdLevel")
+        passw = PypPasword("p4","mdp4")
+        dir2.content.append(passw)
+        dir1.content.append(dir2)
+
+        return root
+
+    def dump(self, obj, it = 0):
+        """ Dump the object to stdout """
+        print " " * it, obj.name, "-", obj.description
+        it = it + 1
+        for item in obj.content:
+            if isinstance(item, PypDirectory):
+                self.dump(item, it)
+            else:
+                print " " * it, item.name, " --", item.password
 
 class PypPasword(object):
     """ Represents a password in pypass"""
     
     def __init__(self, name, password, *args, **kw):
-        self.name = name
-        self.password = password
-        print args, kw
+        self._name = name
+        self._password = password
+        #print args, kw
+
+    @property
+    def name(self):
+        """ Getter for name """
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        """ Setter for name """
+        self._name = value
+
+    @property
+    def password(self):
+        """ Getter for password """
+        return self._password
+
+    @password.setter
+    def password(self, value):
+        """ Setter for password """
+        self._password = value
+
+if __name__ == "__main__":
+    pypd = PypDirectory()
+    tree = pypd.create_set()
+    pypd.dump(tree)
