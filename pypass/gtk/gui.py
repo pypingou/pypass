@@ -222,8 +222,8 @@ class PyPassGui(object):
         about.set_name("PyPass")
         about.set_version(__version__)
         about.set_copyright(__copyright__)
-        about.set_authors(__author__)
-        about.set_comments('\n'.join(__credits__))
+        about.set_authors(__credits__)
+        about.set_comments('\n'.join(__author__))
         _lpath = os.path.join(os.path.dirname(
                 os.path.realpath(__file__)), "..", "datas", "gplv3.txt")
         about.set_license(open(_lpath).read())
