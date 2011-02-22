@@ -37,13 +37,13 @@ class PyPass(object):
         except NotImplementedError:
             self.random_number_generator = random.Random()
 
-        self.gnupgdir = os.path.join(os.path.expanduser('~'), '.gnupg')
-        #print self.hd
-        self.gpg = gnupg.GPG(gnupghome=self.gnupgdir, use_agent=True)
+        self._gnupgdir = os.path.join(os.path.expanduser('~'), '.gnupg')
+        self._gpg = gnupg.GPG(gnupghome=self._gnupgdir, use_agent=True)
+        self.data = None
 
     def load_data(self, password=None, filename=None):
         """
-        Decrypt and lods data into an internal object
+        Decrypt and loads data into an internal object
         """
         self.data = self.decrypt(passphrase=password, filename=filename)
 
@@ -57,7 +57,7 @@ class PyPass(object):
             print "opening file", filename
             stream = open(filename, 'rb')
             #have to select key before that
-            decrypted_data = self.gpg.decrypt_file(
+            decrypted_data = self._gpg.decrypt_file(
                                                    stream,
                                                    passphrase=passphrase)
             stream.close()
@@ -77,7 +77,7 @@ class PyPass(object):
         #have to select recipient before that
         if recipients is None:
             recipients = config.recipients
-        edata = str(self.gpg.encrypt(
+        edata = str(self._gpg.encrypt(
                                      self.data,
                                      recipients,
                                      output=config.file))
@@ -108,7 +108,7 @@ class PyPass(object):
         """
         List knows keys
         """
-        return self.gpg.list_keys(True)
+        return self._gpg.list_keys(True)
 
     def generate_error(self, errortext, error=None):
         """
