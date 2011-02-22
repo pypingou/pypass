@@ -22,8 +22,8 @@
 import sys
 import os
 
-#FIXME: should be from pypass import, but does not work due to name confusion
-from .. import __version__, __author__, __copyright__, __credits__, __url__
+from pypass import __version__, __author__, __copyright__, __credits__, __url__
+from pypass import __license_text__
 
 try:
     import pygtk
@@ -35,6 +35,7 @@ try:
 except ImportError:
     print("GTK not available")
     sys.exit(1)
+
 
 def file_browse(dialog_action, title, pathname, file_name="",
                 types=None):
@@ -52,7 +53,7 @@ def file_browse(dialog_action, title, pathname, file_name="",
     /extending-our-pygtk-application.htm
     """
 
-    if (dialog_action==gtk.FILE_CHOOSER_ACTION_OPEN):
+    if (dialog_action == gtk.FILE_CHOOSER_ACTION_OPEN):
         dialog_buttons = (gtk.STOCK_CANCEL,
                             gtk.RESPONSE_CANCEL,
                             gtk.STOCK_OPEN,
@@ -67,11 +68,11 @@ def file_browse(dialog_action, title, pathname, file_name="",
                 action=dialog_action,
                 buttons=dialog_buttons)
     #set the filename if we are saving
-    if (dialog_action==gtk.FILE_CHOOSER_ACTION_SAVE):
+    if (dialog_action == gtk.FILE_CHOOSER_ACTION_SAVE):
         file_dialog.set_current_name(file_name)
     file_dialog.set_current_folder(pathname)
     file_dialog.set_default_response(gtk.RESPONSE_OK)
-    
+
     if types is not None and isinstance(types, dict):
         for typek in types.keys():
             filefilter = gtk.FileFilter()
@@ -92,6 +93,7 @@ def file_browse(dialog_action, title, pathname, file_name="",
     file_dialog.destroy()
 
     return result
+
 
 def _dialog(dialog):
     """ Display a dialog window """
@@ -161,7 +163,7 @@ class PyPassGui(object):
 
         filename = None
         self.data = {}
-        
+
         if options.filename is not None:
             filename = options.filename
         self.pypass.load_data(filename=filename)
@@ -171,7 +173,7 @@ class PyPassGui(object):
 
         # Add the images on the button :-)
         window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-        window.get_settings().set_long_property('gtk-button-images', 
+        window.get_settings().set_long_property('gtk-button-images',
                                                     True, '')
 
         dic = {
@@ -247,9 +249,7 @@ class PyPassGui(object):
         about.set_copyright(__copyright__)
         about.set_authors(__credits__)
         about.set_comments('\n'.join(__author__))
-        _lpath = os.path.join(os.path.dirname(
-                os.path.realpath(__file__)), "..", "datas", "gplv3.txt")
-        about.set_license(open(_lpath).read())
+        about.set_license(__license_text__)
         about.set_website(__url__)
         #_logo_path = os.path.join(self.path, 'images/logo.png')
         #about.set_logo(gtk.gdk.pixbuf_new_from_file(_logo_path))
@@ -328,7 +328,7 @@ class PyPassGui(object):
     def open_database(self, widget=None):
         """ Open a selected database """
         # get database file
-        filename = file_browse(gtk.FILE_CHOOSER_ACTION_OPEN, "Open a database", 
+        filename = file_browse(gtk.FILE_CHOOSER_ACTION_OPEN, "Open a database",
                                 os.path.expanduser('~'))
         if filename is not None:
             self.pypass.load_data(filename=filename)
@@ -342,13 +342,13 @@ class PyPassGui(object):
 
         self.update_status_bar("Database saved")
         self.modified_db = False
-    
+
     def save_as_database(self, widget=None):
         """ Save the current database in a selected file """
-        filename = file_browse(gtk.FILE_CHOOSER_ACTION_SAVE, "Open a database", 
+        filename = file_browse(gtk.FILE_CHOOSER_ACTION_SAVE, "Open a database",
                                 os.path.expanduser('~'))
         self.pypass.data_from_json(self.data)
-        self.pypass.crypt(recipients = filename)
+        self.pypass.crypt(recipients=filename)
 
         self.update_status_bar("Database saved")
         self.modified_db = False
