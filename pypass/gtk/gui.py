@@ -239,13 +239,6 @@ class PyPassGui(object):
         treeview.set_model(treestore)
         #treeview.set_reorderable(True)
 
-    def reset_entry_dialog(self):
-        """ Reset the different entry field of the add_entry dialog """
-        self.builder.get_object("entry_name").set_text("")
-        self.builder.get_object("entry_user").set_text("")
-        self.builder.get_object("entry_password").set_text("")
-        self.builder.get_object("entry_url").set_text("")
-
     def show_about(self, widget):
         """ Show the about diaglog """
         about = self.builder.get_object("aboutdialog")
@@ -436,7 +429,6 @@ class PyPassGui(object):
                 data = self.pypass.add_password(
                                             self.data, level, passdict)
                 self.load_password_tree(data)
-                self.reset_entry_dialog()
                 self.update_status_bar("Password added*")
                 self.modified_db = True
         add.destroy()
