@@ -33,7 +33,7 @@ def load_pypdir(jsondir, name):
     desc=None
     if "description" in jsondir.keys():
         desc=jsondir["description"]
-    pypdir=PypDirectory(name, )
+    pypdir=PypDirectory(name, desc)
     for password in jsondir["passwords"]:
         pypdir.passwords.append(load_password(password))
     for password in jsondir["directories"]:
