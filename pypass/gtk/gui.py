@@ -140,6 +140,11 @@ class PyPassGui(object):
         if self.pypass.data is not None and self.pypass.data != "":
             self.load_password_tree(self.pypass.data_as_json())
 
+        # Add the images on the button :-)
+        window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        window.get_settings().set_long_property('gtk-button-images', 
+                                                    True, '')
+
         self.data = {}
         dic = {
             "on_buttonQuit_clicked": self.quit,
