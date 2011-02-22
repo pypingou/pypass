@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with pypass.  If not, see <http://www.gnu.org/licenses/>.
 
-from pypass import pypass
+from pypass import pyp
 from pypass.gtk import gui
 from optparse import OptionParser
 
@@ -38,6 +38,6 @@ if __name__ == "__main__":
     if options.cli:
         pass
     else:
-        pypass = pypass.PyPass()
-        gui.PyPassGui(pypass, options)
+        pyp = pyp.PyPass()
+        gui.PyPassGui(pyp, options)
 
