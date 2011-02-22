@@ -53,15 +53,15 @@ def file_browse(dialog_action, title, pathname, file_name="",
     """
 
     if (dialog_action==gtk.FILE_CHOOSER_ACTION_OPEN):
-        dialog_buttons = (gtk.STOCK_CANCEL
-                            , gtk.RESPONSE_CANCEL
-                            , gtk.STOCK_OPEN
-                            , gtk.RESPONSE_OK)
+        dialog_buttons = (gtk.STOCK_CANCEL,
+                            gtk.RESPONSE_CANCEL,
+                            gtk.STOCK_OPEN,
+                            gtk.RESPONSE_OK)
     else:
-        dialog_buttons = (gtk.STOCK_CANCEL
-                            , gtk.RESPONSE_CANCEL
-                            , gtk.STOCK_SAVE
-                            , gtk.RESPONSE_OK)
+        dialog_buttons = (gtk.STOCK_CANCEL,
+                            gtk.RESPONSE_CANCEL,
+                            gtk.STOCK_SAVE,
+                            gtk.RESPONSE_OK)
 
     file_dialog = gtk.FileChooserDialog(title=title,
                 action=dialog_action,
