@@ -179,6 +179,22 @@ div.footer-column {
 #content .post div.aligncenter, #content .post img.aligncenter { display: block; margin-left: auto; margin-right: auto; margin-bottom: 10px; clear: both; }
 #content .post div.alignright, #content .post img.alignright { float: right; margin: 0px 0px 10px 10px; }
 
+/* -- general body styles --------------------------------------------------- */
+
+a.headerlink {
+    visibility: hidden;
+}
+
+h1:hover > a.headerlink,
+h2:hover > a.headerlink,
+h3:hover > a.headerlink,
+h4:hover > a.headerlink,
+h5:hover > a.headerlink,
+h6:hover > a.headerlink,
+dt:hover > a.headerlink {
+    visibility: visible;
+}
+
 /* -- admonitions ----------------------------------------------------------- */
 
 div.admonition {
