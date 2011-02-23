@@ -47,10 +47,9 @@ def file_browse(dialog_action, title, pathname, file_name="",
     if they cancel or do not select one.
     dialog_action - The open or save mode for the dialog either
     gtk.FILE_CHOOSER_ACTION_OPEN, gtk.FILE_CHOOSER_ACTION_SAVE
-        file_name - Default name when doing a save
+    file_name - Default name when doing a save
     source:
-    http://www.pygtk.org/articles/extending-our-pygtk-application \
-    /extending-our-pygtk-application.htm
+    http://www.pygtk.org/articles/extending-our-pygtk-application/extending-our-pygtk-application.htm
     """
 
     if (dialog_action == gtk.FILE_CHOOSER_ACTION_OPEN):
