@@ -4,17 +4,17 @@ pypass module
 
 .. testsetup:: *
 
-   from pypass import pypass
+   from pypass import pyp
 
 .. testcode::
 
-   p = pypass.PyPass()
+   p = pyp.PyPass()
    print p.list_recipients()
 
 .. testoutput::
 
    TODO
 
-.. automodule:: pypass.pypass
+.. automodule:: pypass.pyp
    :members:
    :undoc-members:
