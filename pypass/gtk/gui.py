@@ -123,7 +123,7 @@ def _dialog(dialog):
 def error_window(message, error=None):
     """ Display an error window with the given message """
     dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_ERROR)
-    dialog.set_markup("<b>" + "Error" + "</b>")
+    dialog.set_markup("<b>" + _("Error") + "</b>")
     if error is not None:
         message = message + "\n %s" % error
     dialog.format_secondary_markup(message)
@@ -204,7 +204,7 @@ class PyPassGui(object):
         }
         self.builder.connect_signals(dic)
 
-        self.update_status_bar("Welcome into pypass")
+        self.update_status_bar(_("Welcome into pypass"))
 
         self.modified_db = False
 
@@ -275,9 +275,9 @@ class PyPassGui(object):
         print "quitting..."
         if self.modified_db:
             dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_WARNING)
-            dialog.set_markup("<b>" + "Erreur" + "</b>")
+            dialog.set_markup("<b>" + _("Error") + "</b>")
             dialog.format_secondary_markup(
-                    "Voulez-vous sauvez la base avant de quitter ?")
+                    _("Do you want to save file before quit?"))
             dialog.add_buttons(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                 gtk.STOCK_REMOVE, gtk.RESPONSE_NO,
                                 gtk.STOCK_OK, gtk.RESPONSE_YES,)
@@ -322,7 +322,7 @@ class PyPassGui(object):
             treeview.set_visible(False)
             treeview.destroy()
         else:
-            column_str = gtk.TreeViewColumn('Key ID')
+            column_str = gtk.TreeViewColumn(_('Key ID'))
             treeview.append_column(column_str)
             cell = gtk.CellRendererText()
             column_str.pack_start(cell, True)
@@ -342,7 +342,8 @@ class PyPassGui(object):
     def open_database(self, widget=None):
         """ Open a selected database """
         # get database file
-        filename = file_browse(gtk.FILE_CHOOSER_ACTION_OPEN, "Open a database",
+        filename = file_browse(gtk.FILE_CHOOSER_ACTION_OPEN,
+                               _("Open a database"),
                                 os.path.expanduser('~'))
         if filename is not None:
             self.pypass.load_data(filename=filename)
@@ -354,17 +355,18 @@ class PyPassGui(object):
         self.pypass.data_from_json(self.data)
         self.pypass.crypt()
 
-        self.update_status_bar("Database saved")
+        self.update_status_bar(_("Database saved"))
         self.modified_db = False
 
     def save_as_database(self, widget=None):
         """ Save the current database in a selected file """
-        filename = file_browse(gtk.FILE_CHOOSER_ACTION_SAVE, "Open a database",
+        filename = file_browse(gtk.FILE_CHOOSER_ACTION_SAVE,
+                               _("Save a database"),
                                 os.path.expanduser('~'))
         self.pypass.data_from_json(self.data)
         self.pypass.crypt(recipients=filename)
 
-        self.update_status_bar("Database saved")
+        self.update_status_bar(_("Database saved"))
         self.modified_db = False
 
     def on_pass_selected(self, widget):
@@ -426,8 +428,8 @@ class PyPassGui(object):
             passtype = combotype.get_active()
             print passtype
             if "" in (name, password):
-                generate_error(errortext="Could not enter the password. \n" \
-                    "Name or password had missing information")
+                generate_error(errortext=_("Could not enter the password. \n" \
+                    "Name or password had missing information"))
                 return
             else:
                 passdict = {"name": name, "user": user, "password": password}
@@ -443,7 +445,7 @@ class PyPassGui(object):
                 data = self.pypass.add_password(
                                             self.data, level, passdict)
                 self.load_password_tree(data)
-                self.update_status_bar("Password added*")
+                self.update_status_bar(_("Password added"))
                 self.modified_db = True
         add.destroy()
 
