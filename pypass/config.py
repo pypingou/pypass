@@ -84,10 +84,13 @@ class PyPassConfig(object):
             'base': int(self.config.get('password generator', 'base'))
         }
 
-        LOG.debug(_("Configuration loaded:\n- file: %s\n- recipients: "\
-            "%s\n- password length: %i\n- password base: %i") % (
-            self._file, self.recipients, self.passwords_length,
-            self.passwords_base))
+        LOG.debug(_("Configuration loaded:\n- file: %(file)s\n- recipients: "\
+            "%(recipients)s\n- password length: %(passlength)i\n- "\
+            "password base: %(passbase)i") % {
+            'file': self._file,
+            'recipients': self.recipients,
+            'passlength': self.passwords_length,
+            'passbase': self.passwords_base})
 
     @property
     def file(self):
