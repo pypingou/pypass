@@ -1,0 +1,129 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Pierre-Yves `pingou` Chibon, Johan `trashy` Cwiklinski
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pypass 0.0.1\n"
+"Report-Msgid-Bugs-To: pypass@ulysses.fr\n"
+"POT-Creation-Date: 2011-02-23 21:37+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/pyp.py:67
+#, python-format
+msgid "Could not decrypt file %s"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:46
+#, python-format
+msgid "Application configuration file: %s"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:48
+#, python-format
+msgid "Configuration file:             %s"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:55
+msgid "Update user config file"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:67
+msgid "All printable (excluding space)"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:70
+msgid "Alpha-numeric (a-z, A-Z, 0-9)"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:72
+msgid "Alpha lower-case (a-z)"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:74
+msgid "Hexadecimal (0-9, A-F)"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:75
+msgid "Decimal (0-9)"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:76
+msgid "Base 64 (a-z, A-Z, 0-9, '+', '/')"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:87
+#, python-format
+msgid ""
+"Configuration loaded:\n"
+"- file: %(file)s\n"
+"- recipients: %(recipients)s\n"
+"- password length: %(passlength)i\n"
+"- password base: %(passbase)i"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:108
+#, python-format
+msgid "Trying to set a value for file with a missing parent. %s"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:112
+#, python-format
+msgid "Setting file to: %s"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:142
+msgid "Trying to set passwords"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:185
+msgid "Trying to change characters_sets"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:126
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:278
+msgid "Error"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:207
+msgid "Welcome into pypass"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:280
+msgid "Do you want to save file before quit?"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:325
+msgid "Key ID"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:346
+msgid "Open a database"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:358
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:369
+msgid "Database saved"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:364
+msgid "Save a database"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:431
+msgid ""
+"Could not enter the password. \n"
+"Name or password had missing information"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:448
+msgid "Password added"
+msgstr ""
