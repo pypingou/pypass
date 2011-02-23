@@ -23,7 +23,7 @@ import sys
 import os
 
 from pypass import __version__, __author__, __copyright__, __credits__, __url__
-from pypass import __license_text__
+from pypass import __license_text__, __application__, __locale_dir__
 
 try:
     import pygtk
@@ -35,6 +35,21 @@ try:
 except ImportError:
     print("GTK not available")
     sys.exit(1)
+import gtk.glade
+import gettext
+
+#that way, GUI is not translated (but should be)
+#gettext.install(__application__, __locale_dir__)
+
+#solution found there:
+#http://www.daa.com.au/pipermail/pygtk/2007-March/013586.html
+#locale.setlocale(locale.LC_ALL, '')
+# see http://bugzilla.gnome.org/show_bug.cgi?id=344926 for why the
+# next two commands look repeated.
+gtk.glade.bindtextdomain(__application__, __locale_dir__)
+gtk.glade.textdomain(__application__)
+gettext.bindtextdomain(__application__, __locale_dir__)
+gettext.textdomain(__application__)
 
 
 def file_browse(dialog_action, title, pathname, file_name="",
@@ -132,14 +147,14 @@ class PyPassGui(object):
         self.pypass = pypass
         self.builder = gtk.Builder()
         self.builder.add_from_file(os.path.join(os.path.dirname(
-                os.path.realpath(__file__)), "ui", "pyrevelation.ui"))
+                os.path.realpath(__file__)), "ui", "pyrevelation.glade"))
+        self.builder.set_translation_domain(__application__)
         self.mainwindow = self.builder.get_object('mainwindow')
 
         self.set_button_toolbar()
 
         ## source to put the icons in the TreeView:
-        ## http://www.eurion.net/python-snippets/
-        ## snippet/Tree%20View%20Column.html
+        ## http://www.eurion.net/python-snippets/snippet/Tree%20View%20Column.html
 
         ## Handles the tree view in the main window
         # retrieve the TreeView
@@ -388,7 +403,7 @@ class PyPassGui(object):
     def add_entry(self, widget):
         """ Display the dialog to add an entry to the database """
         self.builder.add_from_file(os.path.join(os.path.dirname(
-                os.path.realpath(__file__)), "ui", "dialogaddentry.ui"))
+                os.path.realpath(__file__)), "ui", "dialogaddentry.glade"))
         butons = {
                 "b_add_entry": gtk.STOCK_OK,
                 "b_cancel_entry": gtk.STOCK_CANCEL,
