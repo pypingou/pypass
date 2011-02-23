@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pypass 0.0.1\n"
 "Report-Msgid-Bugs-To: pypass@ulysses.fr\n"
-"POT-Creation-Date: 2011-02-23 23:02+0100\n"
+"POT-Creation-Date: 2011-02-23 23:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -201,7 +201,7 @@ msgid ""
 msgstr ""
 
 #: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:345
-msgid "Redmine of the PyPass project"
+msgid "PyPass website"
 msgstr ""
 
 #: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:346

@@ -341,8 +341,8 @@
     <property name="version">0.0.1</property>
     <property name="copyright" translatable="yes">&#xA9; Pierre-Yves Chibon, 2011
 &#xA9; Johan Cwiklinski, 2011</property>
-    <property name="website">http://redmine.ulysses.fr/projects/pypass</property>
-    <property name="website_label" translatable="yes">Redmine of the PyPass project</property>
+    <property name="website">http://pypass.ulysses.fr/</property>
+    <property name="website_label" translatable="yes">PyPass website</property>
     <property name="license" translatable="yes">GPLv3+</property>
     <property name="authors">Pierre-Yves Chibon
 Johan Cwiklinski</property>
