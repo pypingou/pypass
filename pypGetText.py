@@ -70,7 +70,7 @@ class PyPassGetText:
         cmd.extend(glob.glob(os.path.join(os.getcwd(), 'pypass', '*.py')))
         cmd.extend(glob.glob(os.path.join(os.getcwd(), 'pypass', 'gtk', '*.py')))
         #include glade files
-        cmd.extend(glob.glob(os.path.join(os.getcwd(), 'pypass', 'gtk', 'ui', '*.ui')))
+        cmd.extend(glob.glob(os.path.join(os.getcwd(), 'pypass', 'gtk', 'ui', '*.glade')))
         if args.debug:
             print cmd
             print ' '.join(cmd)

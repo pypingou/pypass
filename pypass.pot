@@ -8,13 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pypass 0.0.1\n"
 "Report-Msgid-Bugs-To: pypass@ulysses.fr\n"
-"POT-Creation-Date: 2011-02-23 21:37+0100\n"
+"POT-Creation-Date: 2011-02-23 23:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/pyp.py:67
@@ -126,4 +126,120 @@ msgstr ""
 
 #: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:448
 msgid "Password added"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogkeychooser.glade:14
+msgid "Select your key"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogkeychooser.glade:42
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogaddentry.glade:87
+msgid "Password"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:25
+msgid "_File"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:90
+msgid "_Edit"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:134
+msgid "_View"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:141
+msgid "_Help"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:173
+msgid "Open another database"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:184
+msgid "Save"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:188
+msgid "Save the current database"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:210
+msgid "Add"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:214
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogaddentry.glade:15
+msgid "Add an entry"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:225
+msgid "Edit"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:229
+msgid "Edit this entry"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:241
+msgid "Remove this entry"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:263
+msgid "About PyPass"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:277
+msgid "Quit PyPass"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:342
+msgid ""
+"© Pierre-Yves Chibon, 2011\n"
+"© Johan Cwiklinski, 2011"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:345
+msgid "Redmine of the PyPass project"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:346
+msgid "GPLv3+"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogaddentry.glade:31
+msgid "Name"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogaddentry.glade:67
+msgid "Generate"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogaddentry.glade:99
+msgid "Url"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogaddentry.glade:126
+msgid "User"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogaddentry.glade:153
+msgid "Description"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogaddentry.glade:180
+msgid "Type"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogaddentry.glade:203
+msgid "Account information"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogaddentry.glade:234
+msgid "Cancel"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogaddentry.glade:247
+msgid "Ok"
 msgstr ""
