@@ -72,7 +72,10 @@ class PyPass(object):
 
     def crypt(self, recipients=None):
         """
-        Crypt file from current datas
+        Crypt file from current datas.
+
+        If recipients are not set when calling the function, program will take
+        the ones from configuration.
         """
         #have to select recipient before that
         if recipients is None:
