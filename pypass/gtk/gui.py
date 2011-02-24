@@ -24,6 +24,7 @@ import os
 
 from pypass import __version__, __author__, __copyright__, __credits__, __url__
 from pypass import __license_text__, __application__, __locale_dir__
+from pypass.pypobj import PypDirectory, PypPassword
 
 try:
     import pygtk
@@ -195,7 +196,7 @@ class PyPassGui(object):
         self.pypass.load_data(filename=filename)
         print self.pypass.data
         if self.pypass.data is not None and self.pypass.data != "":
-            self.load_password_tree(self.pypass.data_as_json())
+            self.load_password_tree(self.pypass.json_to_tree())
 
         # Add the images on the button :-)
         window = gtk.Window(gtk.WINDOW_TOPLEVEL)
@@ -245,28 +246,20 @@ class PyPassGui(object):
                                             gtk.ICON_SIZE_LARGE_TOOLBAR)
             butonopen.set_image(img)
 
-    def load_password_tree(self, tree):
+    def load_password_tree(self, obj, parent=None):
         """ Load a given tree into the treefolderview """
-        self.data = tree
+        self.data = obj
         treeview = self.builder.get_object("treefolderview")
         treestore = gtk.TreeStore(str, str)
-        if not isinstance(tree, dict):
-            print "plain text"
-            text = self.builder.get_object("labelpass")
-            text.set_text(tree)
-            self.data = {}
-            return
-        for key in tree.keys():
-            if key != "null" and key is not None:
-                parent = treestore.append(None, [key, gtk.STOCK_DIRECTORY])
-            else:
-                parent = None
-            for password in tree[key]:
-                if isinstance(password, dict):
-                    icon = gtk.STOCK_DIALOG_AUTHENTICATION
-                    treestore.append(parent, [password['name'], icon])
+
+        for passw in obj.passwords:
+            icon = gtk.STOCK_DIALOG_AUTHENTICATION
+            treestore.append(parent, [passw.name, icon])
+        for directory in obj.directories:
+            icon = gtk.STOCK_DIRECTORY
+            parent = treestore.append(parent, [directory.name, icon])
         treeview.set_model(treestore)
-        #treeview.set_reorderable(True)
+
 
     def show_about(self, widget):
         """ Show the about diaglog """
@@ -292,8 +285,8 @@ class PyPassGui(object):
             dialog.format_secondary_markup(
                     _("Do you want to save file before quit?"))
             dialog.add_buttons(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                gtk.STOCK_REMOVE, gtk.RESPONSE_NO,
-                                gtk.STOCK_OK, gtk.RESPONSE_YES,)
+                                gtk.STOCK_NO, gtk.RESPONSE_NO,
+                                gtk.STOCK_YES, gtk.RESPONSE_YES,)
             result = _dialog(dialog)
             if result == gtk.RESPONSE_YES:
                 self.save_database()
@@ -368,6 +361,7 @@ class PyPassGui(object):
             if result == gtk.RESPONSE_NO:
                 return
         self.pypass.data_from_json(self.data)
+        print self.pypass.data
         self.pypass.crypt()
 
         self.update_status_bar(_("Database saved"))
@@ -389,18 +383,24 @@ class PyPassGui(object):
         selection = self.builder.get_object("treefolderview").get_selection()
         (model, itera) = selection.get_selected()
         key = model[itera][0]
-        parent = "null"
+        typeselected = "folder"
+        if model[itera][1] == gtk.STOCK_DIALOG_AUTHENTICATION:
+            typeselected = "password"
 
+        parent = None
         if model[itera].parent is not None:
             parent = model[itera].parent[0]
+            typeparent = "folder"
+            if model[itera].parent[1] == gtk.STOCK_DIALOG_AUTHENTICATION:
+                typeparent = "password"
 
-        if parent in self.data.keys():
-            for passw in self.data[parent]:
-                if key in passw['name']:
+        if parent is None:
+            for password in self.data.passwords:
+                if password.name == key:
                     content = ""
-                    for key in ('name', 'password'):
-                        content += "<b>%s:</b> %s \n" % (key, passw[key])
-                    keys = passw.keys()
+                    content += "<b>Name:</b> %s \n" % password.name
+                    content += "<b>Password:</b> %s \n" % password.password
+                    keys = password.extras.keys()
                     keys.sort()
                     for key in keys:
                         if key not in ('name', 'password'):
@@ -410,6 +410,7 @@ class PyPassGui(object):
                             else:
                                 content += "<b>%s:</b> %s \n" % (
                                         key, passw[key])
+
                     txtpass = self.builder.get_object("labelpass")
                     txtpass.set_text(content)
                     txtpass.set_use_markup(True)
@@ -464,26 +465,24 @@ class PyPassGui(object):
             url = self.builder.get_object("entry_url").get_text()
             description = \
                 self.builder.get_object("entry_description").get_text()
-            combotype = self.builder.get_object("combo_type")
-            passtype = combotype.get_active()
-            print passtype
+            passtype = self.builder.get_object("combo_type").get_active()
+
             if "" in (name, password):
                 generate_error(errortext=_("Could not enter the password. \n" \
                     "Name or password had missing information"))
                 return
             else:
-                passdict = {"name": name, "user": user, "password": password}
+                passw = PypPassword(name, password)
                 if url is not "":
-                    passdict['url'] = url
+                    passw.extras['url'] = url
                 if user is not "":
-                    passdict['user'] = user
+                    passw.extras['user'] = user
                 if description is not "":
-                    passdict['description'] = description
+                    passw.extras['description'] = description
                 level = self.get_level()
-                if level is None:
-                    level = "null"
+
                 data = self.pypass.add_password(
-                                            self.data, level, passdict)
+                                            self.data, level, passw)
                 self.load_password_tree(data)
                 self.update_status_bar(_("Password added"))
                 self.modified_db = True
