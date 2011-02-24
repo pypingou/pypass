@@ -120,23 +120,35 @@ def _dialog(dialog):
     return result
 
 
-def error_window(message, error=None):
-    """ Display an error window with the given message """
-    dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_ERROR)
-    dialog.set_markup("<b>" + _("Error") + "</b>")
-    if error is not None:
-        message = message + "\n %s" % error
-    dialog.format_secondary_markup(message)
-    dialog.add_buttons(gtk.STOCK_OK, gtk.RESPONSE_YES)
-    return _dialog(dialog)
-
-
-def generate_error(errortext, error=None):
+def dialog_window(message, error=None, action=gtk.MESSAGE_ERROR):
+    """ 
+    Display an dialog window with the given message. Action precise the
+    type of dialog to dispay, the return signal is handled accordingly.
+    @param message a string of text which is displayed in the dialog
+    @param error a string with another part of the message displayed on 
+    a second line
+    @param action a GTK Message Type Constants giving the type of window
+    displayed _link: http://www.pygtk.org/docs/pygtk/gtk-constants.html#gtk-message-type-constants
     """
-    Function called when a error needs to be raised
-    The error will be displayed in a window
-    """
-    error_window(errortext, error)
+    dialog = gtk.MessageDialog(None, 0, action)
+     dialog.set_markup("<b>" + "Error" + "</b>")
+     if error is not None:
+         message = message + "\n %s" % error
+     dialog.format_secondary_markup(message)
+    if action == gtk.MESSAGE_ERROR:
+        dialog.add_buttons(gtk.STOCK_OK, gtk.RESPONSE_YES)
+    elif action == gtk.MESSAGE_WARNING:
+        dialog.add_buttons(gtk.STOCK_CANCEL,
+                            gtk.RESPONSE_CANCEL,
+                            gtk.STOCK_OK,
+                            gtk.RESPONSE_YES)
+    elif action == gtk.MESSAGE_QUESTION:
+        dialog.add_buttons(gtk.STOCK_NO,
+                            gtk.RESPONSE_NO,
+                            gtk.STOCK_OK,
+                            gtk.RESPONSE_YES)
+     return _dialog(dialog)
+
 
 
 class PyPassGui(object):
@@ -352,6 +364,12 @@ class PyPassGui(object):
 
     def save_database(self, widget=None):
         """ Save the current database """
+        if not self.pypass.is_default_in_keyring():
+            result = dialog_window("The key set as to encrypt this file is not" \
+            " installed in this machine, do you want to continue ?",
+            action=gtk.MESSAGE_QUESTION)
+            if result == gtk.RESPONSE_NO:
+                return
         self.pypass.data_from_json(self.data)
         self.pypass.crypt()
 
