@@ -82,6 +82,7 @@ class PyPass(object):
             recipients = config.recipients
         if output is None:
             output = config.file
+        print recipients, config.recipients, output
         edata = str(self._gpg.encrypt(
                                      self.data,
                                      recipients,
@@ -153,6 +154,13 @@ class PyPass(object):
             if key["keyid"].endswith(config.recipients):
                 return True
         return False
+    
+    def set_recipient(self, recipient):
+        """
+        Set the given recipiend into the configuration
+        """
+        config.recipients = recipient
+        #TODO: save the configuration
 
 # for dev/testing purposes
 if __name__ == "__main__":
