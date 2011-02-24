@@ -23,13 +23,13 @@ generated/read.
 # along with pypass.  If not, see <http://www.gnu.org/licenses/>.
 
 
-def json_to_tree(json):
+def json_to_tree(jsontxt):
     """ From a given json structure transforms it to a tree """
     data = PypDirectory("rootdir")
-    if json is None:
+    if jsontxt is None:
         return data
-    for key in json.keys():
-        data = load_pypdir(json[key], key)
+    for key in jsontxt.keys():
+        data = load_pypdir(jsontxt[key], key)
     return data
 
 
@@ -111,7 +111,7 @@ class PypDirectory(object):
         out = "{"
         out = iterate_over_tree(self, out)
         out = out + "}"
-        print out
+        return out
 
 
 class PypPassword(object):
