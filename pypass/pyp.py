@@ -68,7 +68,7 @@ class PyPass(object):
                 #TODO: raise exception and cope with it
                 #raise Exception("Could not decrypt file %s" % filename)
         else:
-            return "{}"
+            return {}
 
     def crypt(self, recipients=None, output=None):
         """
@@ -102,7 +102,7 @@ class PyPass(object):
         """
         Set data from JSON
         """
-        self.data = json.dumps(data.dump(), indent=4)
+        self.data = data.dump()
     
     def json_to_tree(self):
         """
