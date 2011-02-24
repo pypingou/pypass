@@ -92,8 +92,8 @@ class PyPass(object):
     def add_password(self, database, level, password):
         """ Add the given hashdict to the given database at the given
         level"""
-        if level is None:
-            database.passwords.append(password)
+        #if level is None:
+        database.passwords.append(password)
         #else:
             #database.directories[level].append(passdict)
         return database
