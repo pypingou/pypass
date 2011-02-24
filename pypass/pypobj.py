@@ -25,6 +25,9 @@ generated/read.
 
 def json_to_tree(json):
     """ From a given json structure transforms it to a tree """
+    data = PypDirectory("rootdir")
+    if json is None:
+        return data
     for key in json.keys():
         data = load_pypdir(json[key], key)
     return data
@@ -117,6 +120,7 @@ class PypPassword(object):
     def __init__(self, name, password, *args, **kw):
         self.name = name
         self.password = password
+        self.extras = {}
 
 if __name__ == "__main__":
     tree = create_set()
