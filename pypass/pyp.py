@@ -94,8 +94,8 @@ class PyPass(object):
         level"""
         if level is None:
             database.passwords.append(password)
-        else:
-            database.directories[level].append(passdict)
+        #else:
+            #database.directories[level].append(passdict)
         return database
 
     def data_from_json(self, data):
