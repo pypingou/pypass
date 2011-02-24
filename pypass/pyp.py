@@ -70,7 +70,7 @@ class PyPass(object):
         else:
             return "{}"
 
-    def crypt(self, recipients=None):
+    def crypt(self, recipients=None, output=None):
         """
         Crypt file from current datas.
 
@@ -80,10 +80,12 @@ class PyPass(object):
         #have to select recipient before that
         if recipients is None:
             recipients = config.recipients
+        if output is None:
+            output = config.file
         edata = str(self._gpg.encrypt(
                                      self.data,
                                      recipients,
-                                     output=config.file))
+                                     output=output))
         return edata
 
     def add_password(self, database, level, passdict):
@@ -141,6 +143,16 @@ class PyPass(object):
             password += character_set[random_number]
 
         return password
+    
+    def is_default_in_keyring(self):
+        """
+        Check is the key set as default in the configuration file is installed
+        on the computer
+        """
+        for key in self.list_recipients():
+            if key["keyid"].endswith(config.recipients):
+                return True
+        return False
 
 # for dev/testing purposes
 if __name__ == "__main__":
