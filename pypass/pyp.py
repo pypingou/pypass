@@ -68,7 +68,7 @@ class PyPass(object):
                 #TODO: raise exception and cope with it
                 #raise Exception("Could not decrypt file %s" % filename)
         else:
-            return {}
+            return "{}"
 
     def crypt(self, recipients=None, output=None):
         """
