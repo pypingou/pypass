@@ -213,6 +213,7 @@ class PyPassGui(object):
             "save_database": self.save_database,
             "save_as_database": self.save_as_database,
             "open_database": self.open_database,
+            "set_key": self.set_key,
         }
         self.builder.connect_signals(dic)
 
@@ -330,26 +331,22 @@ class PyPassGui(object):
         """ Set all the keys retrieved from pypass into the list """
         keys = self.pypass.list_recipients()
         treeview = self.builder.get_object("treeviewkey")
-        if hide:
-            treeview.set_visible(False)
-            treeview.destroy()
-        else:
-            column_str = gtk.TreeViewColumn(_('Key ID'))
-            treeview.append_column(column_str)
-            cell = gtk.CellRendererText()
-            column_str.pack_start(cell, True)
-            column_str.add_attribute(cell, "text", 0)
+        column_str = gtk.TreeViewColumn(_('Key ID'))
+        treeview.append_column(column_str)
+        cell = gtk.CellRendererText()
+        column_str.pack_start(cell, True)
+        column_str.add_attribute(cell, "text", 0)
 
-            column_str = gtk.TreeViewColumn('')
-            treeview.append_column(column_str)
-            cell1 = gtk.CellRendererText()
-            column_str.pack_start(cell1, True)
-            column_str.add_attribute(cell1, "text", 1)
+        column_str = gtk.TreeViewColumn('')
+        treeview.append_column(column_str)
+        cell1 = gtk.CellRendererText()
+        column_str.pack_start(cell1, True)
+        column_str.add_attribute(cell1, "text", 1)
 
-            store = gtk.ListStore(str, str)
-            treeview.set_model(store)
-            for key in keys:
-                store.append([key['keyid'], " ".join(key['uids'])])
+        store = gtk.ListStore(str, str)
+        treeview.set_model(store)
+        for key in keys:
+            store.append([key['keyid'], " ".join(key['uids'])])
 
     def open_database(self, widget=None):
         """ Open a selected database """
@@ -419,6 +416,31 @@ class PyPassGui(object):
         else:
             passwd = self.builder.get_object("labelpass")
             passwd.set_text("")
+
+    def set_key(self, widget):
+        """ 
+        Displays the window in which the user can choose one the key
+        which are installed on the machine, set this key in the config file
+        """
+        self.builder.add_from_file(os.path.join(os.path.dirname(
+                os.path.realpath(__file__)), "ui", "dialogkeychooser.glade"))
+        butons = {
+                "b_ok_key": gtk.STOCK_OK,
+                "b_cancel_key": gtk.STOCK_CANCEL,
+                }
+        self.set_button_img(butons)
+        self.set_keys_list()
+        self.builder.get_object("hbox3").destroy()
+        
+        add = self.builder.get_object("dialogkeychooser")
+        if _dialog(add) == 1:
+            selection = self.builder.get_object("treeviewkey").get_selection()
+            (model, itera) = selection.get_selected()
+            if itera is None:
+                return
+            key = model[itera][0]
+            self.pypass.set_recipient(key[:8])
+        
 
     def add_entry(self, widget):
         """ Display the dialog to add an entry to the database """
