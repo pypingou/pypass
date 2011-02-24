@@ -27,7 +27,7 @@ import json
 import random
 
 from . import __pypassconf__ as config
-
+import pypobj
 
 class PyPass(object):
 
@@ -82,27 +82,34 @@ class PyPass(object):
             recipients = config.recipients
         if output is None:
             output = config.file
-        print recipients, config.recipients, output
+        print config.recipients, output, self.data
         edata = str(self._gpg.encrypt(
                                      self.data,
                                      recipients,
                                      output=output))
         return edata
 
-    def add_password(self, database, level, passdict):
+    def add_password(self, database, level, password):
         """ Add the given hashdict to the given database at the given
         level"""
-        if level in database.keys():
-            database[level].append(passdict)
+        if level is None:
+            database.passwords.append(password)
         else:
-            database[level] = [passdict]
+            database.directories[level].append(passdict)
         return database
 
     def data_from_json(self, data):
         """
         Set data from JSON
         """
-        self.data = json.dumps(data, indent=4)
+        self.data = json.dumps(data.dump(), indent=4)
+    
+    def json_to_tree(self):
+        """
+        Transforms the json into a tree from pypobj
+        """
+        return pypobj.json_to_tree(self.data_as_json())
+        
 
     def data_as_json(self):
         """
