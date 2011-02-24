@@ -194,7 +194,6 @@ class PyPassGui(object):
         if options.filename is not None:
             filename = options.filename
         self.pypass.load_data(filename=filename)
-        print self.pypass.data
         if self.pypass.data is not None and self.pypass.data != "":
             self.load_password_tree(self.pypass.json_to_tree())
 
@@ -361,7 +360,6 @@ class PyPassGui(object):
             if result == gtk.RESPONSE_NO:
                 return
         self.pypass.data_from_json(self.data)
-        print self.pypass.data
         self.pypass.crypt()
 
         self.update_status_bar(_("Database saved"))
