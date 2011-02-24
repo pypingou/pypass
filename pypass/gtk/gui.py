@@ -131,10 +131,10 @@ def dialog_window(message, error=None, action=gtk.MESSAGE_ERROR):
     displayed _link: http://www.pygtk.org/docs/pygtk/gtk-constants.html#gtk-message-type-constants
     """
     dialog = gtk.MessageDialog(None, 0, action)
-     dialog.set_markup("<b>" + "Error" + "</b>")
-     if error is not None:
-         message = message + "\n %s" % error
-     dialog.format_secondary_markup(message)
+    dialog.set_markup("<b>" + "Error" + "</b>")
+    if error is not None:
+        message = message + "\n %s" % error
+    dialog.format_secondary_markup(message)
     if action == gtk.MESSAGE_ERROR:
         dialog.add_buttons(gtk.STOCK_OK, gtk.RESPONSE_YES)
     elif action == gtk.MESSAGE_WARNING:
@@ -147,7 +147,7 @@ def dialog_window(message, error=None, action=gtk.MESSAGE_ERROR):
                             gtk.RESPONSE_NO,
                             gtk.STOCK_OK,
                             gtk.RESPONSE_YES)
-     return _dialog(dialog)
+    return _dialog(dialog)
 
 
 
@@ -365,8 +365,8 @@ class PyPassGui(object):
     def save_database(self, widget=None):
         """ Save the current database """
         if not self.pypass.is_default_in_keyring():
-            result = dialog_window("The key set as to encrypt this file is not" \
-            " installed in this machine, do you want to continue ?",
+            result = dialog_window(_("The key set as to encrypt this file is not" \
+            " installed in this machine, do you want to continue ?"),
             action=gtk.MESSAGE_QUESTION)
             if result == gtk.RESPONSE_NO:
                 return
