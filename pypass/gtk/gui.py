@@ -189,7 +189,7 @@ class PyPassGui(object):
         col0.set_attributes(cell, text=0)
 
         filename = None
-        self.data = {}
+        self.data = PypDirectory()
 
         if options.filename is not None:
             filename = options.filename
@@ -361,9 +361,13 @@ class PyPassGui(object):
                 return
         self.pypass.data_from_json(self.data)
         outcome = self.pypass.crypt()
-        if outcome == 1:
+        if outcome == "key_not_found":
             result = dialog_window(_("The database could not be saved!"),
             _("The key could not be found"),
+            action=gtk.MESSAGE_ERROR)
+            return
+        if outcome is not True:
+            result = dialog_window(_("The database could not be saved!"),
             action=gtk.MESSAGE_ERROR)
             return
         self.update_status_bar(_("Database saved"))
@@ -470,8 +474,9 @@ class PyPassGui(object):
             passtype = self.builder.get_object("combo_type").get_active()
 
             if "" in (name, password):
-                generate_error(errortext=_("Could not enter the password. \n" \
-                    "Name or password had missing information"))
+                dialog_window(_("Could not enter the password."),
+                    _("Name or password had missing information"),
+                    gtk.MESSAGE_ERROR)
                 return
             else:
                 passw = PypPassword(name, password)

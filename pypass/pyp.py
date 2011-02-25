@@ -84,13 +84,12 @@ class PyPass(object):
             output = config.file
         print config.recipients, output, self.data
         if config.recipients is None or config.recipients == "":
-            return 1
-        edata = str(self._gpg.encrypt(
-                                     self.data,
-                                     recipients,
-                                     output=output))
-        print edata, dir(edata)
-        return edata
+            return "key_not_found"
+        edata = self._gpg.encrypt(
+                                    self.data,
+                                    recipients,
+                                    output=output)
+        return edata.ok
 
     def add_password(self, database, level, password):
         """ Add the given hashdict to the given database at the given
