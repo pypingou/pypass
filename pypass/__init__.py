@@ -29,7 +29,7 @@ __author__ = ['Pierre-Yves `pingou` Chibon',
               'Johan `trashy` Cwiklinski']
 __credits__ = ['Pierre-Yves `pingou` Chibon',
                'Johan `trashy` Cwiklinski',
-               'Haïkel Guémar ']
+               'Haïkel Guémar', 'Alexandrine Cwiklinski']
 __license__ = 'GPLv3'
 __copyright__ = 'Copyright (c) 2011 Pierre-Yves Chibon \n' \
                 'Copyright (c) 2011 Johan Cwiklinski'
