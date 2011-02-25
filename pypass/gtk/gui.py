@@ -360,8 +360,12 @@ class PyPassGui(object):
             if result == gtk.RESPONSE_NO:
                 return
         self.pypass.data_from_json(self.data)
-        self.pypass.crypt()
-
+        outcome = self.pypass.crypt()
+        if outcome == 1:
+            result = dialog_window(_("The database could not be saved!"),
+            _("The key could not be found"),
+            action=gtk.MESSAGE_ERROR)
+            return
         self.update_status_bar(_("Database saved"))
         self.modified_db = False
 
