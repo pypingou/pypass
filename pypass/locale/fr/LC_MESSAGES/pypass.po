@@ -37,7 +37,7 @@ msgstr ""
 
 #: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:55
 msgid "Update user config file"
-msgstr "Mise à jour du fichier de configuration de l'utilisateuri"
+msgstr "Mise à jour du fichier de configuration de l'utilisateur"
 
 #: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:67
 msgid "All printable (excluding space)"
