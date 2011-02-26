@@ -69,7 +69,7 @@ class PyPass(object):
             if decrypted_data.ok:
                 return decrypted_data.data
             else:
-                print _("Could not decrypt file %s") % filename
+                LOG.warning(_("Could not decrypt file %s") % filename)
                 #TODO: raise exception and cope with it
                 #raise Exception("Could not decrypt file %s" % filename)
         else:
