@@ -26,6 +26,11 @@ import getpass
 import json
 import random
 
+import logging
+LOG = logging.getLogger(__name__)
+if not LOG.handlers:
+    LOG.addHandler(logging.NullHandler())
+
 from . import __pypassconf__ as config
 import pypobj
 
@@ -54,7 +59,7 @@ class PyPass(object):
         if filename is None:
             filename = config.file
         if os.path.exists(filename):
-            print "opening file", filename
+            LOG.debug(_("Opening file %s") % filename)
             stream = open(filename, 'rb')
             #have to select key before that
             decrypted_data = self._gpg.decrypt_file(
