@@ -48,7 +48,7 @@ class PyPass(object):
 
     def load_data(self, passphrase=None, filename=None):
         """
-        Decrypt and loads data into an internal object.
+        Decrypt and load datas into an internal object.
 
         See :func:`decrypt` for arguments details.
         """
@@ -132,7 +132,7 @@ class PyPass(object):
     
     def json_to_tree(self):
         """
-        Transforms the json into a tree from pypobj
+        Transform the json into a tree from pypobj
         """
         return pypobj.json_to_tree(self.data_as_json())
         
@@ -151,11 +151,11 @@ class PyPass(object):
 
     def generate_error(self, errortext, error=None):
         """
-        Function called when a error needs to be raised
-        The error will be displayed in stdout
+        Function called when a error occurs.
+        The error will be logged and program will exit.
         """
-        print errortext
-        print error
+        LOG.error(errortext)
+        LOG.error(error)
         sys.exit(1)
 
     def generate_password(self, password_length=None, character_set_ndx=None):
@@ -197,7 +197,7 @@ class PyPass(object):
     
     def set_recipient(self, recipient):
         """
-        Set the given recipiend into the configuration
+        Set the given recipient into the configuration
         """
         config.recipients = recipient
         #TODO: save the configuration

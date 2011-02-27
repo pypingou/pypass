@@ -61,7 +61,7 @@ class PyPassConfig(object):
 
     def load(self):
         """
-        Loads configuration
+        Load configuration
         """
         self._character_sets = (
             CharacterSet(_("All printable (excluding space)"), "!\"#$%&'()"\

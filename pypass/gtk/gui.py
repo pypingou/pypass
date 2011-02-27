@@ -123,8 +123,11 @@ def _dialog(dialog):
 
 def dialog_window(message, error=None, action=gtk.MESSAGE_ERROR):
     """ 
-    Display an dialog window with the given message. Action precise the
-    type of dialog to dispay, the return signal is handled accordingly.
+    Display a dialog window with the given message.
+
+    Action precise the     type of dialog to display, the return signal is
+    handled accordingly.
+
     @param message a string of text which is displayed in the dialog
     @param error a string with another part of the message displayed on 
     a second line
@@ -156,7 +159,7 @@ class PyPassGui(object):
     """ Class handling the gtk gui for pypass """
 
     def __init__(self, pypass, options):
-        """ Instanciate the window and set the basic element """
+        """ Instanciate the window and set basic elements """
         self.pypass = pypass
         self.builder = gtk.Builder()
         self.builder.add_from_file(os.path.join(os.path.dirname(
@@ -427,7 +430,7 @@ class PyPassGui(object):
 
     def set_key(self, widget):
         """ 
-        Displays the window in which the user can choose one the key
+        Display the window in which the user can choose one the key
         which are installed on the machine, set this key in the config file
         """
         self.builder.add_from_file(os.path.join(os.path.dirname(
