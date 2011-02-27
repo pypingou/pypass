@@ -503,6 +503,12 @@ class PyPassGui(object):
                 if description is not "":
                     passw.extras['description'] = description
                 level = self.get_level()
+                if level[1] == gtk.STOCK_DIRECTORY:
+                    print "folder"
+                    level = self.get_path()
+                else:
+                    print "pass"
+                return
 
                 data = self.pypass.add_password(
                                             self.data, level, passw)
@@ -568,7 +574,7 @@ class PyPassGui(object):
         (model, itera) = selection.get_selected()
         if itera is None:
             return
-        key = model[itera][0]
+        key = model[itera]
         return key
 
     def get_path(self):
