@@ -251,19 +251,30 @@ class PyPassGui(object):
             butonopen.set_image(img)
 
     def load_password_tree(self, obj, parent=None):
-        """ Load a given tree into the treefolderview """
+        """ 
+        Load a given tree into the treefolderview using the 
+        load_pypdirectory function 
+        """
         self.data = obj
         treeview = self.builder.get_object("treefolderview")
         treestore = gtk.TreeStore(str, str, str)
+        self.load_pypdirectory(treestore, obj, parent)
+        treeview.set_model(treestore)
 
+    def load_pypdirectory(self, treestore, obj, parent=None):
+        """ 
+        Loads the given PypDirectory into the given treestore with the
+        given parent
+        This function is recursive to load the whole tree in memory including
+        children directories and password
+        """
         for passw in obj.passwords:
             icon = gtk.STOCK_DIALOG_AUTHENTICATION
             treestore.append(parent, [passw.name, icon, "password"])
         for directory in obj.directories:
             icon = gtk.STOCK_DIRECTORY
-            treestore.append(parent, [directory.name, icon, "folder"])
-        treeview.set_model(treestore)
-
+            p2 = treestore.append(parent, [directory.name, icon, "folder"])
+            self.load_pypdirectory(treestore, directory, p2)
 
     def show_about(self, widget):
         """ Show the about diaglog """
