@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pypass 0.0.1\n"
 "Report-Msgid-Bugs-To: pypass@ulysses.fr\n"
-"POT-Creation-Date: 2011-02-23 23:24+0100\n"
+"POT-Creation-Date: 2011-02-27 16:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,9 +17,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/pyp.py:67
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/pyp.py:70
+#, python-format
+msgid "Opening file %s"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/pyp.py:80
 #, python-format
 msgid "Could not decrypt file %s"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/pyp.py:84
+#, python-format
+msgid "File %s does not exists."
 msgstr ""
 
 #: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:46
@@ -88,51 +98,87 @@ msgstr ""
 msgid "Trying to change characters_sets"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:126
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:278
-msgid "Error"
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:206
+#, python-format
+msgid ""
+"Trying to get index %(index)d for a %(items)d items list; switching index to "
+"%(default)d "
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:207
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/config.py:211
+#, python-format
+msgid "Retrieving character set %(index)d (%(name)s, `%(chars)s`)"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:223
 msgid "Welcome into pypass"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:280
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:287
+msgid "Error"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:289
 msgid "Do you want to save file before quit?"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:325
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:330
 msgid "Key ID"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:346
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:351
 msgid "Open a database"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:358
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:361
+msgid ""
+"The key set as to encrypt this file is not installed in this machine, do you "
+"want to continue ?"
+msgstr ""
+
 #: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:369
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:375
+msgid "The database could not be saved!"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:370
+msgid "The key could not be found"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:378
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:397
 msgid "Database saved"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:364
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:384
 msgid "Save a database"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:431
-msgid ""
-"Could not enter the password. \n"
-"Name or password had missing information"
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:389
+msgid "This database already exists"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:448
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:390
+msgid "Do you want to overrite it ?"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:490
+msgid "Could not enter the password."
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:491
+msgid "Name or password had missing information"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/gui.py:507
 msgid "Password added"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogkeychooser.glade:14
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogkeychooser.glade:15
 msgid "Select your key"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogkeychooser.glade:42
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogkeychooser.glade:43
 #: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogaddentry.glade:87
 msgid "Password"
 msgstr ""
@@ -145,67 +191,66 @@ msgstr ""
 msgid "_Edit"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:134
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:97
+msgid "Set key"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:148
 msgid "_View"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:141
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:155
 msgid "_Help"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:173
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:187
 msgid "Open another database"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:184
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:198
 msgid "Save"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:188
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:202
 msgid "Save the current database"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:210
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:227
+msgid "Add a directory"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:236
 msgid "Add"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:214
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogaddentry.glade:15
-msgid "Add an entry"
-msgstr ""
-
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:225
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:250
 msgid "Edit"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:229
-msgid "Edit this entry"
-msgstr ""
-
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:241
-msgid "Remove this entry"
-msgstr ""
-
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:263
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:286
 msgid "About PyPass"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:277
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:300
 msgid "Quit PyPass"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:342
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:365
 msgid ""
 "© Pierre-Yves Chibon, 2011\n"
 "© Johan Cwiklinski, 2011"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:345
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:368
 msgid "PyPass website"
 msgstr ""
 
-#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:346
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/pyrevelation.glade:369
 msgid "GPLv3+"
+msgstr ""
+
+#: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogaddentry.glade:15
+msgid "Add an entry"
 msgstr ""
 
 #: /home/trasher/Workdir/python-eclipse_workspace/pypass/pypass/gtk/ui/dialogaddentry.glade:31
