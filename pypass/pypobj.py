@@ -90,9 +90,14 @@ def iterate_over_tree(obj, out, it=0):
             out = "%s ," % out
     out = '%s ], ' % out
     out = '%s "directories": [{' % out
+    cnt = 0
     for item in obj.directories:
+        cnt = cnt + 1
         it = it + 1
         out = iterate_over_tree(item, out, it)
+        if cnt != len(obj.directories):
+            print cnt, len(obj.directories)
+            out = "%s ," % out
     out = '%s }] }' % out
     return out
 
