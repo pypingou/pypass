@@ -20,16 +20,23 @@
 # along with pypass.  If not, see <http://www.gnu.org/licenses/>.
 
 from pypass import pyp
+from pypass import __version__, __application__
 from pypass.gtk import gui
 from optparse import OptionParser
 
+
 def getArgument():
     ''' Handle the parameters'''
-    parser = OptionParser(version="%prog 0.0.1")
+    parser = OptionParser(version="%(name)s %(version)s" %
+                          {'name': __application__, 'version': __version__})
     parser.add_option("-f", "--file", dest="filename",
-                help="The password database file, this override the default value contained in the configuration file")
-    parser.add_option("--cli", dest="cli", default = False, action = "store_true",
-                help="Start the cli interface instead of the gtk")
+                help="The password database file, this override the default " \
+                "value contained in the configuration file")
+    parser.add_option("--cli",
+                      dest="cli",
+                      default=False,
+                      action="store_true",
+                      help="Start the cli interface instead of the gtk")
 
     return parser.parse_args()
 
@@ -40,4 +47,3 @@ if __name__ == "__main__":
     else:
         pyp = pyp.PyPass()
         gui.PyPassGui(pyp, options)
-
