@@ -55,4 +55,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     pyp = pyp.PyPass()
-    gui.PyPassGui(pyp, args)
+    try:
+        gui.PyPassGui(pyp, args)
+    except KeyboardInterrupt:
+        print "Exist on user request"
