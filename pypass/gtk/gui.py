@@ -268,13 +268,13 @@ class PyPassGui(object):
         This function is recursive to load the whole tree in memory including
         children directories and password
         """
-        for passw in obj.passwords:
-            icon = gtk.STOCK_DIALOG_AUTHENTICATION
-            treestore.append(parent, [passw.name, icon, "password"])
         for directory in obj.directories:
             icon = gtk.STOCK_DIRECTORY
             p2 = treestore.append(parent, [directory.name, icon, "folder"])
             self.load_pypdirectory(treestore, directory, p2)
+        for passw in obj.passwords:
+            icon = gtk.STOCK_DIALOG_AUTHENTICATION
+            treestore.append(parent, [passw.name, icon, "password"])
 
     def show_about(self, widget):
         """ Show the about diaglog """
