@@ -229,6 +229,7 @@ class PyPassGui(object):
         butons = {
                     "b_open": gtk.STOCK_OPEN,
                     "b_save": gtk.STOCK_SAVE,
+                    "b_directory": gtk.STOCK_DIRECTORY,
                     "b_add": gtk.STOCK_ADD,
                     "b_edit": gtk.STOCK_EDIT,
                     "b_del": gtk.STOCK_REMOVE,
