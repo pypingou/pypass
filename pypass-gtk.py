@@ -23,11 +23,12 @@ import argparse
 
 from pypass import pyp
 from pypass import __version__, __application__, __description__
+from pypass.gtk import gui
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description= __description__,
-                                     version="%(name)s %(version)s" %
+                                     version="%(name)s GTK %(version)s" %
                           {'name': __application__, 'version': __version__})
 
     group = parser.add_argument_group(_('Common options'))
@@ -54,3 +55,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     pyp = pyp.PyPass()
+    gui.PyPassGui(pyp, args)
