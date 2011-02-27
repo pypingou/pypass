@@ -513,15 +513,10 @@ class PyPassGui(object):
                     passw.extras['user'] = user
                 if description is not "":
                     passw.extras['description'] = description
-                level = self.get_level()
-                if level is not None and level[1] == gtk.STOCK_DIRECTORY:
-                    print "folder"
-                    level = self.get_path()
-                else:
-                    print "pass"
 
+                (model, itera) = self.get_path()
                 data = self.pypass.add_password(
-                                            self.data, level, passw)
+                                            self.data, model, itera, passw)
                 self.load_password_tree(data)
                 self.update_status_bar(_("Password added"))
                 self.modified_db = True
