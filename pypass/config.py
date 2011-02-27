@@ -184,6 +184,36 @@ class PyPassConfig(object):
         """
         LOG.warning(_('Trying to change characters_sets'))
 
+    def getCharacters(self, index):
+        """
+        Return the selected character set. The function will first check if
+        the given index is in the correct range, and defaults to 1 if not.
+
+        For example:
+
+        >>> getCharacterSet(3)
+
+        Will return the hexadecimal character set, while:
+
+        >>> getCharacterSet(10)
+        >>> getCharacterSet(50)
+        >>> getCharacterSet(-1)
+
+        Will both return alphanumeric character.
+        """
+        length = len(self._character_sets)
+        if not 0 <= index < length:
+            LOG.warning(_('Trying to get index %(index)d for a %(items)d '\
+                        'items list; switching index to %(default)d ') %
+                        {'index': index, 'items': length, 'default': default})
+            index = 1 #characters set from index 0 is too large
+        set = self._character_sets[index]
+        LOG.debug(_('Retrieving character set %(index)d (%(name)s, '\
+                    '`%(chars)s`)') %
+                  {'index': index, 'name': set.description,
+                   'chars': set.characters})
+        return set.characters
+
 
 class CharacterSet:
     def __init__(self, description, characters):

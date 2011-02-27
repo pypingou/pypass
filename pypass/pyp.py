@@ -81,6 +81,7 @@ class PyPass(object):
                 #TODO: raise exception and cope with it
                 #raise Exception("Could not decrypt file %s" % filename)
         else:
+            LOG.warning(_('File %s does not exists.' % filename))
             return "{}"
 
     def crypt(self, recipients=None, filename=None):
@@ -96,7 +97,7 @@ class PyPass(object):
         >>> crypt(['ABCDEF', 'FEDCBA'])
 
         If no recipient is specified, we'll take the default from
-        configuation.
+        configuration.
 
         If no filename is specified, we'll take the default one from
         configuration (~/.pypass/default.asc)
@@ -160,14 +161,21 @@ class PyPass(object):
     def generate_password(self, password_length=None, character_set_ndx=None):
         """
         Random password generation. The above code was originally taken from
-        gnome-password-generator
+        gnome-password-generator.
+
+        >>> p = PyPass()
+        >>> p.generate_password()
+        YViwf7h9vnp9
+
+        If no password_length or character set is specified, we'll take those
+        from the current configuration.
         """
         if password_length is None:
             password_length = config.passwords['length']
         if character_set_ndx is None:
             character_set_ndx = config.passwords['base']
 
-        character_set = config._character_sets[character_set_ndx].characters
+        character_set = config.getCharacters(character_set_ndx)
 
         password = ""
         for current_character in range(password_length):
