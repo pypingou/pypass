@@ -20,37 +20,96 @@
 # along with pypass.  If not, see <http://www.gnu.org/licenses/>.
 
 import argparse
+import gettext
 
 from pypass import pyp
-from pypass import __version__, __application__, __description__
+from pypass import __version__, __application__
+from pypass import __description__, __locale_dir__
+from pypass import __pypassconf__ as config
 
+gettext.install(__application__, __locale_dir__)
+
+
+class PyPassCli(object):
+
+    def __init__(self, pypass):
+        self.pyp = pypass
+        self.parseArgs()
+
+    def parseArgs(self):
+        """Parse command line arguments."""
+        parser = argparse.ArgumentParser(description=__description__,
+                                         version="%(name)s %(version)s" %
+                              {'name': __application__,
+                               'version': __version__})
+
+        group = parser.add_argument_group(_('Common options'))
+        group.add_argument('-f',
+                           '--file',
+                           dest='filename',
+                           help=_('The password database file, this override '\
+                                  'the default value contained in the '\
+                                  'configuration file'))
+        group.add_argument('-V',
+                           '--verbose',
+                           dest='verbose',
+                           help=_('Be a bit more verbose.'),
+                           action='store_true',
+                           default=False)
+        group.add_argument('-D',
+                           '--debug',
+                           dest='debug',
+                           help=_('Activate debug mode (show executes '\
+                                  'commands, etc.).'),
+                           action='store_true',
+                           default=False)
+
+        query_group = parser.add_argument_group(_('Query options'))
+        exclusive_query_group = query_group.add_mutually_exclusive_group()
+        exclusive_query_group.add_argument('-l',
+                                 '--list',
+                                 help=_('List folders'),
+                                 action='store_true',
+                                 default=False)
+        exclusive_query_group.add_argument('-g',
+                                 '--get',
+                                 help=_('Retrieve an account by its ID'),
+                                 action='store',
+                                 nargs='+',
+                                 default=False)
+
+        #exclusive = parser.add_mutually_exclusive_group()
+        modif_group = parser.add_argument_group(_('Edition options'))
+        modif_group.add_argument('-s',
+                                '--save',
+                                help=_('Save configuration in your '\
+                                       'preferences file (%s).' %
+                                       config.config_file),
+                                action='store_true',
+                                default=False)
+
+        args = parser.parse_args()
+
+        if args.debug:
+            #TODO: init a debug mode
+            pass
+        if args.verbose:
+            #TODO: init a verbose mode
+            pass
+
+        if not args.filename:
+            args.filename = None
+
+        #Query
+        if args.list:
+            self.pyp.load_data(filename=args.filename)
+            if self.pyp.data is not None and self.pyp.data != "":
+                print self.pyp.data
+
+        #Edition
+        if args.save:
+            config.writeUserConfig()
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description= __description__,
-                                     version="%(name)s %(version)s" %
-                          {'name': __application__, 'version': __version__})
-
-    group = parser.add_argument_group(_('Common options'))
-    group.add_argument('-f',
-                       '--file',
-                       dest='filename',
-                       help=_('The password database file, this override '\
-                              'the default value contained in the '\
-                              'configuration file'))
-    group.add_argument('-V',
-                       '--verbose',
-                       dest='verbose',
-                       help=_('Be a bit more verbose.'),
-                       action='store_true',
-                       default=False)
-    group.add_argument('-D',
-                       '--debug',
-                       dest='debug',
-                       help=_('Activate debug mode (show executes commands, '\
-                              'etc.).'),
-                       action='store_true',
-                       default=False)
-
-    args = parser.parse_args()
-
-    pyp = pyp.PyPass()
+    PYP = pyp.PyPass()
+    PYPC = PyPassCli(PYP)
