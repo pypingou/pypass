@@ -416,6 +416,9 @@ class PyPassGui(object):
         (model, itera) = selection.get_selected()
         #print model, model[itera], model[itera].path
         key = model[itera][0]
+        #typeselected = "folder"
+        #if model[itera][2] == gtk.STOCK_DIALOG_AUTHENTICATION:
+            #typeselected = "password"
 
         parent = None
         if model[itera].parent is not None:
@@ -424,29 +427,40 @@ class PyPassGui(object):
             #if model[itera].parent[1] == gtk.STOCK_DIALOG_AUTHENTICATION:
                 #typeparent = "password"
 
+        txtpass = self.builder.get_object("labelpass")
         if parent is None:
-            for password in self.data.passwords:
-                if password.name == key:
-                    content = ""
-                    content += "<b>Name:</b> %s \n" % password.name
-                    content += "<b>Password:</b> %s \n" % password.password
-                    keys = password.extras.keys()
-                    keys.sort()
-                    for key in keys:
-                        if key not in ('name', 'password'):
-                            if key.lower() == 'url':
-                                content += "<b>%s:</b> <a href='%s'>" \
-                                    "%s</a> \n" % (key, passw[key], passw[key])
-                            else:
-                                content += "<b>%s:</b> %s \n" % (
-                                        key, passw[key])
+            if model[itera][2] == "password":
+                for password in self.data.passwords:
+                    if password.name == key:
+                        content = ""
+                        content += "<b>Name:</b> %s \n" % password.name
+                        content += "<b>Password:</b> %s \n" % password.password
+                        keys = password.extras.keys()
+                        keys.sort()
+                        for key in keys:
+                            if key not in ('name', 'password'):
+                                if key.lower() == 'url':
+                                    content += "<b>%s:</b> <a href='%s'>" \
+                                        "%s</a> \n" % (key, passw[key], passw[key])
+                                else:
+                                    content += "<b>%s:</b> %s \n" % (
+                                            key, passw[key])
 
-                    txtpass = self.builder.get_object("labelpass")
-                    txtpass.set_text(content)
-                    txtpass.set_use_markup(True)
+                        txtpass.set_text(content)
+                        txtpass.set_use_markup(True)
+                        return
+            else:
+                for directory in self.data.directories:
+                    if directory.name == key:
+                        content = ""
+                        content += "<b>Name:</b> %s \n" % directory.name
+                        content += "<b>Description:</b> %s \n" % \
+                                directory.description
+                        txtpass.set_text(content)
+                        txtpass.set_use_markup(True)
+                        return
         else:
-            passwd = self.builder.get_object("labelpass")
-            passwd.set_text("")
+            txtpass.set_text(" ")
 
     def set_key(self, widget):
         """ 
