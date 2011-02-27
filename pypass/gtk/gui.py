@@ -529,6 +529,7 @@ class PyPassGui(object):
             obj.destroy()
 
         add = self.builder.get_object("dialogaddentry")
+        add.set_title(_("Add a folder"))
         add.resize(200, 100)
         print add.get_size()
         if _dialog(add) == 1:
