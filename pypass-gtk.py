@@ -26,6 +26,11 @@ from pypass import __version__, __application__, __description__
 from pypass.gtk import gui
 
 
+import logging
+LOG = logging.getLogger(__name__)
+if not LOG.handlers:
+    LOG.addHandler(logging.NullHandler())
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description= __description__,
                                      version="%(name)s GTK %(version)s" %
@@ -58,4 +63,4 @@ if __name__ == "__main__":
     try:
         gui.PyPassGui(pyp, args)
     except KeyboardInterrupt:
-        print "Exist on user request"
+        LOG.warning(_("Exit on user request"))
