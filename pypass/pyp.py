@@ -88,11 +88,14 @@ class PyPass(object):
         Crypt file from current datas.
 
         You should specify one or more recipients:
+
         >>> crypt('ABCEDF')
+
         or
+
         >>> crypt(['ABCDEF', 'FEDCBA'])
 
-        If not recipient is specified, we'll take the default from
+        If no recipient is specified, we'll take the default from
         configuation.
 
         If no filename is specified, we'll take the default one from
