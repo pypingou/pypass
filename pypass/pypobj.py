@@ -96,7 +96,6 @@ def iterate_over_tree(obj, out, it=0):
         it = it + 1
         out = iterate_over_tree(item, out, it)
         if cnt != len(obj.directories):
-            print cnt, len(obj.directories)
             out = "%s ," % out
     out = '%s }] }' % out
     return out
