@@ -84,7 +84,7 @@ class PyPass(object):
             LOG.warning(_('File %s does not exists.' % filename))
             return "{}"
 
-    def crypt(self, recipients=None, filename=None):
+    def crypt(self, recipients=None, filename=None, force=False):
         """
         Crypt file from current datas.
 
@@ -106,9 +106,14 @@ class PyPass(object):
             recipients = config.recipients
         if filename is None:
             filename = config.file
+        if "override_file" in dir(config) and config.override_file:
+            force = True
         print config.recipients, filename, self.data
         if config.recipients is None or config.recipients == "":
             return "key_not_found"
+        if os.path.exists(filename):
+            if not force:
+                return "file_exists"
         edata = self._gpg.encrypt(
                                     self.data,
                                     recipients,

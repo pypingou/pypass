@@ -370,6 +370,15 @@ class PyPassGui(object):
             _("The key could not be found"),
             action=gtk.MESSAGE_ERROR)
             return
+        if outcome == "file_exists":
+            result = dialog_window(_("This database already exists"),
+            _("Do you want to overrite it ?"),
+            action=gtk.MESSAGE_QUESTION)
+            if result == gtk.RESPONSE_NO:
+                return
+            elif result == gtk.RESPONSE_YES:
+                outcome = self.pypass.crypt(force=True)
+
         if outcome is not True:
             result = dialog_window(_("The database could not be saved!"),
             action=gtk.MESSAGE_ERROR)
