@@ -191,12 +191,12 @@ class PyPassGui(object):
         col0.set_attributes(cellpb, stock_id=1)
         col0.set_attributes(cell, text=0)
 
-        filename = None
+        self.filename = None
         self.data = PypDirectory()
 
         if options.filename is not None:
-            filename = options.filename
-        self.pypass.load_data(filename=filename)
+            self.filename = options.filename
+        self.pypass.load_data(filename=self.filename)
         if self.pypass.data is not None and self.pypass.data != "":
             self.load_password_tree(self.pypass.json_to_tree())
 
@@ -365,7 +365,9 @@ class PyPassGui(object):
                                 os.path.expanduser('~'))
         if filename is not None:
             self.pypass.load_data(filename=filename)
-            self.load_password_tree(self.pypass.data_as_json())
+            self.filename = filename
+            if self.pypass.data is not None and self.pypass.data != "":
+                self.load_password_tree(self.pypass.json_to_tree())
             return
 
     def save_database(self, widget=None):
@@ -377,7 +379,7 @@ class PyPassGui(object):
             if result == gtk.RESPONSE_NO:
                 return
         self.pypass.data_from_json(self.data)
-        outcome = self.pypass.crypt(force=True)
+        outcome = self.pypass.crypt(force=True, filename=self.filename)
         if outcome == "key_not_found":
             result = dialog_window(_("The database could not be saved!"),
             _("The key could not be found"),
