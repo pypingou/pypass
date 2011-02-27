@@ -220,18 +220,28 @@
               </packing>
             </child>
             <child>
+              <object class="GtkButton" id="b_directory">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkButton" id="b_add">
                 <property name="label" translatable="yes">Add</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Add an entry</property>
                 <accelerator key="n" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <signal name="clicked" handler="add_entry"/>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child>
@@ -240,11 +250,10 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Edit this entry</property>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="position">4</property>
+                <property name="position">5</property>
               </packing>
             </child>
             <child>
@@ -252,11 +261,10 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Remove this entry</property>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="position">5</property>
+                <property name="position">6</property>
               </packing>
             </child>
             <child>
@@ -266,7 +274,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="position">6</property>
+                <property name="position">9</property>
               </packing>
             </child>
             <child>
