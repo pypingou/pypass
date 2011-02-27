@@ -46,15 +46,23 @@ class PyPass(object):
         self._gpg = gnupg.GPG(gnupghome=self._gnupgdir, use_agent=True)
         self.data = None
 
-    def load_data(self, password=None, filename=None):
+    def load_data(self, passphrase=None, filename=None):
         """
-        Decrypt and loads data into an internal object
+        Decrypt and loads data into an internal object.
+
+        See :func:`decrypt` for arguments details.
         """
-        self.data = self.decrypt(passphrase=password, filename=filename)
+        self.data = self.decrypt(passphrase=passphrase, filename=filename)
 
     def decrypt(self, passphrase=None, filename=None):
         """
-        Decrypt file. If no file is specified, get its path from configuration
+        Decrypt a GPG encrypted file.
+
+        If no passphrase is specified, we rely on GPG Agent to either grant the
+        access to decrypt the file or ask your passphrase.
+
+        If no filename is specified, we'll take the default one from
+        configuration (~/.pypass/default.asc)
         """
         if filename is None:
             filename = config.file
@@ -75,25 +83,32 @@ class PyPass(object):
         else:
             return "{}"
 
-    def crypt(self, recipients=None, output=None):
+    def crypt(self, recipients=None, filename=None):
         """
         Crypt file from current datas.
 
-        If recipients are not set when calling the function, program will take
-        the ones from configuration.
+        You should specify one or more recipients:
+        >>> crypt('ABCEDF')
+        or
+        >>> crypt(['ABCDEF', 'FEDCBA'])
+
+        If not recipient is specified, we'll take the default from
+        configuation.
+
+        If no filename is specified, we'll take the default one from
+        configuration (~/.pypass/default.asc)
         """
-        #have to select recipient before that
         if recipients is None:
             recipients = config.recipients
-        if output is None:
-            output = config.file
-        print config.recipients, output, self.data
+        if filename is None:
+            filename = config.file
+        print config.recipients, filename, self.data
         if config.recipients is None or config.recipients == "":
             return "key_not_found"
         edata = self._gpg.encrypt(
                                     self.data,
                                     recipients,
-                                    output=output)
+                                    output=filename)
         return edata.ok
 
     def add_password(self, database, level, password):
