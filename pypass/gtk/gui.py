@@ -254,14 +254,14 @@ class PyPassGui(object):
         """ Load a given tree into the treefolderview """
         self.data = obj
         treeview = self.builder.get_object("treefolderview")
-        treestore = gtk.TreeStore(str, str)
+        treestore = gtk.TreeStore(str, str, str)
 
         for passw in obj.passwords:
             icon = gtk.STOCK_DIALOG_AUTHENTICATION
-            treestore.append(parent, [passw.name, icon])
+            treestore.append(parent, [passw.name, icon, "password"])
         for directory in obj.directories:
             icon = gtk.STOCK_DIRECTORY
-            treestore.append(parent, [directory.name, icon])
+            treestore.append(parent, [directory.name, icon, "folder"])
         treeview.set_model(treestore)
 
 
