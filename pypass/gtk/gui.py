@@ -364,20 +364,12 @@ class PyPassGui(object):
             if result == gtk.RESPONSE_NO:
                 return
         self.pypass.data_from_json(self.data)
-        outcome = self.pypass.crypt()
+        outcome = self.pypass.crypt(force=True)
         if outcome == "key_not_found":
             result = dialog_window(_("The database could not be saved!"),
             _("The key could not be found"),
             action=gtk.MESSAGE_ERROR)
             return
-        if outcome == "file_exists":
-            result = dialog_window(_("This database already exists"),
-            _("Do you want to overrite it ?"),
-            action=gtk.MESSAGE_QUESTION)
-            if result == gtk.RESPONSE_NO:
-                return
-            elif result == gtk.RESPONSE_YES:
-                outcome = self.pypass.crypt(force=True)
 
         if outcome is not True:
             result = dialog_window(_("The database could not be saved!"),
@@ -392,7 +384,15 @@ class PyPassGui(object):
                                _("Save a database"),
                                 os.path.expanduser('~'))
         self.pypass.data_from_json(self.data)
-        self.pypass.crypt(recipients=filename)
+        outcome = self.pypass.crypt(filename=filename)
+        if outcome == "file_exists":
+            result = dialog_window(_("This database already exists"),
+            _("Do you want to overrite it ?"),
+            action=gtk.MESSAGE_QUESTION)
+            if result == gtk.RESPONSE_NO:
+                return
+            elif result == gtk.RESPONSE_YES:
+                outcome = self.pypass.crypt(force=True,filename=filename)
 
         self.update_status_bar(_("Database saved"))
         self.modified_db = False
