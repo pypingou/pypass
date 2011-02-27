@@ -530,8 +530,7 @@ class PyPassGui(object):
 
         add = self.builder.get_object("dialogaddentry")
         add.set_title(_("Add a folder"))
-        add.resize(200, 100)
-        print add.get_size()
+        add.set_size_request(400, 150)
         if _dialog(add) == 1:
             name = self.builder.get_object("entry_name").get_text()
             description = \
