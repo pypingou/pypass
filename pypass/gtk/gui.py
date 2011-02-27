@@ -163,9 +163,10 @@ class PyPassGui(object):
         self.pypass = pypass
         self.builder = gtk.Builder()
         self.builder.add_from_file(os.path.join(os.path.dirname(
-                os.path.realpath(__file__)), "ui", "pyrevelation.glade"))
+                os.path.realpath(__file__)), "ui", "pypass.glade"))
         self.builder.set_translation_domain(__application__)
         self.mainwindow = self.builder.get_object('mainwindow')
+        self.mainwindow.set_title("PyPass")
 
         self.set_button_toolbar()
 
