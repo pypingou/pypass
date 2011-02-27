@@ -416,16 +416,13 @@ class PyPassGui(object):
         (model, itera) = selection.get_selected()
         #print model, model[itera], model[itera].path
         key = model[itera][0]
-        typeselected = "folder"
-        if model[itera][1] == gtk.STOCK_DIALOG_AUTHENTICATION:
-            typeselected = "password"
 
         parent = None
         if model[itera].parent is not None:
             parent = model[itera].parent[0]
-            typeparent = "folder"
-            if model[itera].parent[1] == gtk.STOCK_DIALOG_AUTHENTICATION:
-                typeparent = "password"
+            #typeparent = "folder"
+            #if model[itera].parent[1] == gtk.STOCK_DIALOG_AUTHENTICATION:
+                #typeparent = "password"
 
         if parent is None:
             for password in self.data.passwords:
