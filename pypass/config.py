@@ -51,12 +51,6 @@ class PyPassConfig(object):
         self.config = ConfigParser.ConfigParser()
         self.config.read([self.app_config_file, self.config_file])
 
-        #[JC 20110227]: no longer rewrite user config file
-        #Rewrite local config to take care of new app changes
-        #LOG.info(_('Update user config file'))
-        #with open(self.config_file, 'wb') as configfile:
-        #    self.config.write(configfile)
-
         #we're done with initialization, we can load values now
         self.load()
 
@@ -214,6 +208,12 @@ class PyPassConfig(object):
                   {'index': index, 'name': set.description,
                    'chars': set.characters})
         return set.characters
+
+    def writeUserConfig(self):
+        #Rewrite local config to take care of new app changes
+        LOG.info(_('Update user config file'))
+        with open(self.config_file, 'wb') as configfile:
+            self.config.write(configfile)
 
 
 class CharacterSet:
