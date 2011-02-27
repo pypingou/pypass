@@ -261,7 +261,7 @@ class PyPassGui(object):
             treestore.append(parent, [passw.name, icon])
         for directory in obj.directories:
             icon = gtk.STOCK_DIRECTORY
-            parent = treestore.append(parent, [directory.name, icon])
+            treestore.append(parent, [directory.name, icon])
         treeview.set_model(treestore)
 
 
@@ -403,7 +403,7 @@ class PyPassGui(object):
         """ Display the password in the window when selected on the tree """
         selection = self.builder.get_object("treefolderview").get_selection()
         (model, itera) = selection.get_selected()
-        print model, model[itera], model[itera].path
+        #print model, model[itera], model[itera].path
         key = model[itera][0]
         typeselected = "folder"
         if model[itera][1] == gtk.STOCK_DIALOG_AUTHENTICATION:
@@ -503,12 +503,11 @@ class PyPassGui(object):
                 if description is not "":
                     passw.extras['description'] = description
                 level = self.get_level()
-                if level[1] == gtk.STOCK_DIRECTORY:
+                if level is not None and level[1] == gtk.STOCK_DIRECTORY:
                     print "folder"
                     level = self.get_path()
                 else:
                     print "pass"
-                return
 
                 data = self.pypass.add_password(
                                             self.data, level, passw)
@@ -553,11 +552,10 @@ class PyPassGui(object):
                 else:
                     folder = PypDirectory(name, description)
                 
-                path = self.get_path()
-                print path
+                (model, itera) = self.get_path()
 
                 data = self.pypass.add_folder(
-                                            self.data, path, folder)
+                                            self.data, model, itera, folder)
                 self.load_password_tree(data)
                 self.update_status_bar(_("Folder added"))
                 self.modified_db = True
@@ -580,11 +578,7 @@ class PyPassGui(object):
     def get_path(self):
         """ Retrieve the path selected """
         selection = self.builder.get_object("treefolderview").get_selection()
-        (model, itera) = selection.get_selected()
-        if itera is None:
-            return
-        path = model[itera].path
-        return path
+        return selection.get_selected()
 
     def generate_password(self, widget):
         """ Generate a random password """

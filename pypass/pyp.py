@@ -129,13 +129,14 @@ class PyPass(object):
             #database.directories[level].append(passdict)
         return database
 
-    def add_folder(self, database, level, folder):
+    def add_folder(self, database, model, itera, folder):
         """ Add the given folder to the given database at the given
         level"""
-        print database, level, folder
-        if level is None:
+        #print model, itera, len(model[itera].path), model[itera].path
+        if itera is None or len(model[itera].path) ==  1:
             database.directories.append(folder)
-        #else:
+        else:
+            pass
             #database.directories[level].append(passdict)
         return database
 
