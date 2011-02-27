@@ -120,23 +120,48 @@ class PyPass(object):
                                     output=filename)
         return edata.ok
 
-    def add_password(self, database, level, password):
+    def add_password(self, database, model, itera, password):
         """ Add the given hashdict to the given database at the given
         level"""
-        #if level is None:
-        database.passwords.append(password)
-        #else:
+        if itera is None or len(model[itera].path) ==  1 and \
+            model[itera][2] != "folder":
+            database.passwords.append(password)
+        else:
+            if len(model[itera].path) == 1:
+                cnt = 0
+                for directory in database.directories:
+                    print directory.name, model[itera][0]
+                    if directory.name == model[itera][0]:
+                        database.directories[cnt].passwords.append(password)
+                        return database
+                    cnt = cnt + 1
+            else:
+                print "Trying to add a password into a folder"
+                print model, itera, len(model[itera].path), \
+                    model[itera].path, model[itera][2]
+                print "Needs more logic than there currently is"
             #database.directories[level].append(passdict)
         return database
 
     def add_folder(self, database, model, itera, folder):
         """ Add the given folder to the given database at the given
         level"""
-        #print model, itera, len(model[itera].path), model[itera].path
-        if itera is None or len(model[itera].path) ==  1:
+        if itera is None or len(model[itera].path) ==  1 and \
+            model[itera][2] != "folder":
             database.directories.append(folder)
         else:
-            pass
+            if len(model[itera].path) == 1:
+                cnt = 0
+                for directory in database.directories:
+                    print directory.name, model[itera][0]
+                    if directory.name == model[itera][0]:
+                        database.directories[cnt].directories.append(folder)
+                        return database
+                    cnt = cnt + 1
+            else:
+                print model, itera, len(model[itera].path), \
+                    model[itera].path, model[itera][2]
+                print "Needs more logic than there currently is"
             #database.directories[level].append(passdict)
         return database
 
