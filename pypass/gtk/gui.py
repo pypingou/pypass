@@ -210,8 +210,9 @@ class PyPassGui(object):
             "on_windowMain_destroy": self.quit,
             "gtk_main_quit": self.quit,
             "show_about": self.show_about,
-            "cursor_changed": self.on_pass_selected,
+            "cursor_changed": self.on_password_selected,
             "add_entry": self.add_entry,
+            "add_folder": self.add_folder,
             "generate_password": self.generate_password,
             "save_database": self.save_database,
             "save_as_database": self.save_as_database,
@@ -398,10 +399,11 @@ class PyPassGui(object):
         self.update_status_bar(_("Database saved"))
         self.modified_db = False
 
-    def on_pass_selected(self, widget):
+    def on_password_selected(self, widget):
         """ Display the password in the window when selected on the tree """
         selection = self.builder.get_object("treefolderview").get_selection()
         (model, itera) = selection.get_selected()
+        print model, model[itera], model[itera].path
         key = model[itera][0]
         typeselected = "folder"
         if model[itera][1] == gtk.STOCK_DIALOG_AUTHENTICATION:
@@ -508,6 +510,52 @@ class PyPassGui(object):
                 self.update_status_bar(_("Password added"))
                 self.modified_db = True
         add.destroy()
+    
+    def add_folder(self, widget):
+        """ Display the dialog to add a folder to the database """
+        self.builder.add_from_file(os.path.join(os.path.dirname(
+                os.path.realpath(__file__)), "ui", "dialogaddentry.glade"))
+        butons = {
+                "b_add_entry": gtk.STOCK_OK,
+                "b_cancel_entry": gtk.STOCK_CANCEL,
+                }
+        self.set_button_img(butons)
+        self.set_combox_type()
+
+        for objname in ("label7", "label8", "label3", "label5", "label4",
+                    "entry_user", "entry_url", "entry_password",
+                    "b_generate_password", "combo_type"):
+            obj = self.builder.get_object(objname)
+            obj.destroy()
+
+        add = self.builder.get_object("dialogaddentry")
+        add.resize(200, 100)
+        print add.get_size()
+        if _dialog(add) == 1:
+            name = self.builder.get_object("entry_name").get_text()
+            description = \
+                self.builder.get_object("entry_description").get_text()
+
+            if name is None or name == "":
+                dialog_window(_("Could not create the folder."),
+                    _("Name was missing."),
+                    gtk.MESSAGE_ERROR)
+                return
+            else:
+                if description is None or description == "":
+                    folder = PypDirectory(name)
+                else:
+                    folder = PypDirectory(name, description)
+                
+                path = self.get_path()
+                print path
+
+                data = self.pypass.add_folder(
+                                            self.data, path, folder)
+                self.load_password_tree(data)
+                self.update_status_bar(_("Folder added"))
+                self.modified_db = True
+        add.destroy()
 
     def update_status_bar(self, entry):
         """ Update the status bar with the given text """
@@ -522,6 +570,15 @@ class PyPassGui(object):
             return
         key = model[itera][0]
         return key
+
+    def get_path(self):
+        """ Retrieve the path selected """
+        selection = self.builder.get_object("treefolderview").get_selection()
+        (model, itera) = selection.get_selected()
+        if itera is None:
+            return
+        path = model[itera].path
+        return path
 
     def generate_password(self, widget):
         """ Generate a random password """

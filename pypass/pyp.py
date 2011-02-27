@@ -129,6 +129,15 @@ class PyPass(object):
             #database.directories[level].append(passdict)
         return database
 
+    def add_folder(self, database, level, folder):
+        """ Add the given folder to the given database at the given
+        level"""
+        #if level is None:
+        #database.passwords.append(password)
+        #else:
+            #database.directories[level].append(passdict)
+        return database
+
     def data_from_json(self, data):
         """
         Set data from JSON

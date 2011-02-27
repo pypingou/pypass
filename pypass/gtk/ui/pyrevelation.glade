@@ -225,6 +225,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Add a directory</property>
+                <signal name="clicked" handler="add_folder"/>
               </object>
               <packing>
                 <property name="expand">False</property>
