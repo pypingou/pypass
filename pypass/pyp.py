@@ -34,6 +34,7 @@ if not LOG.handlers:
 from . import __pypassconf__ as config
 import pypobj
 
+
 class PyPass(object):
 
     def __init__(self):
@@ -123,7 +124,7 @@ class PyPass(object):
     def add_password(self, database, model, itera, password):
         """ Add the given hashdict to the given database at the given
         level"""
-        if itera is None or len(model[itera].path) ==  1 and \
+        if itera is None or len(model[itera].path) == 1 and \
             model[itera][2] != "folder":
             database.passwords.append(password)
         else:
@@ -181,10 +182,7 @@ class PyPass(object):
             directories.append(model[itera][0])
         while model[itera].parent is not None and model[itera].parent != "":
             row = model[itera].parent
-            self.get_directory_path(
-                    row.model,
-                    row.iter, 
-                    directories)
+            self.get_directory_path(row.model, row.iter, directories)
             directories.reverse()
             return directories
         return directories
@@ -194,13 +192,12 @@ class PyPass(object):
         Set data from JSON
         """
         self.data = data.dump()
-    
+
     def json_to_tree(self):
         """
         Transform the json into a tree from pypobj
         """
         return pypobj.json_to_tree(self.data_as_json())
-        
 
     def data_as_json(self):
         """
@@ -249,7 +246,7 @@ class PyPass(object):
             password += character_set[random_number]
 
         return password
-    
+
     def is_default_in_keyring(self):
         """
         Check is the key set as default in the configuration file is installed
@@ -259,7 +256,7 @@ class PyPass(object):
             if key["keyid"].endswith(config.recipients):
                 return True
         return False
-    
+
     def set_recipient(self, recipient):
         """
         Set the given recipient into the configuration
