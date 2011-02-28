@@ -165,6 +165,18 @@ class PyPass(object):
             #database.directories[level].append(passdict)
         return database
 
+    def get_directory_path(self, model, itera, directories=[]):
+        if model[itera][2] == "folder":
+            directories.append(model[itera][0])
+        while model[itera].parent is not None and model[itera].parent != "":
+            row = model[itera].parent
+            self.get_directory_path(
+                    row.model,
+                    row.iter, 
+                    directories)
+            directories.reverse()
+            return directories
+
     def data_from_json(self, data):
         """
         Set data from JSON
