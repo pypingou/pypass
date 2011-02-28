@@ -148,7 +148,7 @@ class PyPass(object):
         level"""
         directoriespath = self.get_directory_path(model, itera, [])
         print directoriespath
-        if directoriespath is None:
+        if directoriespath is None or len(directoriespath) == 0:
             database.directories.append(folder)
         else:
             if len(model[itera].path) == 1:
