@@ -167,6 +167,14 @@ class PyPass(object):
         return database
 
     def get_directory_path(self, model, itera, directories):
+        """
+        For a given position in the model, browse the model up
+        and add level by level the row name.
+        This way we can browse the json back to the correct
+        PypDirectory for our purpose.
+        Returns None if the itera is not defined
+        Returns [] for first level selection which are not folder
+        """
         if itera is None:
             return
         if model[itera][2] == "folder":
