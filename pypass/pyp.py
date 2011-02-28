@@ -146,8 +146,9 @@ class PyPass(object):
     def add_folder(self, database, model, itera, folder):
         """ Add the given folder to the given database at the given
         level"""
-        if itera is None or len(model[itera].path) ==  1 and \
-            model[itera][2] != "folder":
+        directoriespath = self.get_directory_path(model, itera, [])
+        print directoriespath
+        if directoriespath is None:
             database.directories.append(folder)
         else:
             if len(model[itera].path) == 1:
@@ -165,7 +166,9 @@ class PyPass(object):
             #database.directories[level].append(passdict)
         return database
 
-    def get_directory_path(self, model, itera, directories=[]):
+    def get_directory_path(self, model, itera, directories):
+        if itera is None:
+            return
         if model[itera][2] == "folder":
             directories.append(model[itera][0])
         while model[itera].parent is not None and model[itera].parent != "":
@@ -176,6 +179,7 @@ class PyPass(object):
                     directories)
             directories.reverse()
             return directories
+        return directories
 
     def data_from_json(self, data):
         """
