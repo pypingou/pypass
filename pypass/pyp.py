@@ -32,8 +32,30 @@ if not LOG.handlers:
     LOG.addHandler(logging.NullHandler())
 
 from . import __pypassconf__ as config
+import pypass
 import pypobj
 from pypobj import PypDirectory, PypPassword
+
+
+def get_directory_path(model, itera, directories):
+        """
+        For a given position in the model, browse the model up
+        and add level by level the row name.
+        This way we can browse the json back to the correct
+        PypDirectory for our purpose.
+        Returns None if the itera is not defined
+        Returns [] for first level selection which are not folder
+        """
+        if itera is None:
+            return
+        if model[itera][2] == "folder":
+            directories.append(model[itera][0])
+        while model[itera].parent is not None and model[itera].parent != "":
+            row = model[itera].parent
+            get_directory_path(row.model, row.iter, directories)
+            return directories
+        return directories
+
 
 class PyPass(object):
 
@@ -124,7 +146,7 @@ class PyPass(object):
     def add_password(self, database, model, itera, password):
         """ Add the given hashdict to the given database at the given
         level"""
-        directoriespath = self.get_directory_path(model, itera, [])
+        directoriespath = get_directory_path(model, itera, [])
         print directoriespath
         if itera is None or len(model[itera].path) == 1 and \
             model[itera][2] != "folder":
@@ -146,7 +168,7 @@ class PyPass(object):
     def add_folder(self, database, model, itera, folder):
         """ Add the given folder to the given database at the given
         level"""
-        directoriespath = self.get_directory_path(model, itera, [])
+        directoriespath = get_directory_path(model, itera, [])
         print directoriespath
         if directoriespath is None or len(directoriespath) == 0:
             if folder.name in [direc.name for direc in database.directories]:
@@ -164,31 +186,12 @@ class PyPass(object):
             root.directories.append(folder)
         return database
 
-    def get_directory_path(self, model, itera, directories):
-        """
-        For a given position in the model, browse the model up
-        and add level by level the row name.
-        This way we can browse the json back to the correct
-        PypDirectory for our purpose.
-        Returns None if the itera is not defined
-        Returns [] for first level selection which are not folder
-        """
-        if itera is None:
-            return
-        if model[itera][2] == "folder":
-            directories.append(model[itera][0])
-        while model[itera].parent is not None and model[itera].parent != "":
-            row = model[itera].parent
-            self.get_directory_path(row.model, row.iter, directories)
-            return directories
-        return directories
-
     def remove_item(self, database, model, itera, item):
         """ 
         Remove the item from the database using model and itera to access
         the item in the tree
         """
-        directoriespath = self.get_directory_path(model, itera, [])
+        directoriespath = get_directory_path(model, itera, [])
         if directoriespath is None or len(directoriespath) == 0:
             if isinstance(item, PypDirectory):
                 database.directories.remove(item)

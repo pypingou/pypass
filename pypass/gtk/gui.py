@@ -22,6 +22,7 @@
 import sys
 import os
 
+import pypass.pyp
 from pypass import __version__, __author__, __copyright__, __credits__, __url__
 from pypass import __license_text__, __application__, __locale_dir__
 from pypass.pypobj import PypDirectory, PypPassword
@@ -418,7 +419,7 @@ class PyPassGui(object):
         """ Display the password in the window when selected on the tree """
         selection = self.builder.get_object("treefolderview").get_selection()
         (model, itera) = selection.get_selected()
-        directoriespath = self.pypass.get_directory_path(model, itera, [])
+        directoriespath = pypass.pyp.get_directory_path(model, itera, [])
         txtpass = self.builder.get_object("labelpass")
         
         if itera is None:
@@ -487,7 +488,7 @@ class PyPassGui(object):
     def remove_entry(self, widget):
         """ Remove an entry from the tree """
         (model, itera) = self.get_path()
-        directoriespath = self.pypass.get_directory_path(model, itera, [])
+        directoriespath = pypass.pyp.get_directory_path(model, itera, [])
         item = self.pypass.get_item(self.data, directoriespath, 
                 model[itera][2], model[itera][0])
         result = dialog_window(_("You are going to remove %s.") %item.name,
