@@ -614,6 +614,7 @@ class PyPassGui(object):
                     folder = PypDirectory(name)
                 else:
                     folder = PypDirectory(name, description)
+                add.destroy()
                 return folder
 
     def get_password_from_dialog(self):
@@ -643,6 +644,7 @@ class PyPassGui(object):
                     passw.extras['user'] = user
                 if description is not "":
                     passw.extras['description'] = description
+                add.destroy()
                 return passw
 
 
@@ -663,7 +665,6 @@ class PyPassGui(object):
         self.load_password_tree(data)
         self.update_status_bar(_("Password added"))
         self.modified_db = True
-        add.destroy()
     
     def add_folder(self, widget):
         """ Display the dialog to add a folder to the database """
@@ -682,7 +683,6 @@ class PyPassGui(object):
         self.load_password_tree(data)
         self.update_status_bar(_("Folder added"))
         self.modified_db = True
-        add.destroy()
 
     def update_status_bar(self, entry):
         """ Update the status bar with the given text """
