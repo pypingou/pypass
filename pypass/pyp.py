@@ -149,8 +149,13 @@ class PyPass(object):
         return edata.ok
 
     def add_password(self, database, model, itera, password):
-        """ Add the given hashdict to the given database at the given
-        level"""
+        """ 
+        Add the given hashdict to the given database at the given
+        level
+        
+        To add a folder in the n level we need to be at the n level, 
+        same goes for a password.
+        """
         directoriespath = get_directory_path(model, itera, [])
         print directoriespath
         if itera is None or len(model[itera].path) == 1 and \
@@ -171,8 +176,13 @@ class PyPass(object):
         return database
 
     def add_folder(self, database, model, itera, folder):
-        """ Add the given folder to the given database at the given
-        level"""
+        """ 
+        Add the given folder to the given database at the given
+        level
+        
+        To add a folder in the n level we need to be at the n level, 
+        same goes for a password.
+        """
         directoriespath = get_directory_path(model, itera, [])
         print directoriespath
         if directoriespath is None or len(directoriespath) == 0:
@@ -191,10 +201,61 @@ class PyPass(object):
             root.directories.append(folder)
         return database
 
+    def replace_item(self, database, model, itera, item):
+        """
+        Replace an item base on the given coordinates
+        
+        To replace a folder in the n level we would need to be at the n-1 
+        level, from there we can access the directories and update the 
+        folder. However a folder does not get replaced but updated, 
+        otherwise the lower part of the tree would get lost.
+        
+        On the other side, to replace a password we need to be at the n
+        level (at the level of the folder containning this password).
+        """
+        directoriespath = get_directory_path(model, itera, [])
+        if directoriespath is None or len(directoriespath) == 0:
+            if isinstance(item, PypPassword):
+                cnt = 0
+                for passw in database.passwords:
+                    if passw.name == model[itera][0]:
+                        database.passwords[cnt] = item
+                    cnt = cnt + 1
+            else:
+                print "bug"
+        else:
+            directoriespath.reverse()
+            if isinstance(item, PypPassword):
+                root = database
+                for fold in directoriespath:
+                    for directory in root.directories:
+                        if directory.name == fold:
+                            root = directory
+                cnt = 0
+                for passw in root.passwords:
+                    if passw.name == model[itera][0]:
+                        root.passwords[cnt] = item
+                    cnt = cnt + 1
+            else:
+                root = database
+                for fold in directoriespath:
+                    for directory in root.directories:
+                        if directory.name == fold:
+                            root = directory
+
+                root.name = item.name
+                root.description = item.description
+        return database
+
     def remove_item(self, database, model, itera, item):
         """ 
         Remove the item from the database using model and itera to access
-        the item in the tree
+        the item in the tree.
+        
+        To remove an item in the level n we need to be at n-1, therefore
+        we only browse the directory tree down to the n-1 item.
+        From there we can access the passwords/directories to remove
+        the undesired item
         """
         directoriespath = get_directory_path(model, itera, [])
         if directoriespath is None or len(directoriespath) == 0:

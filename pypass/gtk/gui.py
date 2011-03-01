@@ -215,6 +215,7 @@ class PyPassGui(object):
             "cursor_changed": self.on_password_selected,
             "add_entry": self.add_entry,
             "add_folder": self.add_folder,
+            "edit_entry": self.edit_entry,
             "remove_entry": self.remove_entry,
             "generate_password": self.generate_password,
             "save_database": self.save_database,
@@ -360,6 +361,40 @@ class PyPassGui(object):
         for key in keys:
             store.append([key['keyid'], " ".join(key['uids'])])
 
+    def set_folder_dialog(self):
+        self.builder.add_from_file(os.path.join(os.path.dirname(
+                os.path.realpath(__file__)), "ui", "dialogaddentry.glade"))
+        butons = {
+                "b_add_entry": gtk.STOCK_OK,
+                "b_cancel_entry": gtk.STOCK_CANCEL,
+                }
+        self.set_button_img(butons)
+        self.set_combox_type()
+        
+        for objname in ("label7", "label8", "label3", "label5", "label4",
+                    "entry_user", "entry_url", "entry_password",
+                    "b_generate_password", "combo_type"):
+            obj = self.builder.get_object(objname)
+            obj.destroy()
+
+        add = self.builder.get_object("dialogaddentry")
+        add.set_title(_("Add a folder"))
+        add.set_size_request(400, 150)
+
+    def set_entry_dialog(self):
+        """ Add the entry dialog to the current window """
+        self.builder.add_from_file(os.path.join(os.path.dirname(
+                os.path.realpath(__file__)), "ui", "dialogaddentry.glade"))
+        butons = {
+                "b_add_entry": gtk.STOCK_OK,
+                "b_cancel_entry": gtk.STOCK_CANCEL,
+                }
+        self.set_button_img(butons)
+        self.set_combox_type()
+
+        dic = {"generate_password": self.generate_password}
+        self.builder.connect_signals(dic)
+
     def open_database(self, widget=None):
         """ Open a selected database """
         # get database file
@@ -450,10 +485,11 @@ class PyPassGui(object):
                 if key not in ('name', 'password'):
                     if key.lower() == 'url':
                         content += "<b>%s:</b> <a href='%s'>" \
-                            "%s</a> \n" % (key, passw[key], passw[key])
+                            "%s</a> \n" % (key, item.extras[key], 
+                                            item.extras[key])
                     else:
                         content += "<b>%s:</b> %s \n" % (
-                                key, passw[key])
+                                key, item.extras[key])
 
             txtpass.set_text(content)
             txtpass.set_use_markup(True)
@@ -484,7 +520,60 @@ class PyPassGui(object):
                 return
             key = model[itera][0]
             self.pypass.set_recipient(key[:8])
-    
+
+    def edit_entry(self, widget):
+        """ Edit an entry from the tree """
+        (model, itera) = self.get_path()
+        if itera is None:
+            return
+
+        directoriespath = pypass.pyp.get_directory_path(model, itera, [])
+        item = self.pypass.get_item(self.data, directoriespath, 
+                model[itera][2], model[itera][0])
+
+        if item is None:
+            return
+
+        if isinstance(item, PypPassword):
+            self.set_entry_dialog()
+            # Name
+            entry_name = self.builder.get_object("entry_name")
+            entry_name.set_text(item.name)
+            entry_name.set_editable(False) # Name cannot be changed
+            # Password
+            entry_password = self.builder.get_object("entry_password")
+            entry_password.set_text(item.password)
+            # Extras info
+            if "user" in item.extras.keys():
+                self.builder.get_object("entry_user").set_text(
+                        item.extras["user"])
+            if "url" in item.extras.keys():
+                self.builder.get_object("entry_url").set_text(
+                        item.extras["url"])
+            if "description" in item.extras.keys():
+                self.builder.get_object("entry_description").set_text(
+                        item.extras["description"])
+            item = self.get_password_from_dialog()
+
+        else:
+            self.set_folder_dialog()
+            # Name
+            entry_name = self.builder.get_object("entry_name")
+            entry_name.set_text(item.name)
+            entry_name.set_editable(False) # Name cannot be changed
+            # Password
+            if item.description is not None:
+                entry_description = self.builder.get_object("entry_description")
+                entry_description.set_text(item.description)
+            item = self.get_folder_from_dialog()
+            
+        self.data = self.pypass.replace_item(self.data, model, 
+                                                itera, item)
+        self.load_password_tree(self.data)
+        self.on_password_selected()
+        self.update_status_bar(_("Password updated"))
+        self.modified_db = True
+
     def remove_entry(self, widget):
         """ Remove an entry from the tree """
         (model, itera) = self.get_path()
@@ -504,20 +593,32 @@ class PyPassGui(object):
             self.update_status_bar(_("Item removed"))
             self.modified_db = True
 
-    def add_entry(self, widget):
-        """ Display the dialog to add an entry to the database """
-        self.builder.add_from_file(os.path.join(os.path.dirname(
-                os.path.realpath(__file__)), "ui", "dialogaddentry.glade"))
-        butons = {
-                "b_add_entry": gtk.STOCK_OK,
-                "b_cancel_entry": gtk.STOCK_CANCEL,
-                }
-        self.set_button_img(butons)
-        self.set_combox_type()
+    def get_folder_from_dialog(self):
+        """
+        Display the addentry dialog and returns the PypDirectory object
+        """
+        add = self.builder.get_object("dialogaddentry")
+        if _dialog(add) == 1:
+            name = self.builder.get_object("entry_name").get_text()
+            description = \
+                self.builder.get_object("entry_description").get_text()
 
-        dic = {"generate_password": self.generate_password}
-        self.builder.connect_signals(dic)
+            if name is None or name == "":
+                dialog_window(_("Could not create the folder."),
+                    _("Name was missing."),
+                    gtk.MESSAGE_ERROR)
+                return
+            else:
+                if description is None or description == "":
+                    folder = PypDirectory(name)
+                else:
+                    folder = PypDirectory(name, description)
+                return folder
 
+    def get_password_from_dialog(self):
+        """
+        Display the addentry dialog and returns the PypPassword object
+        """
         add = self.builder.get_object("dialogaddentry")
         if _dialog(add) == 1:
             name = self.builder.get_object("entry_name").get_text()
@@ -541,68 +642,46 @@ class PyPassGui(object):
                     passw.extras['user'] = user
                 if description is not "":
                     passw.extras['description'] = description
+                return passw
 
-                (model, itera) = self.get_path()
-                data = self.pypass.add_password(
-                                            self.data, model, itera, passw)
-                if data == "duplicate_entry":
-                    dialog_window(_("Could not add the password."),
-                    _("There is already a password with this name."),
-                    gtk.MESSAGE_ERROR)
-                    return
-                self.load_password_tree(data)
-                self.update_status_bar(_("Password added"))
-                self.modified_db = True
+
+    def add_entry(self, widget):
+        """ Display the dialog to add an entry to the database """
+        self.set_entry_dialog()
+
+        passw = self.get_password_from_dialog()
+        if passw is None:
+            return
+        (model, itera) = self.get_path()
+        data = self.pypass.add_password(
+                                    self.data, model, itera, passw)
+        if data == "duplicate_entry":
+            dialog_window(_("Could not add the password."),
+            _("There is already a password with this name."),
+            gtk.MESSAGE_ERROR)
+            return
+        self.load_password_tree(data)
+        self.update_status_bar(_("Password added"))
+        self.modified_db = True
         add.destroy()
     
     def add_folder(self, widget):
         """ Display the dialog to add a folder to the database """
-        self.builder.add_from_file(os.path.join(os.path.dirname(
-                os.path.realpath(__file__)), "ui", "dialogaddentry.glade"))
-        butons = {
-                "b_add_entry": gtk.STOCK_OK,
-                "b_cancel_entry": gtk.STOCK_CANCEL,
-                }
-        self.set_button_img(butons)
-        self.set_combox_type()
+        self.set_folder_dialog()
+        folder = self.get_folder_from_dialog()
+        if folder is None:
+            return
 
-        for objname in ("label7", "label8", "label3", "label5", "label4",
-                    "entry_user", "entry_url", "entry_password",
-                    "b_generate_password", "combo_type"):
-            obj = self.builder.get_object(objname)
-            obj.destroy()
-
-        add = self.builder.get_object("dialogaddentry")
-        add.set_title(_("Add a folder"))
-        add.set_size_request(400, 150)
-        if _dialog(add) == 1:
-            name = self.builder.get_object("entry_name").get_text()
-            description = \
-                self.builder.get_object("entry_description").get_text()
-
-            if name is None or name == "":
-                dialog_window(_("Could not create the folder."),
-                    _("Name was missing."),
-                    gtk.MESSAGE_ERROR)
-                return
-            else:
-                if description is None or description == "":
-                    folder = PypDirectory(name)
-                else:
-                    folder = PypDirectory(name, description)
-                
-                (model, itera) = self.get_path()
-
-                data = self.pypass.add_folder(
-                                            self.data, model, itera, folder)
-                if data == "duplicate_entry":
-                    dialog_window(_("Could not add the folder."),
-                    _("There is already a folder with this name."),
-                    gtk.MESSAGE_ERROR)
-                    return
-                self.load_password_tree(data)
-                self.update_status_bar(_("Folder added"))
-                self.modified_db = True
+        (model, itera) = self.get_path()
+        data = self.pypass.add_folder(self.data, model, itera, folder)
+        if data == "duplicate_entry":
+            dialog_window(_("Could not add the folder."),
+            _("There is already a folder with this name."),
+            gtk.MESSAGE_ERROR)
+            return
+        self.load_password_tree(data)
+        self.update_status_bar(_("Folder added"))
+        self.modified_db = True
         add.destroy()
 
     def update_status_bar(self, entry):
