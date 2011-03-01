@@ -136,8 +136,8 @@ class PyPass(object):
         #TODO: remove this dirty hack and change the config as it should be
         if "override_file" in dir(self.config) and self.config.override_file:
             force = True
-        print self.config.recipients, filename, self.data
-        if self.config.recipients is None or self.config.recipients == "":
+        print recipients, filename, self.data
+        if recipients is None or recipients == "":
             return "key_not_found"
         if os.path.exists(filename):
             if not force:
