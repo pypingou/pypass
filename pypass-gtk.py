@@ -20,10 +20,12 @@
 # along with pypass.  If not, see <http://www.gnu.org/licenses/>.
 
 import argparse
+import gettext
 
 import pypass
 from pypass import pyp
 from pypass import __version__, __application__, __description__
+from pypass import __locale_dir__
 from pypass.gtk import gui
 
 
@@ -33,7 +35,9 @@ if not LOG.handlers:
     try:
         LOG.addHandler(logging.NullHandler())
     except AttributeError:
-        LOG.addHandler(pypass.PypNullHandler())
+        LOG.addHandler(pyp.PypNullHandler())
+
+gettext.install(__application__, __locale_dir__)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__description__,
