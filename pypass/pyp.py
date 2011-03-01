@@ -183,17 +183,15 @@ class PyPass(object):
             return directories
         return directories
 
-    def get_item(self, database, model, itera):
+    def get_item(self, database, directoriespath, typeitem, key):
         """ 
         For given coordinates return the corresponding object
         """
-        directoriespath = self.get_directory_path(model, itera, [])
-        key = model[itera][0]
         root = database
         if directoriespath is not None and len(directoriespath) != 0:
             directoriespath.reverse()
             for fold in directoriespath:
-                if model[itera][2] == "folder":
+                if typeitem == "folder":
                     for directory in root.directories:
                         if directory.name == fold:
                             root = directory
@@ -201,7 +199,7 @@ class PyPass(object):
                     for directory in root.directories:
                         if directory.name == fold:
                             root = directory
-            if model[itera][2] == "folder":
+            if typeitem == "folder":
                 if root.name == key:
                     return root
                 else:

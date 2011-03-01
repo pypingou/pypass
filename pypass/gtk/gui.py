@@ -417,8 +417,10 @@ class PyPassGui(object):
         """ Display the password in the window when selected on the tree """
         selection = self.builder.get_object("treefolderview").get_selection()
         (model, itera) = selection.get_selected()
-
-        item = self.pypass.get_item(self.data, model, itera)
+        directoriespath = self.pypass.get_directory_path(model, itera, [])
+        
+        item = self.pypass.get_item(self.data, directoriespath, 
+            model[itera][2], model[itera][0])
         txtpass = self.builder.get_object("labelpass")
 
         if item is None:
