@@ -214,6 +214,7 @@ class PyPassGui(object):
             "cursor_changed": self.on_password_selected,
             "add_entry": self.add_entry,
             "add_folder": self.add_folder,
+            "remove_entry": self.remove_entry,
             "generate_password": self.generate_password,
             "save_database": self.save_database,
             "save_as_database": self.save_as_database,
@@ -413,18 +414,23 @@ class PyPassGui(object):
         self.update_status_bar(_("Database saved"))
         self.modified_db = False
 
-    def on_password_selected(self, widget):
+    def on_password_selected(self, widget=None):
         """ Display the password in the window when selected on the tree """
         selection = self.builder.get_object("treefolderview").get_selection()
         (model, itera) = selection.get_selected()
         directoriespath = self.pypass.get_directory_path(model, itera, [])
+        txtpass = self.builder.get_object("labelpass")
         
+        if itera is None:
+            txtpass.set_text(" ")
+            return
+
         item = self.pypass.get_item(self.data, directoriespath, 
             model[itera][2], model[itera][0])
-        txtpass = self.builder.get_object("labelpass")
 
         if item is None:
             txtpass.set_text(" ")
+            return
         elif isinstance(item, PypDirectory):
             content = ""
             content += "<b>Name:</b> %s \n" % item.name
@@ -477,7 +483,25 @@ class PyPassGui(object):
                 return
             key = model[itera][0]
             self.pypass.set_recipient(key[:8])
-        
+    
+    def remove_entry(self, widget):
+        """ Remove an entry from the tree """
+        (model, itera) = self.get_path()
+        directoriespath = self.pypass.get_directory_path(model, itera, [])
+        item = self.pypass.get_item(self.data, directoriespath, 
+                model[itera][2], model[itera][0])
+        result = dialog_window(_("You are going to remove %s.") %item.name,
+            _("Do you want to continue ?"),
+            action=gtk.MESSAGE_QUESTION)
+        if result == gtk.RESPONSE_NO:
+            return
+        elif result == gtk.RESPONSE_YES:
+            self.data = self.pypass.remove_item(self.data, model, itera, 
+                item)
+            self.load_password_tree(self.data)
+            self.on_password_selected()
+            self.update_status_bar(_("Item removed"))
+            self.modified_db = True
 
     def add_entry(self, widget):
         """ Display the dialog to add an entry to the database """
@@ -584,15 +608,6 @@ class PyPassGui(object):
         """ Update the status bar with the given text """
         stbar = self.builder.get_object('statusbar')
         stbar.push(1, entry)
-
-    def get_level(self):
-        """ Retrieve the level selected """
-        selection = self.builder.get_object("treefolderview").get_selection()
-        (model, itera) = selection.get_selected()
-        if itera is None:
-            return
-        key = model[itera]
-        return key
 
     def get_path(self):
         """ Retrieve the path selected """

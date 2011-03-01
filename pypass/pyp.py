@@ -33,7 +33,7 @@ if not LOG.handlers:
 
 from . import __pypassconf__ as config
 import pypobj
-
+from pypobj import PypDirectory, PypPassword
 
 class PyPass(object):
 
@@ -183,6 +183,30 @@ class PyPass(object):
             return directories
         return directories
 
+    def remove_item(self, database, model, itera, item):
+        """ 
+        Remove the item from the database using model and itera to access
+        the item in the tree
+        """
+        directoriespath = self.get_directory_path(model, itera, [])
+        if directoriespath is None or len(directoriespath) == 0:
+            if isinstance(item, PypDirectory):
+                database.directories.remove(item)
+            else:
+                database.passwords.remove(item)
+        else:
+            directoriespath.reverse()
+            root = database
+            for fold in directoriespath[:-1]:
+                for directory in root.directories:
+                    if directory.name == fold:
+                        root = directory
+            if isinstance(item, PypDirectory):
+                root.directories.remove(item)
+            else:
+                root.passwords.remove(item)
+        return database
+
     def get_item(self, database, directoriespath, typeitem, key):
         """ 
         For given coordinates return the corresponding object
@@ -191,14 +215,9 @@ class PyPass(object):
         if directoriespath is not None and len(directoriespath) != 0:
             directoriespath.reverse()
             for fold in directoriespath:
-                if typeitem == "folder":
-                    for directory in root.directories:
-                        if directory.name == fold:
-                            root = directory
-                else:
-                    for directory in root.directories:
-                        if directory.name == fold:
-                            root = directory
+                for directory in root.directories:
+                    if directory.name == fold:
+                        root = directory
             if typeitem == "folder":
                 if root.name == key:
                     return root
@@ -206,6 +225,16 @@ class PyPass(object):
                     print "bug"
             else:
                 for passw in root.passwords:
+                    if passw.name == key:
+                        return passw
+        else:
+            if typeitem == "folder":
+                if database.name == key:
+                    return root
+                else:
+                    print "bug"
+            else:
+                for passw in database.passwords:
                     if passw.name == key:
                         return passw
         return 
