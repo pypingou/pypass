@@ -129,6 +129,7 @@ class PyPass(object):
             recipients = config.recipients
         if filename is None:
             filename = config.file
+        #TODO: remove this dirty hack and change the config as it should be
         if "override_file" in dir(config) and config.override_file:
             force = True
         print config.recipients, filename, self.data
