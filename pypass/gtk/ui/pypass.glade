@@ -93,6 +93,28 @@
                   <object class="GtkMenu" id="menu2">
                     <property name="visible">True</property>
                     <child>
+                      <object class="GtkImageMenuItem" id="menu_add_password">
+                        <property name="label" translatable="yes">Add password</property>
+                        <property name="visible">True</property>
+                        <property name="tooltip_text" translatable="yes">Add a password to the database</property>
+                        <property name="image">image2</property>
+                        <property name="use_stock">False</property>
+                        <accelerator key="n" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="add_entry"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="menu_add_folder">
+                        <property name="label" translatable="yes">Add folder</property>
+                        <property name="visible">True</property>
+                        <property name="tooltip_text" translatable="yes">Add a folder</property>
+                        <property name="image">image3</property>
+                        <property name="use_stock">False</property>
+                        <accelerator key="n" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="add_folder"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkImageMenuItem" id="menu_set_key">
                         <property name="label" translatable="yes">Set key</property>
                         <property name="visible">True</property>
@@ -225,6 +247,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Add a directory</property>
+                <accelerator key="n" signal="clicked" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                 <signal name="clicked" handler="add_folder"/>
               </object>
               <packing>
@@ -396,5 +419,13 @@ Johan Cwiklinski</property>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="stock">gtk-edit</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="stock">gtk-dialog-authentication</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="stock">gtk-directory</property>
   </object>
 </interface>
