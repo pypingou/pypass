@@ -28,11 +28,6 @@ import random
 
 import logging
 LOG = logging.getLogger(__name__)
-if not LOG.handlers:
-    try:
-        LOG.addHandler(logging.NullHandler())
-    except AttributeError:
-        LOG.addHandler(self.PypNullHandler())
 
 import config
 import pypass
@@ -389,6 +384,12 @@ class PyPass(object):
 class PypNullHandler(logging.Handler):
     def emit(self, record):
         pass
+
+if not LOG.handlers:
+    try:
+        LOG.addHandler(logging.NullHandler())
+    except AttributeError:
+        LOG.addHandler(PypNullHandler())
 
 # for dev/testing purposes
 if __name__ == "__main__":
