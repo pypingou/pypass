@@ -29,9 +29,12 @@ import random
 import logging
 LOG = logging.getLogger(__name__)
 if not LOG.handlers:
-    LOG.addHandler(logging.NullHandler())
+    try:
+        LOG.addHandler(logging.NullHandler())
+    except AttributeError:
+        LOG.addHandler(self.PypNullHandler())
 
-from . import __pypassconf__ as config
+import config
 import pypass
 import pypobj
 from pypobj import PypDirectory, PypPassword
@@ -60,6 +63,7 @@ def get_directory_path(model, itera, directories):
 class PyPass(object):
 
     def __init__(self):
+        self.config = config.PyPassConfig()
         try:
             self.random_number_generator = random.SystemRandom()
         except NotImplementedError:
@@ -88,7 +92,7 @@ class PyPass(object):
         configuration (~/.pypass/default.asc)
         """
         if filename is None:
-            filename = config.file
+            filename = self.config.file
         if os.path.exists(filename):
             LOG.debug(_("Opening file %s") % filename)
             stream = open(filename, 'rb')
@@ -126,14 +130,14 @@ class PyPass(object):
         configuration (~/.pypass/default.asc)
         """
         if recipients is None:
-            recipients = config.recipients
+            recipients = self.config.recipients
         if filename is None:
-            filename = config.file
+            filename = self.config.file
         #TODO: remove this dirty hack and change the config as it should be
-        if "override_file" in dir(config) and config.override_file:
+        if "override_file" in dir(self.config) and self.config.override_file:
             force = True
-        print config.recipients, filename, self.data
-        if config.recipients is None or config.recipients == "":
+        print self.config.recipients, filename, self.data
+        if self.config.recipients is None or self.config.recipients == "":
             return "key_not_found"
         if os.path.exists(filename):
             if not force:
@@ -290,11 +294,11 @@ class PyPass(object):
         from the current configuration.
         """
         if password_length is None:
-            password_length = config.passwords['length']
+            password_length = self.config.passwords['length']
         if character_set_ndx is None:
-            character_set_ndx = config.passwords['base']
+            character_set_ndx = self.config.passwords['base']
 
-        character_set = config.getCharacters(character_set_ndx)
+        character_set = self.config.getCharacters(character_set_ndx)
 
         password = ""
         for current_character in range(password_length):
@@ -310,7 +314,7 @@ class PyPass(object):
         on the computer
         """
         for key in self.list_recipients():
-            if key["keyid"].endswith(config.recipients):
+            if key["keyid"].endswith(self.config.recipients):
                 return True
         return False
 
@@ -318,8 +322,12 @@ class PyPass(object):
         """
         Set the given recipient into the configuration
         """
-        config.recipients = recipient
+        self.config.recipients = recipient
         #TODO: save the configuration
+
+class PypNullHandler(logging.Handler):
+    def emit(self, record):
+        pass
 
 # for dev/testing purposes
 if __name__ == "__main__":
@@ -330,6 +338,6 @@ if __name__ == "__main__":
     #PPASS.load_data(passphrase)
     #PPASS.crypt(recipients)
     #PPASS.decrypt(passphrase = passphrase)
-    print config.file
-    config.file = '/a/file/whose/parent/path/does/not/exists'
-    print config.file
+    PPASS.config.file
+    PPASS.config.file = '/a/file/whose/parent/path/does/not/exists'
+    print PPASS.config.file

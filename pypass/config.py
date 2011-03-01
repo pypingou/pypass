@@ -23,9 +23,13 @@ import os
 import ConfigParser
 import gettext
 import logging
+import pypass
 LOG = logging.getLogger(__name__)
 if not LOG.handlers:
-    LOG.addHandler(logging.NullHandler())
+    try:
+        LOG.addHandler(logging.NullHandler())
+    except AttributeError:
+        LOG.addHandler(pypass.PypNullHandler())
 
 
 class PyPassConfig(object):

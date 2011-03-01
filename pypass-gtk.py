@@ -21,6 +21,7 @@
 
 import argparse
 
+import pypass
 from pypass import pyp
 from pypass import __version__, __application__, __description__
 from pypass.gtk import gui
@@ -29,7 +30,10 @@ from pypass.gtk import gui
 import logging
 LOG = logging.getLogger(__name__)
 if not LOG.handlers:
-    LOG.addHandler(logging.NullHandler())
+    try:
+        LOG.addHandler(logging.NullHandler())
+    except AttributeError:
+        LOG.addHandler(pypass.PypNullHandler())
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description= __description__,
