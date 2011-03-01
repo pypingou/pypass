@@ -417,44 +417,38 @@ class PyPassGui(object):
         """ Display the password in the window when selected on the tree """
         selection = self.builder.get_object("treefolderview").get_selection()
         (model, itera) = selection.get_selected()
-        key = model[itera][0]
 
-        parent = None
-        if model[itera].parent is not None:
-            parent = model[itera].parent[0]
-
+        item = self.pypass.get_item(self.data, model, itera)
         txtpass = self.builder.get_object("labelpass")
-        if parent is None:
-            if model[itera][2] == "password":
-                for password in self.data.passwords:
-                    if password.name == key:
-                        content = ""
-                        content += "<b>Name:</b> %s \n" % password.name
-                        content += "<b>Password:</b> %s \n" % password.password
-                        keys = password.extras.keys()
-                        keys.sort()
-                        for key in keys:
-                            if key not in ('name', 'password'):
-                                if key.lower() == 'url':
-                                    content += "<b>%s:</b> <a href='%s'>" \
-                                        "%s</a> \n" % (key, passw[key], passw[key])
-                                else:
-                                    content += "<b>%s:</b> %s \n" % (
-                                            key, passw[key])
 
-                        txtpass.set_text(content)
-                        txtpass.set_use_markup(True)
-                        return
-            else:
-                for directory in self.data.directories:
-                    if directory.name == key:
-                        content = ""
-                        content += "<b>Name:</b> %s \n" % directory.name
-                        content += "<b>Description:</b> %s \n" % \
-                                directory.description
-                        txtpass.set_text(content)
-                        txtpass.set_use_markup(True)
-                        return
+        if item is None:
+            txtpass.set_text(" ")
+        elif isinstance(item, PypDirectory):
+            content = ""
+            content += "<b>Name:</b> %s \n" % item.name
+            content += "<b>Description:</b> %s \n" % \
+                    item.description
+            txtpass.set_text(content)
+            txtpass.set_use_markup(True)
+            return
+        elif isinstance(item, PypPassword):
+            content = ""
+            content += "<b>Name:</b> %s \n" % item.name
+            content += "<b>Password:</b> %s \n" % item.password
+            keys = item.extras.keys()
+            keys.sort()
+            for key in keys:
+                if key not in ('name', 'password'):
+                    if key.lower() == 'url':
+                        content += "<b>%s:</b> <a href='%s'>" \
+                            "%s</a> \n" % (key, passw[key], passw[key])
+                    else:
+                        content += "<b>%s:</b> %s \n" % (
+                                key, passw[key])
+
+            txtpass.set_text(content)
+            txtpass.set_use_markup(True)
+            return
         else:
             txtpass.set_text(" ")
 
