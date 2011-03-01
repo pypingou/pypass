@@ -36,7 +36,7 @@ if not LOG.handlers:
         LOG.addHandler(pypass.PypNullHandler())
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description= __description__,
+    parser = argparse.ArgumentParser(description=__description__,
                                      version="%(name)s GTK %(version)s" %
                           {'name': __application__, 'version': __version__})
 
