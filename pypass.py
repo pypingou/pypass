@@ -25,7 +25,6 @@ import gettext
 from pypass import pyp
 from pypass import __version__, __application__
 from pypass import __description__, __locale_dir__
-from pypass import __pypassconf__ as config
 
 gettext.install(__application__, __locale_dir__)
 
@@ -108,7 +107,7 @@ class PyPassCli(object):
 
         #Edition
         if args.save:
-            config.writeUserConfig()
+            self.pyp.config.writeUserConfig()
 
 if __name__ == "__main__":
     PYP = pyp.PyPass()
