@@ -566,7 +566,8 @@ class PyPassGui(object):
                 entry_description = self.builder.get_object("entry_description")
                 entry_description.set_text(item.description)
             item = self.get_folder_from_dialog()
-            
+        if item is None:
+            return
         self.data = self.pypass.replace_item(self.data, model, 
                                                 itera, item)
         self.load_password_tree(self.data)
@@ -648,7 +649,6 @@ class PyPassGui(object):
     def add_entry(self, widget):
         """ Display the dialog to add an entry to the database """
         self.set_entry_dialog()
-
         passw = self.get_password_from_dialog()
         if passw is None:
             return
