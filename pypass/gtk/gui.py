@@ -193,7 +193,13 @@ class PyPassGui(object):
         col0.set_attributes(cellpb, stock_id=1)
         col0.set_attributes(cell, text=0)
 
+        # filename contains the name of the file which has been opened
+        # This way if you open a file and press ctrl+s you save in the file
+        # you opened not in the default one.
         self.filename = None
+        # key is the key you select, if it is None it will use the default
+        # if set in the configuration file.
+        self.key = None
         self.data = PypDirectory()
 
         if options.filename is not None:
@@ -417,7 +423,8 @@ class PyPassGui(object):
             if result == gtk.RESPONSE_NO:
                 return
         self.pypass.data_from_json(self.data)
-        outcome = self.pypass.crypt(force=True, filename=self.filename)
+        outcome = self.pypass.crypt(force=True, recipients=self.key,
+                                    filename=self.filename)
         if outcome == "key_not_found":
             result = dialog_window(_("The database could not be saved!"),
             _("The key could not be found"),
@@ -437,7 +444,8 @@ class PyPassGui(object):
                                _("Save a database"),
                                 os.path.expanduser('~'))
         self.pypass.data_from_json(self.data)
-        outcome = self.pypass.crypt(filename=filename)
+        outcome = self.pypass.crypt(recipients=self.key, 
+                                    filename=filename)
         if outcome == "file_exists":
             result = dialog_window(_("This database already exists"),
             _("Do you want to overrite it ?"),
@@ -445,7 +453,9 @@ class PyPassGui(object):
             if result == gtk.RESPONSE_NO:
                 return
             elif result == gtk.RESPONSE_YES:
-                outcome = self.pypass.crypt(force=True,filename=filename)
+                outcome = self.pypass.crypt(force=True, 
+                                    recipients=self.key,
+                                    filename=self.filename)
 
         self.update_status_bar(_("Database saved"))
         self.modified_db = False
@@ -519,6 +529,7 @@ class PyPassGui(object):
             if itera is None:
                 return
             key = model[itera][0]
+            self.key = key
             self.pypass.set_recipient(key[:8])
 
     def edit_entry(self, widget):
