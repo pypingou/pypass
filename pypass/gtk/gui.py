@@ -524,6 +524,11 @@ class PyPassGui(object):
                 (model, itera) = self.get_path()
                 data = self.pypass.add_password(
                                             self.data, model, itera, passw)
+                if data == "duplicate_entry":
+                    dialog_window(_("Could not add the password."),
+                    _("There is already a password with this name."),
+                    gtk.MESSAGE_ERROR)
+                    return
                 self.load_password_tree(data)
                 self.update_status_bar(_("Password added"))
                 self.modified_db = True
@@ -569,6 +574,11 @@ class PyPassGui(object):
 
                 data = self.pypass.add_folder(
                                             self.data, model, itera, folder)
+                if data == "duplicate_entry":
+                    dialog_window(_("Could not add the folder."),
+                    _("There is already a folder with this name."),
+                    gtk.MESSAGE_ERROR)
+                    return
                 self.load_password_tree(data)
                 self.update_status_bar(_("Folder added"))
                 self.modified_db = True

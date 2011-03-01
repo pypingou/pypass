@@ -124,24 +124,23 @@ class PyPass(object):
     def add_password(self, database, model, itera, password):
         """ Add the given hashdict to the given database at the given
         level"""
+        directoriespath = self.get_directory_path(model, itera, [])
+        print directoriespath
         if itera is None or len(model[itera].path) == 1 and \
             model[itera][2] != "folder":
+            if password.name in [passw.name for passw in database.passwords]:
+                return "duplicate_entry"
             database.passwords.append(password)
         else:
-            if len(model[itera].path) == 1:
-                cnt = 0
-                for directory in database.directories:
-                    print directory.name, model[itera][0]
-                    if directory.name == model[itera][0]:
-                        database.directories[cnt].passwords.append(password)
-                        return database
-                    cnt = cnt + 1
-            else:
-                print "Trying to add a password into a folder"
-                print model, itera, len(model[itera].path), \
-                    model[itera].path, model[itera][2]
-                print "Needs more logic than there currently is"
-            #database.directories[level].append(passdict)
+            directoriespath.reverse()
+            root = database
+            for fold in directoriespath:
+                for directory in root.directories:
+                    if directory.name == fold:
+                        root = directory
+            if password.name in [passw.name for passw in root.passwords]:
+                return "duplicate_entry"
+            root.passwords.append(password)
         return database
 
     def add_folder(self, database, model, itera, folder):
@@ -150,21 +149,19 @@ class PyPass(object):
         directoriespath = self.get_directory_path(model, itera, [])
         print directoriespath
         if directoriespath is None or len(directoriespath) == 0:
+            if folder.name in [direc.name for direc in database.directories]:
+                return "duplicate_entry"
             database.directories.append(folder)
         else:
-            if len(model[itera].path) == 1:
-                cnt = 0
-                for directory in database.directories:
-                    print directory.name, model[itera][0]
-                    if directory.name == model[itera][0]:
-                        database.directories[cnt].directories.append(folder)
-                        return database
-                    cnt = cnt + 1
-            else:
-                print model, itera, len(model[itera].path), \
-                    model[itera].path, model[itera][2]
-                print "Needs more logic than there currently is"
-            #database.directories[level].append(passdict)
+            directoriespath.reverse()
+            root = database
+            for fold in directoriespath:
+                for directory in root.directories:
+                    if directory.name == fold:
+                        root = directory
+            if folder.name in [direc.name for direc in root.directories]:
+                return "duplicate_entry"
+            root.directories.append(folder)
         return database
 
     def get_directory_path(self, model, itera, directories):
@@ -183,7 +180,6 @@ class PyPass(object):
         while model[itera].parent is not None and model[itera].parent != "":
             row = model[itera].parent
             self.get_directory_path(row.model, row.iter, directories)
-            directories.reverse()
             return directories
         return directories
 
