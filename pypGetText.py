@@ -32,6 +32,7 @@ import subprocess
 from pypass import __version__, __author__, __locale_dir__, __application__
 from pypass import __mail__
 
+
 class PyPassGetText:
 
     def __init__(self):
@@ -68,9 +69,11 @@ class PyPassGetText:
         #include python files
         cmd.extend(glob.glob(os.path.join(os.getcwd(), '*.py')))
         cmd.extend(glob.glob(os.path.join(os.getcwd(), 'pypass', '*.py')))
-        cmd.extend(glob.glob(os.path.join(os.getcwd(), 'pypass', 'gtk', '*.py')))
+        cmd.extend(glob.glob(os.path.join(os.getcwd(), 'pypass', 'gtk',
+                                          '*.py')))
         #include glade files
-        cmd.extend(glob.glob(os.path.join(os.getcwd(), 'pypass', 'gtk', 'ui', '*.glade')))
+        cmd.extend(glob.glob(os.path.join(os.getcwd(), 'pypass', 'gtk',
+                                          'ui', '*.glade')))
         if args.debug:
             print cmd
             print ' '.join(cmd)
@@ -83,7 +86,8 @@ class PyPassGetText:
         if args.verbose:
             print 'Updating po files from main catalog...'
 
-        for trans in glob.glob(os.path.join(self.locale_dir, '*/LC_MESSAGES/*.po')):
+        for trans in glob.glob(os.path.join(self.locale_dir,
+                                            '*/LC_MESSAGES/*.po')):
             cmd = [
                    'msgmerge',
                    '-U',
@@ -102,12 +106,15 @@ class PyPassGetText:
             print 'About to create catalogs for languages:', ', '.join(langs)
 
         for lang in langs:
-            lang_path = os.path.join(os.getcwd(), self.locale_dir, lang[:2], 'LC_MESSAGES')
-            lang_file = os.path.join(lang_path, '%s.po' % __application__);
+            lang_path = os.path.join(os.getcwd(), self.locale_dir, lang[:2],
+                                     'LC_MESSAGES')
+            lang_file = os.path.join(lang_path, '%s.po' % __application__)
             if args.verbose:
-                print 'Creating catalog for language %s in %s' % (lang, lang_path)
+                print 'Creating catalog for language %s in %s' % (lang,
+                                                                 lang_path)
             if os.path.exists(lang_path) and os.path.exists(lang_file):
-                sys.exit('Path %s already exists. Are you sure you do not mean update?\nAborting.' % lang_path)
+                sys.exit('Path %s already exists. Are you sure you do not '\
+                         'mean update?\nAborting.' % lang_path)
             else:
                 if not os.path.exists(lang_path):
                     os.makedirs(lang_path)
@@ -124,14 +131,16 @@ class PyPassGetText:
                     print cmd
                 subprocess.call(cmd)
                 if args.verbose:
-                    print 'New catalog for language %s has been created.' % lang
+                    print 'New catalog for language %s has been '\
+                    'created.' % lang
         print 'New catalogs has been created for languages: ', ', '.join(langs)
 
     def compile(self):
         global args
         if args.verbose:
             print 'Compiling PO files...'
-        for trans in glob.glob(os.path.join('.', self.locale_dir, '*/LC_MESSAGES/*.po')):
+        for trans in glob.glob(os.path.join('.', self.locale_dir,
+                                            '*/LC_MESSAGES/*.po')):
             cmd = [
                    'msgfmt',
                    trans,
@@ -144,7 +153,8 @@ class PyPassGetText:
             if r == 0:
                 print 'PO files has been compiled.'
             else:
-                print 'An error occurs. Please see above output to know more. You can try again using -V or -D options.'
+                print 'An error occurs. Please see above output to know '\
+                'more. You can try again using -V or -D options.'
 
     def localeDirPresent(self):
         """
@@ -155,21 +165,52 @@ class PyPassGetText:
 if __name__ == '__main__':
     rb = PyPassGetText()
     if not rb.localeDirPresent():
-        sys.exit('Locale dir (%s) cannot be found. Please create it before proceed.' % rb.locale_dir)
+        sys.exit('Locale dir (%s) cannot be found. Please create it '\
+                 'before proceed.' % rb.locale_dir)
 
-    parser = argparse.ArgumentParser(description='PyPass - I18N', version=__version__)
+    parser = argparse.ArgumentParser(description='PyPass - I18N',
+                                     version=__version__)
 
     group = parser.add_mutually_exclusive_group()
-    group.add_argument('-u', '--update', help='Full i18n update', action='store_true', default=False)
-    group.add_argument('-s', '--sources', help='Update main catalog from sources', action='store_true', default=False)
-    group.add_argument('-t', '--translations', help='Update translations from main catalog', action='store_true', default=False)
-    group.add_argument('-n', '--new', dest='langs', help='Create new language', action='store', nargs="+")
+    group.add_argument('-u',
+                       '--update',
+                       help='Full i18n update',
+                       action='store_true',
+                       default=False)
+    group.add_argument('-s',
+                       '--sources',
+                       help='Update main catalog from sources',
+                       action='store_true',
+                       default=False)
+    group.add_argument('-t',
+                       '--translations',
+                       help='Update translations from main catalog',
+                       action='store_true',
+                       default=False)
+    group.add_argument('-n',
+                       '--new',
+                       dest='langs',
+                       help='Create new language',
+                       action='store',
+                       nargs="+")
 
-    parser.add_argument('-c', '--compile', help='Compile po files', action='store_true', default=False)
+    parser.add_argument('-c',
+                        '--compile',
+                        help='Compile po files',
+                        action='store_true',
+                        default=False)
 
     more_group = parser.add_argument_group('Debugging option')
-    more_group.add_argument('-V', '--verbose', help='Be more verbose', action='store_true', default=False)
-    more_group.add_argument('-D', '--debug', help='Run in "debug" mode (show commands, etc.)', action='store_true', default=False)
+    more_group.add_argument('-V',
+                            '--verbose',
+                            help='Be more verbose',
+                            action='store_true',
+                            default=False)
+    more_group.add_argument('-D',
+                            '--debug',
+                            help='Run in "debug" mode (show commands, etc.)',
+                            action='store_true',
+                            default=False)
 
     args = parser.parse_args()
 
