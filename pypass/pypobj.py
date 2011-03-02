@@ -34,24 +34,24 @@ def json_to_tree(jsontxt):
 
 
 def load_pypdir(jsondir, name):
-    """ convert an element of pypdir to tree """
+    """ Convert an element of pypdir to tree """
     desc = None
     if "description" in jsondir.keys():
         desc = jsondir["description"]
     pypdir = PypFolder(name, desc)
-    for password in jsondir["accounts"]:
-        pypdir.accounts.append(load_password(password))
-    for password in jsondir["folders"]:
-        for key in password.keys():
+    for account in jsondir["accounts"]:
+        pypdir.accounts.append(load_account(account))
+    for account in jsondir["folders"]:
+        for key in account.keys():
             pypdir.folders.append(load_pypdir(
                                     password[key], key))
     return pypdir
 
 
-def load_password(json_account):
-    """ from an account entry in the json return a PypAccount object """
-    pyppass = v(json_account["name"], json_account["password"])
-    return pyppass
+def load_account(json_account):
+    """ From an account entry in the json return a PypAccount object """
+    account = PypAccount(json_account["name"], json_account["password"])
+    return account
 
 
 def create_set():
