@@ -443,6 +443,8 @@ class PyPassGui(object):
         filename = file_browse(gtk.FILE_CHOOSER_ACTION_SAVE,
                                _("Save a database"),
                                 os.path.expanduser('~'))
+        if filename is None:
+            return
         self.pypass.data_from_json(self.data)
         outcome = self.pypass.crypt(recipients=self.key, 
                                     filename=filename)
