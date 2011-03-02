@@ -32,27 +32,27 @@ LOG = logging.getLogger(__name__)
 import config
 import pypass
 import pypobj
-from pypobj import PypDirectory, PypPassword
+from pypobj import PypFolder, PypAccount
 
 
-def get_directory_path(model, itera, directories):
+def get_folder_path(model, itera, folders):
         """
         For a given position in the model, browse the model up
         and add level by level the row name.
         This way we can browse the json back to the correct
-        PypDirectory for our purpose.
+        PypFolder for our purpose.
         Returns None if the itera is not defined
         Returns [] for first level selection which are not folder
         """
         if itera is None:
             return
         if model[itera][2] == "folder":
-            directories.append(model[itera][0])
+            folders.append(model[itera][0])
         while model[itera].parent is not None and model[itera].parent != "":
             row = model[itera].parent
-            get_directory_path(row.model, row.iter, directories)
-            return directories
-        return directories
+            get_folder_path(row.model, row.iter, folders)
+            return folders
+        return folders
 
 
 class PyPass(object):
@@ -151,23 +151,23 @@ class PyPass(object):
         To add a folder in the n level we need to be at the n level,
         same goes for a password.
         """
-        directoriespath = get_directory_path(model, itera, [])
-        print directoriespath
+        folderspath = get_folder_path(model, itera, [])
+        print folderspath
         if itera is None or len(model[itera].path) == 1 and \
             model[itera][2] != "folder":
-            if password.name in [passw.name for passw in database.passwords]:
+            if password.name in [passw.name for passw in database.accounts]:
                 return "duplicate_entry"
-            database.passwords.append(password)
+            database.accounts.append(password)
         else:
-            directoriespath.reverse()
+            folderspath.reverse()
             root = database
-            for fold in directoriespath:
-                for directory in root.directories:
-                    if directory.name == fold:
-                        root = directory
-            if password.name in [passw.name for passw in root.passwords]:
+            for fold in folderspath:
+                for folder in root.folders:
+                    if folder.name == fold:
+                        root = folder
+            if password.name in [passw.name for passw in root.accounts]:
                 return "duplicate_entry"
-            root.passwords.append(password)
+            root.accounts.append(password)
         return database
 
     def add_folder(self, database, model, itera, folder):
@@ -178,22 +178,22 @@ class PyPass(object):
         To add a folder in the n level we need to be at the n level,
         same goes for a password.
         """
-        directoriespath = get_directory_path(model, itera, [])
-        print directoriespath
-        if directoriespath is None or len(directoriespath) == 0:
-            if folder.name in [direc.name for direc in database.directories]:
+        folderspath = get_folder_path(model, itera, [])
+        print folderspath
+        if folderspath is None or len(folderspath) == 0:
+            if folder.name in [direc.name for direc in database.folders]:
                 return "duplicate_entry"
-            database.directories.append(folder)
+            database.folders.append(folder)
         else:
-            directoriespath.reverse()
+            folderspath.reverse()
             root = database
-            for fold in directoriespath:
-                for directory in root.directories:
-                    if directory.name == fold:
-                        root = directory
-            if folder.name in [direc.name for direc in root.directories]:
+            for fold in folderspath:
+                for folder in root.folders:
+                    if folder.name == fold:
+                        root = folder
+            if folder.name in [direc.name for direc in root.folders]:
                 return "duplicate_entry"
-            root.directories.append(folder)
+            root.folders.append(folder)
         return database
 
     def replace_item(self, database, model, itera, item):
@@ -201,42 +201,42 @@ class PyPass(object):
         Replace an item base on the given coordinates
 
         To replace a folder in the n level we would need to be at the n-1
-        level, from there we can access the directories and update the
+        level, from there we can access the folders and update the
         folder. However a folder does not get replaced but updated,
         otherwise the lower part of the tree would get lost.
 
         On the other side, to replace a password we need to be at the n
-        level (at the level of the folder containning this password).
+        level (at the level of the folder containing this password).
         """
-        directoriespath = get_directory_path(model, itera, [])
-        if directoriespath is None or len(directoriespath) == 0:
-            if isinstance(item, PypPassword):
+        folderspath = get_folder_path(model, itera, [])
+        if folderspath is None or len(folderspath) == 0:
+            if isinstance(item, PypAccount):
                 cnt = 0
-                for passw in database.passwords:
+                for passw in database.accounts:
                     if passw.name == model[itera][0]:
-                        database.passwords[cnt] = item
+                        database.accounts[cnt] = item
                     cnt = cnt + 1
             else:
                 print "bug"
         else:
-            directoriespath.reverse()
-            if isinstance(item, PypPassword):
+            folderspath.reverse()
+            if isinstance(item, PypAccount):
                 root = database
-                for fold in directoriespath:
-                    for directory in root.directories:
-                        if directory.name == fold:
-                            root = directory
+                for fold in folderspath:
+                    for folder in root.folders:
+                        if folder.name == fold:
+                            root = folder
                 cnt = 0
-                for passw in root.passwords:
+                for passw in root.accounts:
                     if passw.name == model[itera][0]:
-                        root.passwords[cnt] = item
+                        root.accounts[cnt] = item
                     cnt = cnt + 1
             else:
                 root = database
-                for fold in directoriespath:
-                    for directory in root.directories:
-                        if directory.name == fold:
-                            root = directory
+                for fold in folderspath:
+                    for folder in root.folders:
+                        if folder.name == fold:
+                            root = folder
 
                 root.name = item.name
                 root.description = item.description
@@ -248,47 +248,47 @@ class PyPass(object):
         the item in the tree.
 
         To remove an item in the level n we need to be at n-1, therefore
-        we only browse the directory tree down to the n-1 item.
-        From there we can access the passwords/directories to remove
+        we only browse the folder tree down to the n-1 item.
+        From there we can access the accounts/folders to remove
         the undesired item
         """
-        directoriespath = get_directory_path(model, itera, [])
-        if directoriespath is None or len(directoriespath) == 0:
-            if isinstance(item, PypDirectory):
-                database.directories.remove(item)
+        folderspath = get_folder_path(model, itera, [])
+        if folderspath is None or len(folderspath) == 0:
+            if isinstance(item, PypFolder):
+                database.folders.remove(item)
             else:
-                database.passwords.remove(item)
+                database.accounts.remove(item)
         else:
-            directoriespath.reverse()
+            folderspath.reverse()
             root = database
-            for fold in directoriespath[:-1]:
-                for directory in root.directories:
-                    if directory.name == fold:
-                        root = directory
-            if isinstance(item, PypDirectory):
-                root.directories.remove(item)
+            for fold in folderspath[:-1]:
+                for folder in root.folders:
+                    if folder.name == fold:
+                        root = folder
+            if isinstance(item, PypFolder):
+                root.folders.remove(item)
             else:
-                root.passwords.remove(item)
+                root.accounts.remove(item)
         return database
 
-    def get_item(self, database, directoriespath, typeitem, key):
+    def get_item(self, database, folderspath, typeitem, key):
         """
         For given coordinates return the corresponding object
         """
         root = database
-        if directoriespath is not None and len(directoriespath) != 0:
-            directoriespath.reverse()
-            for fold in directoriespath:
-                for directory in root.directories:
-                    if directory.name == fold:
-                        root = directory
+        if folderspath is not None and len(folderspath) != 0:
+            folderspath.reverse()
+            for fold in folderspath:
+                for folder in root.folders:
+                    if folder.name == fold:
+                        root = folder
             if typeitem == "folder":
                 if root.name == key:
                     return root
                 else:
                     print "bug"
             else:
-                for passw in root.passwords:
+                for passw in root.accounts:
                     if passw.name == key:
                         return passw
         else:
@@ -298,7 +298,7 @@ class PyPass(object):
                 else:
                     print "bug"
             else:
-                for passw in database.passwords:
+                for passw in database.accounts:
                     if passw.name == key:
                         return passw
         return

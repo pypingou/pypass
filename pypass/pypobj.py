@@ -25,7 +25,7 @@ generated/read.
 
 def json_to_tree(jsontxt):
     """ From a given json structure transforms it to a tree """
-    data = PypDirectory("rootdir")
+    data = PypFolder("rootdir")
     if jsontxt is None:
         return data
     for key in jsontxt.keys():
@@ -38,78 +38,78 @@ def load_pypdir(jsondir, name):
     desc = None
     if "description" in jsondir.keys():
         desc = jsondir["description"]
-    pypdir = PypDirectory(name, desc)
-    for password in jsondir["passwords"]:
-        pypdir.passwords.append(load_password(password))
-    for password in jsondir["directories"]:
+    pypdir = PypFolder(name, desc)
+    for password in jsondir["accounts"]:
+        pypdir.accounts.append(load_password(password))
+    for password in jsondir["folders"]:
         for key in password.keys():
-            pypdir.directories.append(load_pypdir(
+            pypdir.folders.append(load_pypdir(
                                     password[key], key))
     return pypdir
 
 
-def load_password(jsonpass):
-    """ from a password entry in the json return a PypPassword object """
-    pyppass = PypPassword(jsonpass["name"], jsonpass["password"])
+def load_password(json_account):
+    """ from an account entry in the json return a PypAccount object """
+    pyppass = v(json_account["name"], json_account["password"])
     return pyppass
 
 
 def create_set():
-    """ Creates a fake PypDirectory for development """
-    root = PypDirectory("rootdir", "firstLevel")
-    passw = PypPassword("p1", "mdp1")
-    root.passwords.append(passw)
-    passw = PypPassword("p2", "mdp2")
-    root.passwords.append(passw)
+    """ Creates a fake PypFolder for development """
+    root = PypFolder("rootfolder", "firstLevel")
+    account = PypAccount("p1", "mdp1")
+    root.accounts.append(account)
+    account = PypAccount("p2", "mdp2")
+    root.accounts.append(account)
 
-    dir1 = PypDirectory("secdir", "secLevel")
-    root.directories.append(dir1)
-    passw = PypPassword("p3", "mdp3")
-    dir1.passwords.append(passw)
+    folder1 = PypFolder("secfolder", "secLevel")
+    root.folders.append(folder1)
+    account = PypAccount("p3", "mdp3")
+    folder1.accounts.append(account)
 
-    dir2 = PypDirectory("thirdDir", "thirdLevel")
-    passw = PypPassword("p4", "mdp4")
-    dir2.passwords.append(passw)
-    dir1.directories.append(dir2)
+    folder2 = PypFolder("thirdfolder", "thirdLevel")
+    account = PypAccount("p4", "mdp4")
+    folder2.accounts.append(account)
+    folder1.folders.append(folder2)
 
     return root
 
 
 def iterate_over_tree(obj, out, ite=0):
-    """ Iterate over the items in a PypDirectory """
+    """ Iterate over the items in a PypFolder """
     out = '%s "%s": { ' % (out, obj.name)
     if obj.description is not None and obj.description != "":
         out = '%s "description": "%s",' % (out, obj.description)
     ite = ite + 1
     cnt = 0
-    out = '%s "passwords": [' % out
-    for item in obj.passwords:
+    out = '%s "accounts": [' % out
+    for item in obj.accounts:
         cnt = cnt + 1
         out = '%s { "name": "%s", "password": "%s"}' % (out,
                 item.name, item.password)
-        if cnt != len(obj.passwords):
+        if cnt != len(obj.accounts):
             out = "%s ," % out
     out = '%s ], ' % out
-    out = '%s "directories": [{' % out
+    out = '%s "folders": [{' % out
     cnt = 0
-    for item in obj.directories:
+    for item in obj.folders:
         cnt = cnt + 1
         ite = ite + 1
         out = iterate_over_tree(item, out, ite)
-        if cnt != len(obj.directories):
+        if cnt != len(obj.folders):
             out = "%s ," % out
     out = '%s }] }' % out
     return out
 
 
-class PypDirectory(object):
-    """ Represents a directory in pypass, used to classify the passwords """
+class PypFolder(object):
+    """ Represents a folder in pypass, used to classify the accounts """
 
     def __init__(self, name="", description=None):
         self.name = name
         self.description = description
-        self.passwords = []
-        self.directories = []
+        self.accounts = []
+        self.folders = []
 
     def dump(self):
         """ Dump the object to stdout """
@@ -119,7 +119,7 @@ class PypDirectory(object):
         return out
 
 
-class PypPassword(object):
+class PypAccount(object):
     """ Represents a password in pypass"""
 
     def __init__(self, name, password):
