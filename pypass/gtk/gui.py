@@ -315,7 +315,7 @@ class PyPassGui(object):
         self.data = PypDirectory()
         self.filename = None
         self.created = True
-        self.load_password_tree(self.data)        
+        self.load_password_tree(self.data)
 
     def quit(self, widget):
         """ Quit the application """
