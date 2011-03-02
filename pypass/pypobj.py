@@ -49,6 +49,7 @@ def load_pypdir(jsondir, name):
 
 
 def load_password(jsonpass):
+    """ from a password entry in the json return a PypPassword object """
     pyppass = PypPassword(jsonpass["name"], jsonpass["password"])
     return pyppass
 
@@ -74,12 +75,12 @@ def create_set():
     return root
 
 
-def iterate_over_tree(obj, out, it=0):
+def iterate_over_tree(obj, out, ite=0):
     """ Iterate over the items in a PypDirectory """
     out = '%s "%s": { ' % (out, obj.name)
     if obj.description is not None and obj.description != "":
         out = '%s "description": "%s",' % (out, obj.description)
-    it = it + 1
+    ite = ite + 1
     cnt = 0
     out = '%s "passwords": [' % out
     for item in obj.passwords:
@@ -93,8 +94,8 @@ def iterate_over_tree(obj, out, it=0):
     cnt = 0
     for item in obj.directories:
         cnt = cnt + 1
-        it = it + 1
-        out = iterate_over_tree(item, out, it)
+        ite = ite + 1
+        out = iterate_over_tree(item, out, ite)
         if cnt != len(obj.directories):
             out = "%s ," % out
     out = '%s }] }' % out
@@ -121,18 +122,18 @@ class PypDirectory(object):
 class PypPassword(object):
     """ Represents a password in pypass"""
 
-    def __init__(self, name, password, *args, **kw):
+    def __init__(self, name, password):
         self.name = name
         self.password = password
         self.extras = {}
 
-if __name__ == "__main__":
-    tree = create_set()
-    tree.dump()
+#if __name__ == "__main__":
+    #tree = create_set()
+    #tree.dump()
 
-    import json
-    f = open("../testjson")
-    data = json.load(f)
-    f.close()
-    tree = json_to_tree(data)
-    tree.dump()
+    #import json
+    #f = open("../testjson")
+    #data = json.load(f)
+    #f.close()
+    #tree = json_to_tree(data)
+    #tree.dump()
