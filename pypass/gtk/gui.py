@@ -21,11 +21,19 @@
 
 import sys
 import os
+import logging
 
 import pypass.pyp
 from pypass import __version__, __author__, __copyright__, __credits__, __url__
 from pypass import __license_text__, __application__, __locale_dir__
 from pypass.pypobj import PypFolder, PypAccount
+
+LOG = logging.getLogger(__name__)
+if not LOG.handlers:
+    try:
+        LOG.addHandler(logging.NullHandler())
+    except AttributeError:
+        LOG.addHandler(pyp.PypNullHandler())
 
 try:
     import pygtk
@@ -35,7 +43,7 @@ except ImportError:
 try:
     import gtk
 except ImportError:
-    print("GTK not available")
+    LOG.error(_("GTK is not available."))
     sys.exit(1)
 import gtk.glade
 import gettext
