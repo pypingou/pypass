@@ -121,6 +121,7 @@
                         <property name="tooltip_text" translatable="yes">Edit selected item</property>
                         <property name="image">image5</property>
                         <property name="use_stock">False</property>
+                        <accelerator key="e" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
