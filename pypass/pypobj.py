@@ -44,7 +44,7 @@ def load_pypdir(jsondir, name):
     for account in jsondir["folders"]:
         for key in account.keys():
             pypdir.folders.append(load_pypdir(
-                                    password[key], key))
+                                    account[key], key))
     return pypdir
 
 
@@ -103,7 +103,7 @@ def iterate_over_tree(obj, out, ite=0):
 
 
 class PypFolder(object):
-    """ Represents a folder in pypass, used to classify the accounts """
+    """ Represents PyPass folder, used to classify the accounts."""
 
     def __init__(self, name="", description=None):
         self.name = name
@@ -120,7 +120,7 @@ class PypFolder(object):
 
 
 class PypAccount(object):
-    """ Represents a password in pypass"""
+    """ Represents a PyPass account"""
 
     def __init__(self, name, password):
         self.name = name

@@ -143,21 +143,21 @@ class PyPass(object):
                                     output=filename)
         return edata.ok
 
-    def add_password(self, database, model, itera, password):
+    def add_account(self, database, model, itera, account):
         """
         Add the given hashdict to the given database at the given
         level
 
         To add a folder in the n level we need to be at the n level,
-        same goes for a password.
+        same goes for an account.
         """
         folderspath = get_folder_path(model, itera, [])
         print folderspath
         if itera is None or len(model[itera].path) == 1 and \
             model[itera][2] != "folder":
-            if password.name in [passw.name for passw in database.accounts]:
+            if account.name in [acc.name for acc in database.accounts]:
                 return "duplicate_entry"
-            database.accounts.append(password)
+            database.accounts.append(account)
         else:
             folderspath.reverse()
             root = database
@@ -165,9 +165,9 @@ class PyPass(object):
                 for folder in root.folders:
                     if folder.name == fold:
                         root = folder
-            if password.name in [passw.name for passw in root.accounts]:
+            if account.name in [acc.name for acc in root.accounts]:
                 return "duplicate_entry"
-            root.accounts.append(password)
+            root.accounts.append(account)
         return database
 
     def add_folder(self, database, model, itera, folder):
@@ -176,7 +176,7 @@ class PyPass(object):
         level
 
         To add a folder in the n level we need to be at the n level,
-        same goes for a password.
+        same goes for an account.
         """
         folderspath = get_folder_path(model, itera, [])
         print folderspath
@@ -205,15 +205,15 @@ class PyPass(object):
         folder. However a folder does not get replaced but updated,
         otherwise the lower part of the tree would get lost.
 
-        On the other side, to replace a password we need to be at the n
-        level (at the level of the folder containing this password).
+        On the other side, to replace an account we need to be at the n
+        level (at the level of the folder containing this account).
         """
         folderspath = get_folder_path(model, itera, [])
         if folderspath is None or len(folderspath) == 0:
             if isinstance(item, PypAccount):
                 cnt = 0
-                for passw in database.accounts:
-                    if passw.name == model[itera][0]:
+                for acount in database.accounts:
+                    if account.name == model[itera][0]:
                         database.accounts[cnt] = item
                     cnt = cnt + 1
             else:
@@ -227,8 +227,8 @@ class PyPass(object):
                         if folder.name == fold:
                             root = folder
                 cnt = 0
-                for passw in root.accounts:
-                    if passw.name == model[itera][0]:
+                for account in root.accounts:
+                    if account.name == model[itera][0]:
                         root.accounts[cnt] = item
                     cnt = cnt + 1
             else:
@@ -288,9 +288,9 @@ class PyPass(object):
                 else:
                     LOG.warning(_('An error occured loading folder.'))
             else:
-                for passw in root.accounts:
-                    if passw.name == key:
-                        return passw
+                for account in root.accounts:
+                    if account.name == key:
+                        return account
         else:
             if typeitem == "folder":
                 if database.name == key:
@@ -298,9 +298,9 @@ class PyPass(object):
                 else:
                     LOG.warning(_('An error occured loading folder.'))
             else:
-                for passw in database.accounts:
-                    if passw.name == key:
-                        return passw
+                for account in database.accounts:
+                    if account.name == key:
+                        return account
         return
 
     def data_from_json(self, data):

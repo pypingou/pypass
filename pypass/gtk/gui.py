@@ -227,7 +227,7 @@ class PyPassGui(object):
             "on_windowMain_destroy": self.quit,
             "gtk_main_quit": self.quit,
             "show_about": self.show_about,
-            "cursor_changed": self.on_password_selected,
+            "cursor_changed": self.on_account_selected,
             "add_entry": self.add_entry,
             "add_folder": self.add_folder,
             "edit_entry": self.edit_entry,
@@ -292,9 +292,9 @@ class PyPassGui(object):
             icon = gtk.STOCK_DIRECTORY
             parent2 = treestore.append(parent, [folder.name, icon, "folder"])
             self.load_pypfolder(treestore, folder, parent2)
-        for passw in obj.accounts:
+        for account in obj.accounts:
             icon = gtk.STOCK_DIALOG_AUTHENTICATION
-            treestore.append(parent, [passw.name, icon, "password"])
+            treestore.append(parent, [account.name, icon, "account"])
 
     def show_about(self, widget):
         """ Show the about diaglog """
@@ -492,8 +492,8 @@ class PyPassGui(object):
         self.update_status_bar(_("Database saved"))
         self.modified_db = False
 
-    def on_password_selected(self, widget=None):
-        """ Display the password in the window when selected on the tree """
+    def on_account_selected(self, widget=None):
+        """ Display the account in the window when selected on the tree """
         selection = self.builder.get_object("treefolderview").get_selection()
         (model, itera) = selection.get_selected()
         folderspath = pypass.pyp.get_folder_path(model, itera, [])
@@ -625,7 +625,7 @@ class PyPassGui(object):
         self.data = self.pypass.replace_item(self.data, model,
                                                 itera, item)
         self.load_password_tree(self.data)
-        self.on_password_selected()
+        self.on_account_selected()
         self.update_status_bar(_("Password updated"))
         self.modified_db = True
 
@@ -644,7 +644,7 @@ class PyPassGui(object):
             self.data = self.pypass.remove_item(self.data, model, itera,
                 item)
             self.load_password_tree(self.data)
-            self.on_password_selected()
+            self.on_account_selected()
             self.update_status_bar(_("Item removed"))
             self.modified_db = True
 
@@ -691,32 +691,32 @@ class PyPassGui(object):
                     gtk.MESSAGE_ERROR)
                 return
             else:
-                passw = PypAccount(name, password)
+                account = PypAccount(name, password)
                 if url is not "":
-                    passw.extras['url'] = url
+                    account.extras['url'] = url
                 if user is not "":
-                    passw.extras['user'] = user
+                    account.extras['user'] = user
                 if description is not "":
-                    passw.extras['description'] = description
+                    account.extras['description'] = description
                 add.destroy()
-                return passw
+                return account
 
     def add_entry(self, widget):
         """ Display the dialog to add an entry to the database """
         self.set_entry_dialog()
-        passw = self.get_password_from_dialog()
-        if passw is None:
+        account = self.get_password_from_dialog()
+        if account is None:
             return
         (model, itera) = self.get_path()
-        data = self.pypass.add_password(
-                                    self.data, model, itera, passw)
+        data = self.pypass.add_account(
+                                    self.data, model, itera, account)
         if data == "duplicate_entry":
-            dialog_window(_("Could not add the password."),
-            _("There is already a password with this name."),
+            dialog_window(_("Could not add the account."),
+            _("There is already an account with this name."),
             gtk.MESSAGE_ERROR)
             return
         self.load_password_tree(data)
-        self.update_status_bar(_("Password added"))
+        self.update_status_bar(_("Account added"))
         self.modified_db = True
 
     def add_folder(self, widget):
