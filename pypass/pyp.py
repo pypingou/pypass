@@ -286,7 +286,7 @@ class PyPass(object):
                 if root.name == key:
                     return root
                 else:
-                    print "bug"
+                    LOG.warning(_('An error occured loading folder.'))
             else:
                 for passw in root.accounts:
                     if passw.name == key:
@@ -296,7 +296,7 @@ class PyPass(object):
                 if database.name == key:
                     return root
                 else:
-                    print "bug"
+                    LOG.warning(_('An error occured loading folder.'))
             else:
                 for passw in database.accounts:
                     if passw.name == key:
@@ -378,7 +378,6 @@ class PyPass(object):
         Set the given recipient into the configuration
         """
         self.config.recipients = recipient
-        #TODO: save the configuration
 
 
 class PypNullHandler(logging.Handler):
