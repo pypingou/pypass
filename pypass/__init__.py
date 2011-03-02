@@ -93,4 +93,3 @@ __locale_dir__ = os.path.join(os.path.dirname(os.path.realpath(__file__)),
 
 __application__ = 'pypass'
 gettext.install(__application__, __locale_dir__)
-

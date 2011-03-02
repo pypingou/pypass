@@ -205,7 +205,8 @@ class PyPassConfig(object):
             LOG.warning(_('Trying to get index %(index)d for a %(items)d '\
                         'items list; switching index to %(default)d ') %
                         {'index': index, 'items': length, 'default': default})
-            index = 1 #characters set from index 0 is too large
+            #characters set from index 0 is too large
+            index = 1
         set = self._character_sets[index]
         LOG.debug(_('Retrieving character set %(index)d (%(name)s, '\
                     '`%(chars)s`)') %
