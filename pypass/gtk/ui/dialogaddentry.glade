@@ -12,7 +12,7 @@
     <property name="width_request">600</property>
     <property name="height_request">320</property>
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">Add an entry</property>
+    <property name="title" translatable="yes">Add an account</property>
     <property name="type_hint">normal</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">

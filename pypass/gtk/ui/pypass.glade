@@ -255,7 +255,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="b_directory">
+              <object class="GtkButton" id="b_folder">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
