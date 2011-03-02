@@ -157,6 +157,28 @@
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">_View</property>
                 <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu1">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="menu_show_password">
+                        <property name="visible">True</property>
+                        <property name="tooltip_text" translatable="yes">Show password's text or not</property>
+                        <property name="label" translatable="yes">Show password</property>
+                        <property name="use_underline">True</property>
+                        <property name="active">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="menu_show_tag">
+                        <property name="visible">True</property>
+                        <property name="tooltip_text" translatable="yes">Show the account by tags</property>
+                        <property name="label" translatable="yes">Show tags</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
