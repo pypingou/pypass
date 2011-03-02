@@ -199,6 +199,8 @@ class PyPassGui(object):
         # key is the key you select, if it is None it will use the default
         # if set in the configuration file.
         self.key = None
+        # created reflects wether the database was new/manually created
+        self.created = False
         self.data = PypDirectory()
 
         if options.filename is not None:
@@ -227,6 +229,7 @@ class PyPassGui(object):
             "save_as_database": self.save_as_database,
             "open_database": self.open_database,
             "set_key": self.set_key,
+            "menu_new_db": self.new_database,
         }
         self.builder.connect_signals(dic)
 
@@ -300,6 +303,19 @@ class PyPassGui(object):
         about.set_logo(gtk.gdk.pixbuf_new_from_file(_logo_path))
 
         _dialog(about)
+
+    def new_database(self, widget):
+        """ Set a new database """
+        if self.modified_db:
+            result = dialog_window(_("This database has been modified",
+            "Do you want to save it before continuing?"),
+                    action=gtk.MESSAGE_QUESTION)
+            if result == gtk.RESPONSE_YES:
+                self.save_database()
+        self.data = PypDirectory()
+        self.filename = None
+        self.created = True
+        self.load_password_tree(self.data)        
 
     def quit(self, widget):
         """ Quit the application """
@@ -425,6 +441,8 @@ class PyPassGui(object):
             action=gtk.MESSAGE_QUESTION)
             if result == gtk.RESPONSE_NO:
                 return
+        if self.created:
+            self.save_as_database()
         self.pypass.data_from_json(self.data)
         outcome = self.pypass.crypt(force=True, recipients=self.key,
                                     filename=self.filename)
