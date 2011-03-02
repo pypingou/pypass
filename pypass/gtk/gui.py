@@ -409,7 +409,7 @@ class PyPassGui(object):
                                 os.path.expanduser('~'))
         if filename is not None:
             self.pypass.load_data(filename=filename)
-            self.filename = filename
+            sef.filename = filename
             if self.pypass.data is not None and self.pypass.data != "":
                 self.load_password_tree(self.pypass.json_to_tree())
             return
@@ -450,9 +450,9 @@ class PyPassGui(object):
             result = dialog_window(_("This database already exists"),
             _("Do you want to overrite it ?"),
             action=gtk.MESSAGE_QUESTION)
-            if result == gtk.RESPONSE_NO:
+            if result != gtk.RESPONSE_YES:
                 return
-            elif result == gtk.RESPONSE_YES:
+            else:
                 outcome = self.pypass.crypt(force=True, 
                                     recipients=self.key,
                                     filename=self.filename)
