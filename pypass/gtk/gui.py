@@ -429,6 +429,7 @@ class PyPassGui(object):
         if filename is not None:
             self.pypass.load_data(filename=filename)
             self.filename = filename
+            self.created = False
             if self.pypass.data is not None and self.pypass.data != "":
                 self.load_password_tree(self.pypass.json_to_tree())
             return
@@ -543,15 +544,26 @@ class PyPassGui(object):
                 }
         self.set_button_img(butons)
         self.set_keys_list()
-        self.builder.get_object("hbox3").destroy()
+        self.builder.get_object("label_password").set_text("Other key:")
+        self.builder.get_object("entry_key_password").set_visibility(True)
 
         add = self.builder.get_object("dialogkeychooser")
         if _dialog(add) == 1:
             selection = self.builder.get_object("treeviewkey").get_selection()
             (model, itera) = selection.get_selected()
-            if itera is None:
+            otherk = self.builder.get_object("entry_key_password").get_text()
+            if itera is None and otherk is None or otherk == "":
                 return
-            key = model[itera][0]
+
+            key = None
+            if itera is not None:
+                key = model[itera][0]
+            if otherk is not None and otherk != "":
+                key = otherk
+            if key is None:
+                print "bug"
+
+            print key
             self.key = key
             self.pypass.set_recipient(key[:8])
 

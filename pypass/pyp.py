@@ -131,12 +131,12 @@ class PyPass(object):
         #TODO: remove this dirty hack and change the config as it should be
         if "override_file" in dir(self.config) and self.config.override_file:
             force = True
-        print recipients, filename, self.data
         if recipients is None or recipients == "":
             return "key_not_found"
         if os.path.exists(filename):
             if not force:
                 return "file_exists"
+        print recipients, filename, self.data
         edata = self._gpg.encrypt(
                                     self.data,
                                     recipients,

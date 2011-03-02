@@ -37,7 +37,7 @@
               <object class="GtkHBox" id="hbox3">
                 <property name="spacing">5</property>
                 <child>
-                  <object class="GtkLabel" id="label1">
+                  <object class="GtkLabel" id="label_password">
                     <property name="visible">True</property>
                     <property name="xalign">0.05000000074505806</property>
                     <property name="label" translatable="yes">Password</property>
