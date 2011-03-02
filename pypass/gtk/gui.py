@@ -95,7 +95,7 @@ def file_browse(dialog_action, title, pathname, file_name="",
             filefilter.set_name(typek)
             for element in types[typek]:
                 filefilter.add_mime_type(element)
-            dialog.add_filter(filefilter)
+            file_dialog.add_filter(filefilter)
     #Create and add the 'all files' filter
     filefilter = gtk.FileFilter()
     filefilter.set_name("All files")
@@ -123,16 +123,16 @@ def _dialog(dialog):
 
 
 def dialog_window(message, error=None, action=gtk.MESSAGE_ERROR):
-    """ 
+    """
     Display a dialog window with the given message.
 
     Action precise the     type of dialog to display, the return signal is
     handled accordingly.
 
-    @param message a string of text which is displayed in the dialog
-    @param error a string with another part of the message displayed on 
+    message -- a string of text which is displayed in the dialog
+    error -- a string with another part of the message displayed on
     a second line
-    @param action a GTK Message Type Constants giving the type of window
+    action -- a GTK Message Type Constants giving the type of window
     displayed _link: http://www.pygtk.org/docs/pygtk/gtk-constants.html#gtk-message-type-constants
     """
     dialog = gtk.MessageDialog(None, 0, action)
@@ -153,7 +153,6 @@ def dialog_window(message, error=None, action=gtk.MESSAGE_ERROR):
                             gtk.STOCK_OK,
                             gtk.RESPONSE_YES)
     return _dialog(dialog)
-
 
 
 class PyPassGui(object):
@@ -261,9 +260,9 @@ class PyPassGui(object):
             butonopen.set_image(img)
 
     def load_password_tree(self, obj, parent=None):
-        """ 
-        Load a given tree into the treefolderview using the 
-        load_pypdirectory function 
+        """
+        Load a given tree into the treefolderview using the
+        load_pypdirectory function
         """
         self.data = obj
         treeview = self.builder.get_object("treefolderview")
@@ -272,7 +271,7 @@ class PyPassGui(object):
         treeview.set_model(treestore)
 
     def load_pypdirectory(self, treestore, obj, parent=None):
-        """ 
+        """
         Loads the given PypDirectory into the given treestore with the
         given parent
         This function is recursive to load the whole tree in memory including
@@ -280,8 +279,8 @@ class PyPassGui(object):
         """
         for directory in obj.directories:
             icon = gtk.STOCK_DIRECTORY
-            p2 = treestore.append(parent, [directory.name, icon, "folder"])
-            self.load_pypdirectory(treestore, directory, p2)
+            parent2 = treestore.append(parent, [directory.name, icon, "folder"])
+            self.load_pypdirectory(treestore, directory, parent2)
         for passw in obj.passwords:
             icon = gtk.STOCK_DIALOG_AUTHENTICATION
             treestore.append(parent, [passw.name, icon, "password"])
@@ -368,6 +367,10 @@ class PyPassGui(object):
             store.append([key['keyid'], " ".join(key['uids'])])
 
     def set_folder_dialog(self):
+        """
+        Reads the dialogaddentry ui file and adjust the dialog to make it
+        the folder dialog (remove some item and resize it).
+        """
         self.builder.add_from_file(os.path.join(os.path.dirname(
                 os.path.realpath(__file__)), "ui", "dialogaddentry.glade"))
         butons = {
@@ -376,7 +379,7 @@ class PyPassGui(object):
                 }
         self.set_button_img(butons)
         self.set_combox_type()
-        
+
         for objname in ("label7", "label8", "label3", "label5", "label4",
                     "entry_user", "entry_url", "entry_password",
                     "b_generate_password", "combo_type"):
@@ -409,7 +412,7 @@ class PyPassGui(object):
                                 os.path.expanduser('~'))
         if filename is not None:
             self.pypass.load_data(filename=filename)
-            sef.filename = filename
+            self.filename = filename
             if self.pypass.data is not None and self.pypass.data != "":
                 self.load_password_tree(self.pypass.json_to_tree())
             return
@@ -446,7 +449,7 @@ class PyPassGui(object):
         if filename is None:
             return
         self.pypass.data_from_json(self.data)
-        outcome = self.pypass.crypt(recipients=self.key, 
+        outcome = self.pypass.crypt(recipients=self.key,
                                     filename=filename)
         if outcome == "file_exists":
             result = dialog_window(_("This database already exists"),
@@ -455,7 +458,7 @@ class PyPassGui(object):
             if result != gtk.RESPONSE_YES:
                 return
             else:
-                outcome = self.pypass.crypt(force=True, 
+                outcome = self.pypass.crypt(force=True,
                                     recipients=self.key,
                                     filename=self.filename)
 
@@ -468,12 +471,12 @@ class PyPassGui(object):
         (model, itera) = selection.get_selected()
         directoriespath = pypass.pyp.get_directory_path(model, itera, [])
         txtpass = self.builder.get_object("labelpass")
-        
+
         if itera is None:
             txtpass.set_text(" ")
             return
 
-        item = self.pypass.get_item(self.data, directoriespath, 
+        item = self.pypass.get_item(self.data, directoriespath,
             model[itera][2], model[itera][0])
 
         if item is None:
@@ -497,7 +500,7 @@ class PyPassGui(object):
                 if key not in ('name', 'password'):
                     if key.lower() == 'url':
                         content += "<b>%s:</b> <a href='%s'>" \
-                            "%s</a> \n" % (key, item.extras[key], 
+                            "%s</a> \n" % (key, item.extras[key],
                                             item.extras[key])
                     else:
                         content += "<b>%s:</b> %s \n" % (
@@ -510,7 +513,7 @@ class PyPassGui(object):
             txtpass.set_text(" ")
 
     def set_key(self, widget):
-        """ 
+        """
         Display the window in which the user can choose one the key
         which are installed on the machine, set this key in the config file
         """
@@ -523,7 +526,7 @@ class PyPassGui(object):
         self.set_button_img(butons)
         self.set_keys_list()
         self.builder.get_object("hbox3").destroy()
-        
+
         add = self.builder.get_object("dialogkeychooser")
         if _dialog(add) == 1:
             selection = self.builder.get_object("treeviewkey").get_selection()
@@ -541,7 +544,7 @@ class PyPassGui(object):
             return
 
         directoriespath = pypass.pyp.get_directory_path(model, itera, [])
-        item = self.pypass.get_item(self.data, directoriespath, 
+        item = self.pypass.get_item(self.data, directoriespath,
                 model[itera][2], model[itera][0])
 
         if item is None:
@@ -552,7 +555,7 @@ class PyPassGui(object):
             # Name
             entry_name = self.builder.get_object("entry_name")
             entry_name.set_text(item.name)
-            entry_name.set_editable(False) # Name cannot be changed
+            entry_name.set_editable(False)  # Name cannot be changed
             # Password
             entry_password = self.builder.get_object("entry_password")
             entry_password.set_text(item.password)
@@ -573,7 +576,7 @@ class PyPassGui(object):
             # Name
             entry_name = self.builder.get_object("entry_name")
             entry_name.set_text(item.name)
-            entry_name.set_editable(False) # Name cannot be changed
+            entry_name.set_editable(False)  # Name cannot be changed
             # Password
             if item.description is not None:
                 entry_description = self.builder.get_object("entry_description")
@@ -581,7 +584,7 @@ class PyPassGui(object):
             item = self.get_folder_from_dialog()
         if item is None:
             return
-        self.data = self.pypass.replace_item(self.data, model, 
+        self.data = self.pypass.replace_item(self.data, model,
                                                 itera, item)
         self.load_password_tree(self.data)
         self.on_password_selected()
@@ -592,15 +595,15 @@ class PyPassGui(object):
         """ Remove an entry from the tree """
         (model, itera) = self.get_path()
         directoriespath = pypass.pyp.get_directory_path(model, itera, [])
-        item = self.pypass.get_item(self.data, directoriespath, 
+        item = self.pypass.get_item(self.data, directoriespath,
                 model[itera][2], model[itera][0])
-        result = dialog_window(_("You are going to remove %s.") %item.name,
+        result = dialog_window(_("You are going to remove %s.") % item.name,
             _("Do you want to continue ?"),
             action=gtk.MESSAGE_QUESTION)
         if result == gtk.RESPONSE_NO:
             return
         elif result == gtk.RESPONSE_YES:
-            self.data = self.pypass.remove_item(self.data, model, itera, 
+            self.data = self.pypass.remove_item(self.data, model, itera,
                 item)
             self.load_password_tree(self.data)
             self.on_password_selected()
@@ -660,7 +663,6 @@ class PyPassGui(object):
                 add.destroy()
                 return passw
 
-
     def add_entry(self, widget):
         """ Display the dialog to add an entry to the database """
         self.set_entry_dialog()
@@ -678,7 +680,7 @@ class PyPassGui(object):
         self.load_password_tree(data)
         self.update_status_bar(_("Password added"))
         self.modified_db = True
-    
+
     def add_folder(self, widget):
         """ Display the dialog to add a folder to the database """
         self.set_folder_dialog()
