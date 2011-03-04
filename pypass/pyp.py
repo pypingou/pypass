@@ -70,7 +70,7 @@ class PyPass(object):
 
     def load_data(self, passphrase=None, filename=None):
         """
-        Decrypt and load datas into an internal object.
+        Decrypt and load data into an internal object.
 
         See :func:`decrypt` for arguments details.
         """
@@ -108,7 +108,7 @@ class PyPass(object):
 
     def crypt(self, recipients=None, filename=None, force=False):
         """
-        Crypt file from current datas.
+        Crypt file from current data.
 
         You should specify one or more recipients:
 
@@ -317,7 +317,7 @@ class PyPass(object):
 
     def data_as_json(self):
         """
-        Get datas as JSON
+        Get data as JSON
         """
         return json.loads(self.data)
 

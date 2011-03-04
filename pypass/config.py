@@ -39,7 +39,7 @@ class PyPassConfig(object):
         self.app_config_file = os.path.abspath(
             os.path.join(
                 os.path.dirname(os.path.realpath(__file__)),
-               'datas',
+               'data',
                'pypass.ini'
             )
          )

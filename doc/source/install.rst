@@ -14,7 +14,7 @@ A few words on PyPass
 =====================
 
 PyPass relies on GnupPG to encrypt your data. PyPass can store many of you
-personal and confidential datas, such as
+personal and confidential data, such as
 :abbr:`HTTP (HyperText Transfer Protocol)` authentication, OS accounts and so
 on. So we'll use your own GPG key to encrypt PyPass' file.
 
@@ -23,7 +23,7 @@ Data are stored in a unique text file, in
 decrypt your file on any computer, without having to install PyPass.
 
 Of course, we advise you to install PyPass, using GnuPG directly won't permit
-you to benefit from a beautiful and efficient way to access your datas ;-)
+you to benefit from a beautiful and efficient way to access your data ;-)
 
 .. _prerequisites:
 
