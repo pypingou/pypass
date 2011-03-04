@@ -33,7 +33,7 @@ __credits__ = ['Pierre-Yves `pingou` Chibon',
 __license__ = 'GPLv3'
 __copyright__ = 'Copyright (c) 2011 Pierre-Yves Chibon \n' \
                 'Copyright (c) 2011 Johan Cwiklinski'
-__url__ = 'http://pypass.ulysses.fr'
+__url__ = 'http://pypass.org'
 __status__ = "Prototype"
 __license_text__ = """
 PyPass is free software; you can redistribute it and/or modify
