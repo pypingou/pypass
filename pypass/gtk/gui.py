@@ -552,7 +552,7 @@ class PyPassGui(object):
                 }
         self.set_button_img(butons)
         self.set_keys_list()
-        self.builder.get_object("label_password").set_text("Other key:")
+        self.builder.get_object("label_password").set_text(_("Other key:"))
         self.builder.get_object("entry_key_password").set_visibility(True)
 
         add = self.builder.get_object("dialogkeychooser")
@@ -626,7 +626,7 @@ class PyPassGui(object):
                                                 itera, item)
         self.load_password_tree(self.data)
         self.on_account_selected()
-        self.update_status_bar(_("Password updated"))
+        self.update_status_bar(_("Account updated"))
         self.modified_db = True
 
     def remove_entry(self, widget):
@@ -686,8 +686,8 @@ class PyPassGui(object):
             passtype = self.builder.get_object("combo_type").get_active()
 
             if "" in (name, password):
-                dialog_window(_("Could not enter the password."),
-                    _("Name or password had missing information"),
+                dialog_window(_("Could not add the account"),
+                    _("Name and password are both required."),
                     gtk.MESSAGE_ERROR)
                 return
             else:
@@ -711,7 +711,7 @@ class PyPassGui(object):
         data = self.pypass.add_account(
                                     self.data, model, itera, account)
         if data == "duplicate_entry":
-            dialog_window(_("Could not add the account."),
+            dialog_window(_("Could not add the account"),
             _("There is already an account with this name."),
             gtk.MESSAGE_ERROR)
             return
@@ -729,7 +729,7 @@ class PyPassGui(object):
         (model, itera) = self.get_path()
         data = self.pypass.add_folder(self.data, model, itera, folder)
         if data == "duplicate_entry":
-            dialog_window(_("Could not add the folder."),
+            dialog_window(_("Could not add the folder"),
             _("There is already a folder with this name."),
             gtk.MESSAGE_ERROR)
             return

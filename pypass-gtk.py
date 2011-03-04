@@ -48,9 +48,8 @@ if __name__ == "__main__":
     group.add_argument('-f',
                        '--file',
                        dest='filename',
-                       help=_('The password database file, this override '\
-                              'the default value contained in the '\
-                              'configuration file'))
+                       help=_('The accounts database file, this override '\
+                              'the default value'))
     group.add_argument('-V',
                        '--verbose',
                        dest='verbose',
@@ -60,7 +59,7 @@ if __name__ == "__main__":
     group.add_argument('-D',
                        '--debug',
                        dest='debug',
-                       help=_('Activate debug mode (show executes commands, '\
+                       help=_('Activate debug mode (show executed commands, '\
                               'etc.).'),
                        action='store_true',
                        default=False)
