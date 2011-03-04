@@ -9,6 +9,7 @@ PyPass' Documentation
 .. toctree::
    :maxdepth: 5
 
+   install.rst
    cli.rst
    gtk_gui.rst
    modules.rst
