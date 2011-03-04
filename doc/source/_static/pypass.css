@@ -416,6 +416,25 @@ h1 tt, h2 tt, h3 tt, h4 tt, h5 tt, h6 tt {
     margin: -1px -10px;
     padding: 0 10px;
 }*/
+
+div.warning {
+    background-color: #ffe4e4;
+    border: 1px solid #f66;
+}
+
+.warning tt {
+    background: #efc2c2;
+}
+
+div.note {
+    background-color: #eee;
+    border: 1px solid #ccc;
+}
+
+.note tt {
+    background: #d6d6d6;
+}
+
 /* -- printout stylesheet --------------------------------------------------- */
 
 @media print {
