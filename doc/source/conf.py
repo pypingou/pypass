@@ -284,7 +284,7 @@ pdf_compressed = True
 
 # Name of the cover page template to use
 #pdf_cover_template = 'sphinxcover.tmpl'
-pdf_cover_template = '_styles/_templates/pleade_cover.tmpl'
+pdf_cover_template = '_templates/pypass_cover.tmpl'
 
 # Documents to append as an appendix to all manuals.
 #pdf_appendices = []
