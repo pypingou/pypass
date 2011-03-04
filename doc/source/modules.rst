@@ -13,5 +13,6 @@ Contents:
 
    modules/pypass.rst
    modules/config.rst
+   modules/pypobj.rst
    modules/gtk_gui.rst
 
