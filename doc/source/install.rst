@@ -45,7 +45,9 @@ As for `python-gnupg`, it is not available on Fedora (14) nor Debian (6) base
 repositories. If you use Fedora, there's `a third party repository that
 provides python-gnupg package <http://rpms.ulysses.fr>`_.
 
-.. todo: find and describe `python-gnupg` installation on Debian like systems
+.. todo::
+
+   find and describe `python-gnupg` installation on Debian like systems
 
 .. _get_the_software:
 
