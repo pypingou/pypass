@@ -63,7 +63,7 @@ class PyPassCli(object):
                            default=False)
 
         query_group = parser.add_argument_group(_('Query options'))
-        exclusive_query_group = query_group.add_mutually_exclusive_group()
+        exclusive_query_group = query_group.add_mutually_exclusive_group(required = True)
         exclusive_query_group.add_argument('-l',
                                  '--list',
                                  help=_('List folders'),
@@ -82,7 +82,7 @@ class PyPassCli(object):
                                 '--save',
                                 help=_('Save configuration in your '\
                                        'preferences file (%s).' %
-                                       config.config_file),
+                                       self.pyp.config.config_file),
                                 action='store_true',
                                 default=False)
 
