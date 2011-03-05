@@ -117,3 +117,45 @@ you'll have to run:
 Results will be available in the `doc/build/html` and/or `build/doc/pdf/`
 directories.
 Pretty simple, huh? ;-)
+
+Run the software
+================
+
+For the moment, there are two ways for using PyPass. In the pypass directory,
+you'll find two different scripts:
+
+* ``pypass.py``: command line interface
+* ``pypass-gtk.py``: the GTK interface
+
+Of course, if you plan to only use PyPass from command line, you will not have
+to install PyGTK.
+
+Those both scripts can take several common options:
+
+* `-D` or `--debug`: to run the program in debug mode,
+* `-V` or `--verbose`: cause the software to be a little more verbose,
+* `-f` or `--filename`: start PyPass using specified file. If the file does
+not exists, PyPass wil start with a new one that will be saved by default
+in the location you've specified. Of course, you still can open or save the
+file you want from within the interface.
+
+Configuration
+=============
+
+PyPass comes with a default configuration file (``pypass/data/pypass.ini``)
+that will be loaded first on each startup. User configuration file
+(that defaults to ``~/.pypass/pypass.ini``) will be loaded second; and then
+the program will take care of command line arguments.
+
+Configuration files are `.ini` python files, in the form::
+
+   [group name]
+   key_name = 'value'
+   boolean = False
+
+.. todo::
+
+   write config file documentation and add a link here
+
+Please take an eye at the configuration file documentation if want you to learn
+more on available options, their values, and most important: possible values.
