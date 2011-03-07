@@ -135,27 +135,17 @@ Those both scripts can take several common options:
 * `-D` or `--debug`: to run the program in debug mode,
 * `-V` or `--verbose`: cause the software to be a little more verbose,
 * `-f` or `--filename`: start PyPass using specified file. If the file does
-not exists, PyPass wil start with a new one that will be saved by default
-in the location you've specified. Of course, you still can open or save the
-file you want from within the interface.
+  not exists, PyPass will start with a new one that will be saved by default
+  in the location you've specified. Of course, you still can open or save the
+  file you want from within the interface.
 
 Configuration
 =============
 
-PyPass comes with a default configuration file (``pypass/data/pypass.ini``)
-that will be loaded first on each startup. User configuration file
-(that defaults to ``~/.pypass/pypass.ini``) will be loaded second; and then
-the program will take care of command line arguments.
+PyPass comes with a default configuration that permit you to run it without
+changing anything. Of course, several
+:doc:`configuration options are available <configuration>`, and you can change
+the default configuration to suit your needs.
 
-Configuration files are `.ini` python files, in the form::
-
-   [group name]
-   key_name = 'value'
-   boolean = False
-
-.. todo::
-
-   write config file documentation and add a link here
-
-Please take an eye at the configuration file documentation if want you to learn
-more on available options, their values, and most important: possible values.
+At the moment, we have plans to implement the ability for the user to change
+the configuration from the GUI and the CLI interfaces, or from specific file.

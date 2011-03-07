@@ -10,6 +10,7 @@ PyPass' Documentation
    :maxdepth: 5
 
    install.rst
+   configuration.rst
    cli.rst
    gtk_gui.rst
    modules.rst
