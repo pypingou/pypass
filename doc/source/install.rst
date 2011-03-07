@@ -88,7 +88,7 @@ If you plan to build the documentation, you will also need `Sphinx
 `rst2pdf <http://code.google.com/p/rst2pdf/>`_ (>= 0.16) among with Sphinx.
 
 To get the latest PyPass development version, just clone our Mercurial
- repository:
+repository:
 
 .. code-block:: bash
 
