@@ -25,9 +25,10 @@ The configuration file
 
 .. warning::
 
-   Groups and keys name must never be modified. The program relies on that
-   names to work. If one of groups or keys cannot be found, application may
-   crash.
+   Groups and keys name must never be modified.
+
+   PyPass relies on that exact names to work. If one of groups or keys
+   cannot be found, application may not work as excepted or crash.
 
 .. todo::
 
