@@ -81,7 +81,7 @@ Development version
 In order to use our development version, you'll need:
 
 * :ref:`standard prerequisites <prerequisites>`,
-* `Mercurial <http://mercurial.selenic.com/>`_,
+* `Mercurial <http://mercurial.selenic.com/>`_.
 
 If you plan to build the documentation, you will also need `Sphinx
 <http://sphinx.pocoo.org>`_. To get the PDF documentation, you will need
