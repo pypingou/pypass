@@ -167,7 +167,7 @@ class PyPassGui(object):
     """ Class handling the gtk gui for pypass """
 
     def __init__(self, pypass, options):
-        """ Instanciate the window and set basic elements """
+        """ Instantiate the window and set basic elements """
         self.pypass = pypass
         self.builder = gtk.Builder()
         self.builder.add_from_file(os.path.join(os.path.dirname(
@@ -207,7 +207,7 @@ class PyPassGui(object):
         # key is the key you select, if it is None it will use the default
         # if set in the configuration file.
         self.key = None
-        # created reflects wether the database was new/manually created
+        # created reflects whether the database was new/manually created
         self.created = False
         self.data = PypFolder()
 
