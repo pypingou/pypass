@@ -327,7 +327,7 @@ class PyPassGui(object):
 
     def quit(self, widget):
         """ Quit the application """
-        print "quitting..."
+        LOG.info(_("Exiting..."))
         if self.modified_db:
             dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_WARNING)
             dialog.set_markup("<b>" + _("Error") + "</b>")
@@ -569,9 +569,9 @@ class PyPassGui(object):
             if otherk is not None and otherk != "":
                 key = otherk
             if key is None:
-                print "bug"
+                LOG.error("bug")
 
-            print key
+            LOG.debug(key)
             self.key = key
             self.pypass.set_recipient(key[:8])
 
