@@ -67,8 +67,8 @@ class PyPassCli(object):
         exclusive_query_group.add_argument('-l',
                                  '--list',
                                  help=_('List folders'),
-                                 action='store_true',
-                                 default=False)
+                                 nargs='?',
+                                 default='')
         exclusive_query_group.add_argument('-g',
                                  '--get',
                                  help=_('Retrieve an account by its ID'),
@@ -95,14 +95,31 @@ class PyPassCli(object):
             #TODO: init a verbose mode
             pass
 
+        if args.list == '' and not args.get and not args.save:
+            print _('You should at least specify one query or edit option.')
+            parser.print_help()
+
         if not args.filename:
             args.filename = None
 
         #Query
-        if args.list:
+        if args.list != '':
             self.pyp.load_data(filename=args.filename)
             if self.pyp.data is not None and self.pyp.data != "":
-                print self.pyp.data
+                pyp_main_folder = self.pyp.json_to_tree()
+
+                if args.list != None:
+                    print pyp_main_folder.folders
+
+                if len(pyp_main_folder.folders) > 0:
+                    print _("Folders:")
+                    for folder in pyp_main_folder.folders:
+                        print "  " + folder.name
+
+                if len(pyp_main_folder.accounts) > 0:
+                    print _("Accounts:")
+                    for account in pyp_main_folder.accounts:
+                        print account
 
         #Edition
         if args.save:
