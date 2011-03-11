@@ -25,7 +25,6 @@ else:
         packages = ['pypass', 
                     'pypass.gtk',
                     ],
-        py_module=['pypass'],
         package_data = {'pypass' : ['data/pypass.ini', 
                                 'gtk/ui/*'] },
         scripts = ["pypass.py", "pypass-gtk.py"],
@@ -39,7 +38,7 @@ else:
         url = __url__,
         data_files = [("/usr/share/applications/",["PyPass.desktop"]), 
                       ('/usr/share/icons/',["pypass/data/logo.png"]),
-                      #TODO: fix this when run from terminal (and not spec)
+                      #TODO: fix language stuff
                     ]# + [(os.path.join(LOCALE_DIR, locale),
                        #     [os.path.join('pypass', 'locale', locale,
                        #      'pypass.mo')])

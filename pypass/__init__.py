@@ -29,7 +29,7 @@ __author__ = ['Pierre-Yves `pingou` Chibon',
 __credits__ = ['Pierre-Yves `pingou` Chibon',
                'Johan `trashy` Cwiklinski',
                'Haïkel Guémar', 'Alexandrine Cwiklinski']
-__license__ = 'GPLv3'
+__license__ = 'GNU GPLv3 or any later version'
 __copyright__ = 'Copyright (c) 2011 Pierre-Yves Chibon \n' \
                 'Copyright (c) 2011 Johan Cwiklinski'
 __url__ = 'http://pypass.org'
