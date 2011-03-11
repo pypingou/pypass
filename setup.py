@@ -39,6 +39,8 @@ else:
                       ["pypass/gtk/ui/dialogaddentry.glade",
                       "pypass/gtk/ui/dialogkeychooser.glade",
                       "pypass/gtk/ui/pypass.glade"]),
+                      ('/usr/lib/python2.7/site-packages/pypass/data',
+                      ["pypass/data/pypass.ini"]),
                       #TODO: fix this when run from terminal (and not spec)
                     ]# + [(os.path.join(LOCALE_DIR, locale),
                        #     [os.path.join('pypass', 'locale', locale,
