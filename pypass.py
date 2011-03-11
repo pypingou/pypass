@@ -38,9 +38,6 @@ class PyPassInteractive(cmd.Cmd):
         self.pyp = pyp
         self.filename = filename
 
-    def do_echo(self, params):
-        print params
-
     def do_pwd(self, params):
         print 'We do not knonw yet.'
 
