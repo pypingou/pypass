@@ -51,6 +51,10 @@ def load_pypdir(jsondir, name):
 def load_account(json_account):
     """ From an account entry in the json return a PypAccount object """
     account = PypAccount(json_account["name"], json_account["password"])
+    for key in json_account.keys():
+        if key not in ["name","password"] and \
+            key not in account.extras.keys():
+            account.extras[key] = json_account[key]
     return account
 
 
@@ -85,8 +89,11 @@ def iterate_over_tree(obj, out, ite=0):
     out = '%s "accounts": [' % out
     for item in obj.accounts:
         cnt = cnt + 1
-        out = '%s { "name": "%s", "password": "%s"}' % (out,
+        out = '%s { "name": "%s", "password": "%s"' % (out,
                 item.name, item.password)
+        for key in item.extras.keys():
+            out += ',"%s":"%s"' %(key, item.extras[key])
+        out += "}"
         if cnt != len(obj.accounts):
             out = "%s ," % out
     out = '%s ], ' % out
