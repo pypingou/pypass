@@ -211,7 +211,7 @@ class PyPass(object):
         if folderspath is None or len(folderspath) == 0:
             if isinstance(item, PypAccount):
                 cnt = 0
-                for acount in database.accounts:
+                for account in database.accounts:
                     if account.name == model[itera][0]:
                         database.accounts[cnt] = item
                     cnt = cnt + 1
