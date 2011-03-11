@@ -452,6 +452,7 @@ class PyPassGui(object):
                 return
         if self.created:
             self.save_as_database()
+        print self.key
         self.pypass.data_from_json(self.data)
         outcome = self.pypass.crypt(force=True, recipients=self.key,
                                     filename=self.filename)
@@ -560,7 +561,8 @@ class PyPassGui(object):
             selection = self.builder.get_object("treeviewkey").get_selection()
             (model, itera) = selection.get_selected()
             otherk = self.builder.get_object("entry_key_password").get_text()
-            if itera is None and otherk is None or otherk == "":
+            if itera is None and (otherk is None or otherk == ""):
+                LOG.warning("No key selected")
                 return
 
             key = None
