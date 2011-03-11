@@ -338,7 +338,9 @@ class PyPassGui(object):
                                 gtk.STOCK_YES, gtk.RESPONSE_YES,)
             result = _dialog(dialog)
             if result == gtk.RESPONSE_YES:
-                self.save_database()
+                outcome = self.save_database()
+                if outcome is not True:
+                    return
             elif result == gtk.RESPONSE_CANCEL:
                 self.mainwindow.show()
                 return
@@ -468,6 +470,7 @@ class PyPassGui(object):
             return
         self.update_status_bar(_("Database saved"))
         self.modified_db = False
+        return True
 
     def save_as_database(self, widget=None):
         """ Save the current database in a selected file """
