@@ -22,7 +22,8 @@ else:
                     'pypass.gtk',
                     'pypass.gtk.ui',
                     ],
-        package_data = {'pypass' : ['pypass.py'] },
+        package_data = {'pypass' : ['data/pypass.ini', 
+                                'gtk/ui/*'] },
         scripts = ["pypass.py", "pypass-gtk.py"],
         license = 'GNU GPLv3 or any later version',
         description = 'Manage your passwords easily with PyPass',
@@ -34,13 +35,6 @@ else:
         url = 'http://pypass.org',
         data_files = [("/usr/share/applications/",["PyPass.desktop"]), 
                       ('/usr/share/icons/PyPass.png',["pypass/data/logo.png"]),
-                      #TODO: fix this line
-                      ('/usr/lib/python2.7/site-packages/pypass/gtk/ui/',
-                      ["pypass/gtk/ui/dialogaddentry.glade",
-                      "pypass/gtk/ui/dialogkeychooser.glade",
-                      "pypass/gtk/ui/pypass.glade"]),
-                      ('/usr/lib/python2.7/site-packages/pypass/data',
-                      ["pypass/data/pypass.ini"]),
                       #TODO: fix this when run from terminal (and not spec)
                     ]# + [(os.path.join(LOCALE_DIR, locale),
                        #     [os.path.join('pypass', 'locale', locale,
