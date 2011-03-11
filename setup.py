@@ -37,7 +37,7 @@ else:
         author_email = __mail__,
         url = __url__,
         data_files = [("/usr/share/applications/",["PyPass.desktop"]), 
-                      ('/usr/share/icons/',["pypass/data/logo.png"]),
+                      ('/usr/share/icons/',["pypass/data/PyPass.png"]),
                       #TODO: fix language stuff
                     ]# + [(os.path.join(LOCALE_DIR, locale),
                        #     [os.path.join('pypass', 'locale', locale,
