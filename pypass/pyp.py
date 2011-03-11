@@ -1,4 +1,3 @@
-#!/usr/bin/python
 #-*- coding: utf-8 -*-
 
 # Copyright (c) 2011 Pierre-Yves Chibon <pingou AT pingoured DOT fr>
