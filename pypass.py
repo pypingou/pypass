@@ -20,13 +20,48 @@
 # along with pypass.  If not, see <http://www.gnu.org/licenses/>.
 
 import argparse
+import cmd
 import gettext
+import sys
 
 from pypass import pyp
 from pypass import __version__, __application__
 from pypass import __description__, __locale_dir__
 
 gettext.install(__application__, __locale_dir__)
+
+
+class PyPassInteractive(cmd.Cmd):
+
+    def __init__(self, pyp, filename=None):
+        cmd.Cmd.__init__(self)
+        self.pyp = pyp
+        self.filename = filename
+
+    def do_echo(self, params):
+        print params
+
+    def do_pwd(self, params):
+        print 'We do not knonw yet.'
+
+    def do_ls(self, params):
+        self.pyp.load_data(filename=self.filename)
+        if self.pyp.data is not None and self.pyp.data != "":
+            pyp_main_folder = self.pyp.json_to_tree()
+
+            if len(pyp_main_folder.folders) > 0:
+                print _("Folders:")
+                for folder in pyp_main_folder.folders:
+                    print "  " + folder.name
+
+            if len(pyp_main_folder.accounts) > 0:
+                print _("Accounts:")
+                for account in pyp_main_folder.accounts:
+                    print account
+
+
+    def do_exit(self, params):
+        sys.exit(1)
 
 
 class PyPassCli(object):
@@ -62,8 +97,7 @@ class PyPassCli(object):
                            action='store_true',
                            default=False)
 
-        query_group = parser.add_argument_group(_('Query options'))
-        exclusive_query_group = query_group.add_mutually_exclusive_group(required = True)
+        exclusive_query_group = parser.add_mutually_exclusive_group(required = True)
         exclusive_query_group.add_argument('-l',
                                  '--list',
                                  help=_('List folders'),
@@ -76,15 +110,11 @@ class PyPassCli(object):
                                  nargs='+',
                                  default=False)
 
-        #exclusive = parser.add_mutually_exclusive_group()
-        modif_group = parser.add_argument_group(_('Edition options'))
-        modif_group.add_argument('-s',
-                                '--save',
-                                help=_('Save configuration in your '\
-                                       'preferences file (%s).' %
-                                       self.pyp.config.config_file),
-                                action='store_true',
-                                default=False)
+        exclusive_query_group.add_argument('-i',
+                                   '--interactive',
+                                   help=_('Enter PyPass interactive mode'),
+                                   action='store_true',
+                                   default=False)
 
         args = parser.parse_args()
 
@@ -95,15 +125,13 @@ class PyPassCli(object):
             #TODO: init a verbose mode
             pass
 
-        if args.list == '' and not args.get and not args.save:
-            print _('You should at least specify one query or edit option.')
-            parser.print_help()
-
         if not args.filename:
             args.filename = None
 
-        #Query
+        #List mode
         if args.list != '':
+            #TODO: the --list option should show the entire tree, interactive
+            #mode should be used to be more concise.
             self.pyp.load_data(filename=args.filename)
             if self.pyp.data is not None and self.pyp.data != "":
                 pyp_main_folder = self.pyp.json_to_tree()
@@ -121,9 +149,14 @@ class PyPassCli(object):
                     for account in pyp_main_folder.accounts:
                         print account
 
-        #Edition
-        if args.save:
-            self.pyp.config.writeUserConfig()
+        #Retrieve mode
+        if args.get:
+            #TODO: what to do if mulitple ids can match?
+            pass
+
+        #Interactive mode
+        if args.interactive:
+            PyPassInteractive(self.pyp, args.filename).cmdloop()
 
 if __name__ == "__main__":
     PYP = pyp.PyPass()
