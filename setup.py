@@ -1,8 +1,12 @@
 #!/usr/bin/python
 
+# test via:
+# python setup.py install --root /tmp/pypass && tree /tmp/pypass/
+
 from distutils.core import setup
 import os, sys
-from pypass import __version__, __author__
+from pypass import __version__, __author__, __url__, __license__
+from pypass import __description__, __mail__
 
 name = 'PyPass'
 
@@ -20,21 +24,21 @@ else:
         version = __version__,
         packages = ['pypass', 
                     'pypass.gtk',
-                    'pypass.gtk.ui',
                     ],
+        py_module=['pypass'],
         package_data = {'pypass' : ['data/pypass.ini', 
                                 'gtk/ui/*'] },
         scripts = ["pypass.py", "pypass-gtk.py"],
-        license = 'GNU GPLv3 or any later version',
-        description = 'Manage your passwords easily with PyPass',
+        license = __license__,
+        description = __description__,
         long_description = 'PyPass helps you to manage all your ' \
         'accounts in an easy and secure with GPG.',
         platforms = ['Linux'],
         author = __author__,
-        author_email = 'admin@pypass.org',
-        url = 'http://pypass.org',
+        author_email = __mail__,
+        url = __url__,
         data_files = [("/usr/share/applications/",["PyPass.desktop"]), 
-                      ('/usr/share/icons/PyPass.png',["pypass/data/logo.png"]),
+                      ('/usr/share/icons/',["pypass/data/logo.png"]),
                       #TODO: fix this when run from terminal (and not spec)
                     ]# + [(os.path.join(LOCALE_DIR, locale),
                        #     [os.path.join('pypass', 'locale', locale,
