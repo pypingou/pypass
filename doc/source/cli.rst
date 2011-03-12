@@ -17,7 +17,7 @@ To get the complete list of available commands, just run:
 
 You can get the entire list using `--list` (or `-l`) flag:
 
-.. todo:: That example is from a development version that doe not work as expected
+.. todo:: That example is from a development version that does not work as expected
 
 .. code-block:: bash
 
