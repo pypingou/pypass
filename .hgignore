@@ -4,6 +4,8 @@ syntax: glob
 *.pyd
 *.pyc
 *.pyo
+.egg-info
+build
 
 #eclipse project stuff
 *.project
@@ -13,7 +15,6 @@ syntax: glob
 # projectr specific output
 *.asc
 *.log
-build
 *.mo
 
 #backup files
