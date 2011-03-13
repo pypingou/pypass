@@ -23,10 +23,20 @@ import sys
 import os
 import logging
 
-import pypass.pyp
-from pypass import __version__, __author__, __copyright__, __credits__, __url__
-from pypass import __license_text__, __application__, __locale_dir__
-from pypass.pypobj import PypFolder, PypAccount
+try:
+    import pypass.pyp as pyp
+    from pypass import __version__, __author__, __copyright__
+    from pypass import __license_text__, __application__, __locale_dir__
+    from pypass import __url__, __credits__
+    from pypass.pypobj import PypFolder, PypAccount
+
+except ImportError:
+    # Application isn't installed
+    import src.pyp as pyp
+    from src import __version__, __author__, __copyright__, __credits__
+    from src import __license_text__, __application__, __locale_dir__
+    from src import __url__
+    from src.pypobj import PypFolder, PypAccount
 
 LOG = logging.getLogger(__name__)
 if not LOG.handlers:
@@ -500,7 +510,7 @@ class PyPassGui(object):
         """ Display the account in the window when selected on the tree """
         selection = self.builder.get_object("treefolderview").get_selection()
         (model, itera) = selection.get_selected()
-        folderspath = pypass.pyp.get_folder_path(model, itera, [])
+        folderspath = pyp.get_folder_path(model, itera, [])
         txtpass = self.builder.get_object("labelpass")
 
         if itera is None:
@@ -586,7 +596,7 @@ class PyPassGui(object):
         if itera is None:
             return
 
-        folderspath = pypass.pyp.get_folder_path(model, itera, [])
+        folderspath = pyp.get_folder_path(model, itera, [])
         item = self.pypass.get_item(self.data, folderspath,
                 model[itera][2], model[itera][0])
 
@@ -637,7 +647,7 @@ class PyPassGui(object):
     def remove_entry(self, widget):
         """ Remove an entry from the tree """
         (model, itera) = self.get_path()
-        folderspath = pypass.pyp.get_folder_path(model, itera, [])
+        folderspath = pyp.get_folder_path(model, itera, [])
         item = self.pypass.get_item(self.data, folderspath,
                 model[itera][2], model[itera][0])
         result = dialog_window(_("You are going to remove %s.") % item.name,

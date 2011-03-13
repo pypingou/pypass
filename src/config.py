@@ -23,7 +23,12 @@ import os
 import ConfigParser
 import gettext
 import logging
-from pypass import pyp
+try:
+    # Application is already installed
+    from pypass import pyp
+except ImportError:
+    # Application isn't installed
+    from src import pyp
 LOG = logging.getLogger(__name__)
 if not LOG.handlers:
     try:

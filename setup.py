@@ -2,11 +2,15 @@
 
 # test via:
 # python setup.py install --root /tmp/pypass && tree /tmp/pypass/
+# rm -rf build/ PyPass.egg-info /tmp/pypass/ && python setup.py \
+# install --root /tmp/pypass && tree /tmp/pypass/
+
 
 from distutils.core import setup
+from setuptools import find_packages
 import os, sys
-from pypass import __version__, __author__, __url__, __license__
-from pypass import __description__, __mail__
+from src import __version__, __author__, __url__, __license__
+from src import __description__, __mail__
 
 name = 'PyPass'
 
@@ -19,15 +23,10 @@ if sys.platform == 'win32':
     # Something might come here one day.
     pass
 else:
+    print find_packages('.')
     setup(
         name = name,
         version = __version__,
-        packages = ['pypass', 
-                    'pypass.gtk',
-                    ],
-        package_data = {'pypass' : ['data/pypass.ini', 
-                                'gtk/ui/*'] },
-        scripts = ["pypass.py", "pypass-gtk.py"],
         license = __license__,
         description = __description__,
         long_description = 'PyPass helps you to manage all your ' \
@@ -36,8 +35,13 @@ else:
         author = __author__,
         author_email = __mail__,
         url = __url__,
+        packages = ['pypass','pypass.gtk'],
+        package_dir={'pypass': 'src'},
+        #package_data = {'pypass' : ['data/pypass.ini', 
+                                #'gtk/ui/*'] },
+        scripts = ["pypass", "pypass-gtk"],
         data_files = [("/usr/share/applications/",["PyPass.desktop"]), 
-                      ('/usr/share/icons/',["pypass/data/PyPass.png"]),
+                      ('/usr/share/icons/',["src/data/PyPass.png"]),
                       #TODO: fix language stuff
                     ]# + [(os.path.join(LOCALE_DIR, locale),
                        #     [os.path.join('pypass', 'locale', locale,

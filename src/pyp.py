@@ -29,7 +29,6 @@ import logging
 LOG = logging.getLogger(__name__)
 
 import config
-import pypass
 import pypobj
 from pypobj import PypFolder, PypAccount
 

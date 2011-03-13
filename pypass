@@ -23,10 +23,18 @@ import argparse
 import cmd
 import gettext
 import sys
+try:
+    # Application is already installed
+    from pypass import pyp
+    from pypass import __version__, __application__
+    from pypass import __description__, __locale_dir__
+except ImportError:
+    # Application isn't installed
+    from src import pyp
+    from src import __version__, __application__
+    from src import __description__, __locale_dir__
 
-from pypass import pyp
-from pypass import __version__, __application__
-from pypass import __description__, __locale_dir__
+
 
 gettext.install(__application__, __locale_dir__)
 
