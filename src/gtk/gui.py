@@ -29,7 +29,6 @@ try:
     from pypass import __license_text__, __application__, __locale_dir__
     from pypass import __url__, __credits__
     from pypass.pypobj import PypFolder, PypAccount
-
 except ImportError:
     # Application isn't installed
     import src.pyp as pyp
