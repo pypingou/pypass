@@ -55,6 +55,23 @@ class PyPassInteractive(cmd.Cmd):
         self.path = "/"
         self.modified = False
 
+    def complete_cat(self, text, line, start_index, end_index):
+        options = [account.name for account in self.folder.accounts]
+        return options
+
+    def complete_cd(self, text, line, start_index, end_index):
+        options = [folder.name for folder in self.folder.folders]
+        return options
+
+    def complete_cmd(self, text, line, start_index, end_index):
+        commands = ['add', 'add_folder', 'cat', 'cd', 'exit', 'ls', 'pwd',
+            'quit', 'remove', 'save', 'view']
+        return commands
+
+    def complete_view(self, text, line, start_index, end_index):
+        options = [account.name for account in self.folder.accounts]
+        return options
+
     def do_add(self, params):
         """ Add a password in the database. """
         print 'Adding a password into the folder: %s' % self.path
@@ -84,7 +101,7 @@ class PyPassInteractive(cmd.Cmd):
 
     def do_cat(self, params):
         """ Display the information relative to a given password. """
-        self.do_view(self, params)
+        self.do_view(params)
 
     def do_cd(self, params):
         """ Change the working directory. """
