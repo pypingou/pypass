@@ -3,7 +3,7 @@
 
 Name:           PyPass
 Version:        0.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Manage your accounts information easily and safely
 
 Group:          Development/Languages
@@ -13,10 +13,9 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
-BuildRequires:  python-devel pygtk2
-BuildRequires:  desktop-file-utils
-Requires:       pygtk2
-
+BuildRequires:  python-devel
+Requires:       python-gnupg
+Requires:       python-argparse
 
 %description
 PyPass allows you to manage easily and safely your accounts. The sensible
@@ -33,31 +32,8 @@ command line and GTK interfaces.
 rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install  --root $RPM_BUILD_ROOT
 
-desktop-file-install \
-        --dir=%{buildroot}%{_datadir}/applications \
-        %{name}.desktop
-
 # TODO: fix languages
 #find_lang %{name}
-
-%post
-# After install, we update the icons
-touch --no-create %{_datadir}/icons/hicolor
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-  %{_bindir}/gtk-update-icon-cache -q %{_datadir}/icons/hicolor;
-fi
-update-mime-database %{_datadir}/mime &> /dev/null || :
-update-desktop-database &> /dev/null || :
-
-%postun
-# After uninstall, we update the icons
-touch --no-create %{_datadir}/icons/hicolor
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-  %{_bindir}/gtk-update-icon-cache -q %{_datadir}/icons/hicolor;
-fi
-update-mime-database %{_datadir}/mime &> /dev/null || :
-update-desktop-database &> /dev/null || :
-
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -68,10 +44,11 @@ rm -rf $RPM_BUILD_ROOT
 %doc README LICENSE
 %{python_sitelib}/*
 %{_bindir}/pypass.py
-%{_bindir}/pypass-gtk.py
-%{_datadir}/applications/%{name}.desktop
-%{_datadir}/icons/PyPass.png
 
 %changelog
+* Thu Jan 5 2012 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.0.1-2
+- Adjust spec to the split pypass/pypass-gnome
+- Add missing Requires
+
 * Fri Mar 11 2011 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.0.1-1
 - First package
