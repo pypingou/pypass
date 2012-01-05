@@ -45,7 +45,10 @@ class PyPassInteractive(cmd.Cmd):
         self.pyp = pyp
         self.filename = filename
         self.pyp.load_data(filename=self.filename)
+        self.pyp_main_folder = self.pyp.json_to_tree()
         self.intro = 'See `help` for a list of the command available.'
+        self.folder = self.pyp_main_folder
+        self.path = "/"
 
     def do_add(self, params):
         """ Add a password in the database. """
@@ -54,8 +57,21 @@ class PyPassInteractive(cmd.Cmd):
 
     def do_cd(self, params):
         """ Change the working directory. """
-        print params
-        print 'Not implemented yet'
+        if params == '..':
+            path = self.path.split('/')
+            self.folder = self.pyp_main_folder
+            self.path = '/'
+            for folder in path[1:-2]:
+                self.do_cd(folder)
+            return
+        found = False
+        for folder in self.folder.folders:
+            if params == folder.name:
+                self.folder = folder
+                self.path = self.path + folder.name + '/'
+                found = True
+        if not found:
+            print 'No folder of the name "%s" were found in this folder.' % params
 
     def do_exit(self, params):
         """ Quit the program. """
@@ -65,24 +81,16 @@ class PyPassInteractive(cmd.Cmd):
         """ List directory and password available in the current
         directory.
         """
-        print params
-        if self.pyp.data is not None and self.pyp.data != "":
-            pyp_main_folder = self.pyp.json_to_tree()
-
-            if len(pyp_main_folder.folders) > 0:
-                print _("Folders:")
-                for folder in pyp_main_folder.folders:
-                    print "  " + folder.name
-
-            if len(pyp_main_folder.accounts) > 0:
-                print _("Accounts:")
-                for account in pyp_main_folder.accounts:
-                    print account
+        if not params:
+            self.view_folder(self.folder)
+        else:
+            for folder in self.folder.folders:
+                if params == folder.name:
+                    self.view_folder(folder)
 
     def do_pwd(self, params):
         """ Print the working directory. """
-        print param
-        print 'Not implemented yet'
+        print self.path
 
     def do_quit(self, params):
         """ Quit the program. """
@@ -98,6 +106,31 @@ class PyPassInteractive(cmd.Cmd):
         """ Save the current database. """
         print params
         print 'Not implemented yet'
+
+    def do_view(self, params):
+        """ Display the information relative to a given password. """
+        if not params:
+            print 'No password specified'
+        else:
+            found = False
+            for account in self.folder.accounts:
+                if account.name == params:
+                    print account
+                    found = True
+            if not found:
+                print 'No password of the name "%s" were found in this folder.' % params
+
+    def view_folder(self, folder):
+        """ Display the content of a folder. """
+        if len(folder.folders) > 0:
+            print _("Folders:")
+            for fold in folder.folders:
+                print "  " + fold.name
+
+        if len(folder.accounts) > 0:
+            print _("Accounts:")
+            for account in folder.accounts:
+                print '  %s' % account.name
 
 
 class PyPassCli(object):
