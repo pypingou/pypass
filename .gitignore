@@ -3,7 +3,8 @@
 *.pyc
 *.pyo
 *.egg-info
-build
+build/
+dist/
 
 #eclipse project stuff
 *.project
