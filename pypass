@@ -82,6 +82,10 @@ class PyPassInteractive(cmd.Cmd):
         self.folder.folders.append(folder)
         self.modified = True
 
+    def do_cat(self, params):
+        """ Display the information relative to a given password. """
+        self.do_view(self, params)
+
     def do_cd(self, params):
         """ Change the working directory. """
         if params == '..':
