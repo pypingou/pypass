@@ -37,6 +37,7 @@ else:
         url = __url__,
         packages = ['pypass'],
         package_dir={'pypass': 'src'},
+        package_data = {'pypass' : ['data/pypass.ini']},
         scripts = ["pypass"],
                       #TODO: fix language stuff
                     # + [(os.path.join(LOCALE_DIR, locale),
