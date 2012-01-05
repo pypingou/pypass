@@ -43,7 +43,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc README LICENSE
 %{python_sitelib}/*
-%{_bindir}/pypass.py
+%{_bindir}/pypass
 
 %changelog
 * Thu Jan 5 2012 Pierre-Yves Chibon <pingou@pingoured.fr> - 0.0.1-2
