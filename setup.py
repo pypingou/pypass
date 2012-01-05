@@ -35,15 +35,11 @@ else:
         author = __author__,
         author_email = __mail__,
         url = __url__,
-        packages = ['pypass','pypass.gtk'],
+        packages = ['pypass'],
         package_dir={'pypass': 'src'},
-        #package_data = {'pypass' : ['data/pypass.ini', 
-                                #'gtk/ui/*'] },
-        scripts = ["pypass", "pypass-gtk"],
-        data_files = [("/usr/share/applications/",["PyPass.desktop"]), 
-                      ('/usr/share/icons/',["src/data/PyPass.png"]),
+        scripts = ["pypass"],
                       #TODO: fix language stuff
-                    ]# + [(os.path.join(LOCALE_DIR, locale),
+                    # + [(os.path.join(LOCALE_DIR, locale),
                        #     [os.path.join('pypass', 'locale', locale,
                        #      'pypass.mo')])
                        #     for locale in locales]
