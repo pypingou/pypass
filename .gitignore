@@ -2,7 +2,7 @@
 *.pyd
 *.pyc
 *.pyo
-.egg-info
+*.egg-info
 build
 
 #eclipse project stuff
