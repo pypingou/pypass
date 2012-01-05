@@ -23,6 +23,8 @@ import argparse
 import cmd
 import gettext
 import sys
+import getpass
+
 try:
     # Application is already installed
     from pypass import pyp
@@ -59,7 +61,7 @@ class PyPassInteractive(cmd.Cmd):
         name = params
         if not name:
             name = raw_input('Name: ')
-        password = raw_input('Password: ')
+        password = getpass.getpass('Password: ')
         account = PypAccount(name, password)
         add_extras = raw_input( 'Do you want to add extra-information? [Y/N] ')
         while add_extras.lower().startswith('y'):
