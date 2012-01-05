@@ -51,6 +51,7 @@ class PyPassInteractive(cmd.Cmd):
         self.intro = 'See `help` for a list of the command available.'
         self.folder = self.pyp_main_folder
         self.path = "/"
+        self.modified = False
 
     def do_add(self, params):
         """ Add a password in the database. """
@@ -67,6 +68,7 @@ class PyPassInteractive(cmd.Cmd):
             account.extras[key] = value
             add_extras = raw_input( 'Do you want to add extra-information? [Y/N] ')
         self.folder.accounts.append(account)
+        self.modified = True
 
     def do_add_folder(self, params):
         """ Add a folder in the current directory. """
@@ -76,6 +78,7 @@ class PyPassInteractive(cmd.Cmd):
         desc = raw_input('Description: ')
         folder = PypFolder(name, desc)
         self.folder.folders.append(folder)
+        self.modified = True
 
     def do_cd(self, params):
         """ Change the working directory. """
@@ -97,7 +100,7 @@ class PyPassInteractive(cmd.Cmd):
 
     def do_exit(self, params):
         """ Quit the program. """
-        sys.exit(1)
+        self.do_quit(params)
 
     def do_ls(self, params):
         """ List directory and password available in the current
@@ -116,6 +119,13 @@ class PyPassInteractive(cmd.Cmd):
 
     def do_quit(self, params):
         """ Quit the program. """
+        if self.modified:
+            print 'The database has been modified.'
+            usr_inp = raw_input('Do you want to quit (q), save (s), cancel (c)? ')
+            if usr_inp.lower() == 'c':
+                return
+            elif usr_inp.lower() == 's':
+                self.do_save(None)
         sys.exit(1)
 
     def do_remove(self, params):
@@ -130,12 +140,14 @@ class PyPassInteractive(cmd.Cmd):
                         params)
                     if usr_inp.lower().startswith('y'):
                         self.folder.folders.remove(folder)
+                        self.modified = True
             for account in self.folder.accounts:
                 if params == account.name:
                     usr_inp = raw_input('Are you sure you want to remove the account "%s"? [Y/N] ' %
                         params)
                     if usr_inp.lower().startswith('y'):
                         self.folder.accounts.remove(account)
+                        self.modified = True
 
     def do_save(self, params):
         """ Save the current database.
@@ -153,6 +165,8 @@ class PyPassInteractive(cmd.Cmd):
                 print 'No key specified in the configuration file.'
             elif outcome == 'file_exists':
                 print 'This database file already exists.'
+            else:
+                self.modified = False
         elif params:
             outcome = self.pyp.crypt(filename = params)
             if outcome is False:
@@ -164,6 +178,9 @@ class PyPassInteractive(cmd.Cmd):
                 usr_inp = raw_input( 'To you want to over write this file? [Y/N]')
                 if usr_inp.lower().startswith('y'):
                     self.pyp.crypt(filename = params, force=True)
+                    self.modified = False
+            else:
+                self.modified = False
 
     def do_view(self, params):
         """ Display the information relative to a given password. """
