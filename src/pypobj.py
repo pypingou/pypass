@@ -125,6 +125,9 @@ class PypFolder(object):
         out = out + "}"
         return out
 
+    def __str__(self):
+        return 'Name: %s' % self.name
+
 
 class PypAccount(object):
     """ Represents a PyPass account"""
@@ -133,6 +136,14 @@ class PypAccount(object):
         self.name = name
         self.password = password
         self.extras = {}
+
+    def __str__(self):
+        string = '''Name: %s
+Password: %s ''' % (self.name, self.password)
+        for key in self.extras.keys():
+            string = string + '\s%s: %s' % (key.capitalize(),
+                self.extras[key])
+        return string
 
 #if __name__ == "__main__":
     #tree = create_set()
