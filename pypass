@@ -103,9 +103,31 @@ class PyPassInteractive(cmd.Cmd):
         print 'Not implemented yet'
 
     def do_save(self, params):
-        """ Save the current database. """
-        print params
-        print 'Not implemented yet'
+        """ Save the current database.
+    :arg filename to which the database will be saved, if not specified
+        it will save the current file or will take it the default from
+        the configuration file."""
+        if not params and not self.filename:
+            print 'Please specify a filename to which save the database.'
+        elif self.filename and not params:
+            outcome = self.pyp.crypt(filename = self.filename, force=True)
+            if outcome is False:
+                print 'Could not save the database, Wrong/Expired key?'
+            elif outcome == 'key_not_found':
+                print 'No key specified in the configuration file.'
+            elif outcome == 'file_exists':
+                print 'This database file already exists.'
+        elif params:
+            outcome = self.pyp.crypt(filename = params)
+            if outcome is False:
+                print 'Could not save the database, Wrong/Expired key?'
+            elif outcome == 'key_not_found':
+                print 'No key specified in the configuration file.'
+            elif outcome == 'file_exists':
+                print 'This database file already exists.'
+                usr_inp = raw_input( 'To you want to over write this file? [Y/N]')
+                if usr_inp.lower().startswith('y'):
+                    self.pyp.crypt(filename = params, force=True)
 
     def do_view(self, params):
         """ Display the information relative to a given password. """
