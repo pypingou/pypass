@@ -316,6 +316,7 @@ class PyPassCli(object):
                 ppi = PyPassInteractive(self.pyp, args.filename)
                 ppi.cmdloop()
             except KeyboardInterrupt:
+                ppi.do_quit(None)
                 print ""
 
     def view_folder(self, folder, level):
