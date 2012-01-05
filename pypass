@@ -28,9 +28,11 @@ try:
     from pypass import pyp
     from pypass import __version__, __application__
     from pypass import __description__, __locale_dir__
+    from pypass.pypobj import PypFolder, PypAccount
 except ImportError:
     # Application isn't installed
     from src import pyp
+    from src.pypobj import PypFolder, PypAccount
     from src import __version__, __application__
     from src import __description__, __locale_dir__
 
@@ -52,8 +54,28 @@ class PyPassInteractive(cmd.Cmd):
 
     def do_add(self, params):
         """ Add a password in the database. """
-        print params
-        print 'Not implemented yet'
+        print 'Adding a password into the folder: %s' % self.path
+        name = params
+        if not name:
+            name = raw_input('Name: ')
+        password = raw_input('Password: ')
+        account = PypAccount(name, password)
+        add_extras = raw_input( 'Do you want to add extra-information? [Y/N] ')
+        while add_extras.lower().startswith('y'):
+            key = raw_input('Title: ')
+            value = raw_input('Value: ')
+            account.extras[key] = value
+            add_extras = raw_input( 'Do you want to add extra-information? [Y/N] ')
+        self.folder.accounts.append(account)
+
+    def do_add_folder(self, params):
+        """ Add a folder in the current directory. """
+        name = params
+        if not name:
+            name = raw_input('Name: ')
+        desc = raw_input('Description: ')
+        folder = PypFolder(name, desc)
+        self.folder.folders.append(folder)
 
     def do_cd(self, params):
         """ Change the working directory. """
@@ -99,14 +121,28 @@ class PyPassInteractive(cmd.Cmd):
     def do_remove(self, params):
         """ Remove a password from the database.
         """
-        print params
-        print 'Not implemented yet'
+        if not params:
+            print 'Please specify the password or folder to remove.'
+        else:
+            for folder in self.folder.folders:
+                if params == folder.name:
+                    usr_inp = raw_input('Are you sure you want to remove the folder "%s"? [Y/N] ' %
+                        params)
+                    if usr_inp.lower().startswith('y'):
+                        self.folder.folders.remove(folder)
+            for account in self.folder.accounts:
+                if params == account.name:
+                    usr_inp = raw_input('Are you sure you want to remove the account "%s"? [Y/N] ' %
+                        params)
+                    if usr_inp.lower().startswith('y'):
+                        self.folder.accounts.remove(account)
 
     def do_save(self, params):
         """ Save the current database.
     :arg filename to which the database will be saved, if not specified
         it will save the current file or will take it the default from
         the configuration file."""
+        self.pyp.data = self.pyp_main_folder.dump()
         if not params and not self.filename:
             print 'Please specify a filename to which save the database.'
         elif self.filename and not params:
