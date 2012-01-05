@@ -35,7 +35,6 @@ except ImportError:
     from src import __description__, __locale_dir__
 
 
-
 gettext.install(__application__, __locale_dir__)
 
 
@@ -45,12 +44,28 @@ class PyPassInteractive(cmd.Cmd):
         cmd.Cmd.__init__(self)
         self.pyp = pyp
         self.filename = filename
+        self.pyp.load_data(filename=self.filename)
+        self.intro = 'See `help` for a list of the command available.'
 
-    def do_pwd(self, params):
-        print 'We do not knonw yet.'
+    def do_add(self, params):
+        """ Add a password in the database. """
+        print params
+        print 'Not implemented yet'
+
+    def do_cd(self, params):
+        """ Change the working directory. """
+        print params
+        print 'Not implemented yet'
+
+    def do_exit(self, params):
+        """ Quit the program. """
+        sys.exit(1)
 
     def do_ls(self, params):
-        self.pyp.load_data(filename=self.filename)
+        """ List directory and password available in the current
+        directory.
+        """
+        print params
         if self.pyp.data is not None and self.pyp.data != "":
             pyp_main_folder = self.pyp.json_to_tree()
 
@@ -64,9 +79,25 @@ class PyPassInteractive(cmd.Cmd):
                 for account in pyp_main_folder.accounts:
                     print account
 
+    def do_pwd(self, params):
+        """ Print the working directory. """
+        print param
+        print 'Not implemented yet'
 
-    def do_exit(self, params):
+    def do_quit(self, params):
+        """ Quit the program. """
         sys.exit(1)
+
+    def do_remove(self, params):
+        """ Remove a password from the database.
+        """
+        print params
+        print 'Not implemented yet'
+
+    def do_save(self, params):
+        """ Save the current database. """
+        print params
+        print 'Not implemented yet'
 
 
 class PyPassCli(object):
@@ -161,7 +192,11 @@ class PyPassCli(object):
 
         #Interactive mode
         if args.interactive:
-            PyPassInteractive(self.pyp, args.filename).cmdloop()
+            try:
+                ppi = PyPassInteractive(self.pyp, args.filename)
+                ppi.cmdloop()
+            except KeyboardInterrupt:
+                print ""
 
 if __name__ == "__main__":
     PYP = pyp.PyPass()
