@@ -141,7 +141,7 @@ class PypAccount(object):
         string = '''Name: %s
 Password: %s ''' % (self.name, self.password)
         for key in self.extras.keys():
-            string = string + '\s%s: %s' % (key.capitalize(),
+            string = string + '\n%s: %s' % (key.capitalize(),
                 self.extras[key])
         return string
 
