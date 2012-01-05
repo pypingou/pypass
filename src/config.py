@@ -53,7 +53,8 @@ class PyPassConfig(object):
                     self.config_file)
 
         self.config = ConfigParser.ConfigParser()
-        self.config.read([self.app_config_file, self.config_file])
+        self.config.readfp(open(self.app_config_file))
+        self.config.read([self.config_file])
 
         #we're done with initialization, we can load values now
         self.load()
