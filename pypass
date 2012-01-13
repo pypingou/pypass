@@ -41,7 +41,7 @@ except ImportError:
 
 TKIMPORT = True
 try:
-    from Tkinter import Tk123
+    from Tkinter import Tk
 except ImportError:
     TKIMPORT = False
 
