@@ -24,7 +24,7 @@ import cmd
 import getpass
 import gettext
 import sys
-from Tkinter import Tk
+from warnings import warn
 
 try:
     # Application is already installed
@@ -39,6 +39,11 @@ except ImportError:
     from src import __version__, __application__
     from src import __description__, __locale_dir__
 
+TKIMPORT = True
+try:
+    from Tkinter import Tk123
+except ImportError:
+    TKIMPORT = False
 
 gettext.install(__application__, __locale_dir__)
 
@@ -55,6 +60,9 @@ class PyPassInteractive(cmd.Cmd):
         self.folder = self.pyp_main_folder
         self.path = "/"
         self.modified = False
+        if not TKIMPORT:
+            warn('The copy command from the interactive shell will not be available. '\
+        'Install the Tkinter library to have it.')
 
     def complete_cat(self, text, line, start_index, end_index):
         options = [account.name for account in self.folder.accounts]
@@ -68,7 +76,7 @@ class PyPassInteractive(cmd.Cmd):
         commands = ['add', 'add_folder', 'cat', 'cd', 'exit', 'ls', 'pwd',
             'quit', 'remove', 'save', 'view']
         return commands
-
+    
     def complete_view(self, text, line, start_index, end_index):
         options = [account.name for account in self.folder.accounts]
         return options
@@ -124,6 +132,9 @@ class PyPassInteractive(cmd.Cmd):
 
     def do_copy(self, params):
         """ Copy the password of the given account to the clipboard. """
+        if not TKIMPORT:
+            print 'Command not available.'
+            return
         if not params:
             print 'No password specified'
         else:
