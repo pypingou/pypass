@@ -24,7 +24,9 @@ generated/read.
 
 
 def json_to_tree(jsontxt):
-    """ From a given json structure transforms it to a tree """
+    """ Converts a json string into a PypFolder with all the information
+    from the json string converted into PypFolder and PypAccount.
+    """
     data = PypFolder("rootdir")
     if jsontxt is None:
         return data
@@ -34,7 +36,8 @@ def json_to_tree(jsontxt):
 
 
 def load_pypdir(jsondir, name):
-    """ Convert an element of pypdir to tree """
+    """ Convert a dictionary into a PypFolder with the specified name.
+    """
     desc = None
     if "description" in jsondir.keys():
         desc = jsondir["description"]
@@ -81,7 +84,7 @@ def create_set():
 
 def iterate_over_tree(obj, out, ite=0):
     """ Iterate over the items in a PypFolder """
-    out = '%s "%s": { ' % (out, obj.name)
+    out = '%s"%s": { ' % (out, obj.name)
     if obj.description is not None and obj.description != "":
         out = '%s "description": "%s",' % (out, obj.description)
     ite = ite + 1
