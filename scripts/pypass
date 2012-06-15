@@ -176,11 +176,11 @@ class PyPassInteractive(cmd.Cmd):
         directory.
         """
         if not params:
-            self.view_folder(self.folder)
+            view_folder(self.folder, 1)
         else:
             for folder in self.folder.folders:
                 if params == folder.name:
-                    self.view_folder(folder)
+                    view_folder(folder, 1)
 
     def do_pwd(self, params):
         """ Print the working directory. """
@@ -189,8 +189,14 @@ class PyPassInteractive(cmd.Cmd):
     def do_tree(self, params=None):
         """ Show the tree. """
         print '(Folder have a *)'
-        print '*root'
-        view_folder(self.folder, 1)
+        if not params:
+            print '*%s' % self.folder.name
+            view_folder(self.folder, 1)
+        else:
+            for folder in self.folder.folders:
+                if params == folder.name:
+                    print '*%s' % self.folder.name
+                    view_folder(folder, 1)
 
     def do_quit(self, params):
         """ Quit the program. """
