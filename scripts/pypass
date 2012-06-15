@@ -48,6 +48,18 @@ except ImportError:
 
 gettext.install(__application__, __locale_dir__)
 
+def view_folder(folder, level):
+    """ Print the content of the given folder. """
+    if len(folder.accounts) > 0:
+        for account in folder.accounts:
+            print '  | ' * level + '\_', account.name
+
+    if len(folder.folders) > 0:
+        for folder in folder.folders:
+            print '  | ' * level + '\_ *' + folder.name
+            view_folder(folder, level = level + 1)
+
+
 
 class PyPassInteractive(cmd.Cmd):
 
@@ -113,8 +125,12 @@ class PyPassInteractive(cmd.Cmd):
         """ Display the information relative to a given password. """
         self.do_view(params)
 
-    def do_cd(self, params):
+    def do_cd(self, params=None):
         """ Change the working directory. """
+        if not params or params == '/':
+            self.folder = self.pyp_main_folder
+            self.path = '/'
+            return
         if params == '..':
             path = self.path.split('/')
             self.folder = self.pyp_main_folder
@@ -169,6 +185,12 @@ class PyPassInteractive(cmd.Cmd):
     def do_pwd(self, params):
         """ Print the working directory. """
         print self.path
+
+    def do_tree(self, params=None):
+        """ Show the tree. """
+        print '(Folder have a *)'
+        print '*root'
+        view_folder(self.folder, 1)
 
     def do_quit(self, params):
         """ Quit the program. """
@@ -332,8 +354,9 @@ class PyPassCli(object):
             self.pyp.load_data(filename=args.filename)
             if self.pyp.data is not None and self.pyp.data != "":
                 pyp_main_folder = self.pyp.json_to_tree()
-                print '*root (Folder have a *)'
-                self.view_folder(pyp_main_folder, 1)
+                print '(Folder have a *)'
+                print '*root'
+                view_folder(pyp_main_folder, 1)
 
         #Retrieve mode
         if args.get:
@@ -349,16 +372,6 @@ class PyPassCli(object):
                 ppi.do_quit(None)
                 print ""
 
-    def view_folder(self, folder, level):
-        """ Print the content of the given folder. """
-        if len(folder.folders) > 0:
-            for folder in folder.folders:
-                print '  | ' * level + '\_ *' + folder.name
-                self.view_folder(folder, level = level + 1)
-
-        if len(folder.accounts) > 0:
-            for account in folder.accounts:
-                print '  | ' * level + '\_', account.name
 
 if __name__ == "__main__":
     PYP = pyp.PyPass()
