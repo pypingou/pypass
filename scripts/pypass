@@ -34,10 +34,11 @@ try:
     from pypass.pypobj import PypFolder, PypAccount
 except ImportError:
     # Application isn't installed
-    from src import pyp
-    from src.pypobj import PypFolder, PypAccount
-    from src import __version__, __application__
-    from src import __description__, __locale_dir__
+    sys.path.insert(0, '..')
+    from pypass import pyp
+    from pypass import __version__, __application__
+    from pypass import __description__, __locale_dir__
+    from pypass.pypobj import PypFolder, PypAccount
 
 TKIMPORT = True
 try:
