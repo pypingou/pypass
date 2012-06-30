@@ -177,8 +177,7 @@ class PyPass(object):
         same goes for an account.
         """
         folderspath = get_folder_path(model, itera, [])
-        print folderspath
-        if folderspath is None or len(folderspath) == 0:
+        if not folderspath:
             if folder.name in [direc.name for direc in database.folders]:
                 return "duplicate_entry"
             database.folders.append(folder)
@@ -186,9 +185,9 @@ class PyPass(object):
             folderspath.reverse()
             root = database
             for fold in folderspath:
-                for folder in root.folders:
-                    if folder.name == fold:
-                        root = folder
+                for direc in root.folders:
+                    if direc.name == fold:
+                        root = direc
             if folder.name in [direc.name for direc in root.folders]:
                 return "duplicate_entry"
             root.folders.append(folder)
