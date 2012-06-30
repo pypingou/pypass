@@ -5,9 +5,11 @@ PyPass
 :Author: Johan Cwiklinski <>
 
 
-PyPass is a gpg-based password database. This project provides both
-the python backend as well as a command line interface allowing to
-easily access you password database remotely.
+PyPass is a gpg-based password database.
+
+This project provides both the python backend as well as
+a command line interface allowing to easily access you
+password database remotely.
 
 
 License:
