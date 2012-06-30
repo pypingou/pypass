@@ -104,7 +104,6 @@ def iterate_over_tree(obj, out, ite=0):
     cnt = 0
     for item in obj.folders:
         cnt = cnt + 1
-        ite = ite + 1
         out = iterate_over_tree(item, out, ite)
         if cnt != len(obj.folders):
             out = "%s ," % out
