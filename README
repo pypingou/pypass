@@ -1,8 +1,0 @@
-I18n:
-
-PyPass is available (partially at the moment) in French and English.
-If you get if from sources, you'll have to compile .po files. To achieve
-that, run:
-$ ./pypGetText.py -c
-
-From within PyPass directory.
